@@ -1,4 +1,4 @@
-# MovieRecommendationSystem
+# My Tunes
 Recommendation System Exercise
 
 Over the course of the next weeks we will be developing a single user movie recommendation system. You will work in groups throughout the project.
