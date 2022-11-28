@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="571.0" prefWidth="373.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunessys.gui.controller.IndexController">
+<BorderPane prefHeight="571.0" prefWidth="373.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunessys.gui.controller.IndexController">
    <bottom>
       <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="97.0" prefWidth="456.0" BorderPane.alignment="CENTER">
         <items>
@@ -14,23 +21,23 @@
                      <children>
                         <VBox prefHeight="45.0" prefWidth="209.0">
                            <children>
-                              <Label prefHeight="17.0" prefWidth="182.0" text="Name of Song" />
-                              <Label prefHeight="17.0" prefWidth="309.0" text="Artist" />
+                              <Label fx:id="lblNameOfSong" prefHeight="17.0" prefWidth="182.0" text="Name of Song" />
+                              <Label fx:id="lblArtist" prefHeight="17.0" prefWidth="309.0" text="Artist" />
                            </children>
                         </VBox>
                         <VBox prefHeight="45.0" prefWidth="50.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Button" />
+                              <Button fx:id="btnPrevious" mnemonicParsing="false" text="&lt;" />
                            </children>
                         </VBox>
                         <VBox prefHeight="45.0" prefWidth="50.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Button" />
+                              <Button fx:id="btnPlay" mnemonicParsing="false" text="Play" />
                            </children>
                         </VBox>
                         <VBox layoutX="240.0" layoutY="10.0" prefHeight="45.0" prefWidth="50.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Button" />
+                              <Button fx:id="btnNext" mnemonicParsing="false" text="&gt;" />
                            </children>
                         </VBox>
                      </children>
@@ -43,7 +50,7 @@
                      <children>
                         <VBox prefHeight="43.0" prefWidth="185.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Button" />
+                              <Button fx:id="btnSongs" mnemonicParsing="false" text="Songs" />
                               <Label text="Songs" />
                            </children>
                            <padding>
@@ -52,7 +59,7 @@
                         </VBox>
                         <VBox prefHeight="43.0" prefWidth="185.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Button" />
+                              <Button fx:id="btnPlaylists" mnemonicParsing="false" text="Playlists" />
                               <Label text="Playlists" />
                            </children>
                            <padding>
@@ -73,4 +80,14 @@
          </children>
       </AnchorPane>
    </center>
+   <top>
+      <AnchorPane prefHeight="60.0" prefWidth="374.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="lblCurrentLocation" layoutX="48.0" layoutY="21.0" text="Label" />
+            <Button fx:id="btnGoBack" layoutX="7.0" layoutY="17.0" mnemonicParsing="false" text="&lt;" />
+            <Button fx:id="btnAdd" layoutX="335.0" layoutY="17.0" mnemonicParsing="false" text="+" />
+            <TextField fx:id="txfSearchBar" layoutX="179.0" layoutY="18.0" promptText="Search..." />
+         </children>
+      </AnchorPane>
+   </top>
 </BorderPane>

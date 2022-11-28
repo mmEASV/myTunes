@@ -19,17 +19,7 @@ import javafx.scene.control.TextField;
 public class IndexController implements Initializable
 {
 
-    /**
-     * The TextField containing the URL of the targeted website.
-     */
-    @FXML
-    private TextField txtMovieSearcjh;
 
-    /**
-     * The TextField containing the query word.
-     */
-    @FXML
-    private ListView<?> lstMovies;
 
 
     @Override
