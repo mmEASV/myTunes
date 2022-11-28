@@ -1,37 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunessys.gui.controller.IndexController">
-   <top>
-      <VBox alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
-         <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Movie Recommendation System" textAlignment="CENTER" VBox.vgrow="ALWAYS">
-               <font>
-                  <Font name="Book Antiqua Bold" size="30.0" />
-               </font>
-            </Label>
-         </children>
-         <padding>
-            <Insets bottom="10.0" />
-         </padding>
-         <BorderPane.margin>
-            <Insets left="5.0" right="5.0" />
-         </BorderPane.margin>
-      </VBox>
-   </top>
+<BorderPane prefHeight="571.0" prefWidth="373.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunessys.gui.controller.IndexController">
+   <bottom>
+      <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="97.0" prefWidth="456.0" BorderPane.alignment="CENTER">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <HBox prefHeight="45.0" prefWidth="373.0">
+                     <children>
+                        <VBox prefHeight="45.0" prefWidth="209.0">
+                           <children>
+                              <Label prefHeight="17.0" prefWidth="182.0" text="Name of Song" />
+                              <Label prefHeight="17.0" prefWidth="309.0" text="Artist" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="45.0" prefWidth="50.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Button" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="45.0" prefWidth="50.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Button" />
+                           </children>
+                        </VBox>
+                        <VBox layoutX="240.0" layoutY="10.0" prefHeight="45.0" prefWidth="50.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Button" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="77.0" prefWidth="454.0">
+               <children>
+                  <HBox prefHeight="43.0" prefWidth="373.0">
+                     <children>
+                        <VBox prefHeight="43.0" prefWidth="185.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Button" />
+                              <Label text="Songs" />
+                           </children>
+                           <padding>
+                              <Insets left="65.0" />
+                           </padding>
+                        </VBox>
+                        <VBox prefHeight="43.0" prefWidth="185.0">
+                           <children>
+                              <Button mnemonicParsing="false" text="Button" />
+                              <Label text="Playlists" />
+                           </children>
+                           <padding>
+                              <Insets left="65.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </bottom>
    <center>
-      <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <TextField fx:id="txtMovieSearcjh" promptText="search movies" />
-            <ListView fx:id="lstMovies" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+            <ListView prefHeight="473.0" prefWidth="373.0" />
          </children>
-      </VBox>
+      </AnchorPane>
    </center>
 </BorderPane>
