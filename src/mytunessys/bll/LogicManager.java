@@ -1,5 +1,7 @@
 package mytunessys.bll;
 
-public class LogicManager implements LogicFacade{
+import mytunessys.bll.interfaces.ILogicFacade;
+
+public class LogicManager implements ILogicFacade {
 
 }

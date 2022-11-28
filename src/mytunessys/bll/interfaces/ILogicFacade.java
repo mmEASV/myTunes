@@ -3,15 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mytunessys.bll;
-
-import java.util.List;
+package mytunessys.bll.interfaces;
 
 /**
  *
  * @author
  */
-public interface LogicFacade
+public interface ILogicFacade
 {
 
 }
