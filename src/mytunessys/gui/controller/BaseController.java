@@ -61,12 +61,8 @@ public class BaseController implements Initializable {
     @FXML
     private AnchorPane centerContent;
 
-
     private SongModel songModel = new SongModel();
     private PlaylistModel playlistModel = new PlaylistModel();
-
-
-
 
     private void updateCurrentSongNameLabel(){
         //TODO display the song that is played currently on lblNameOfSong
