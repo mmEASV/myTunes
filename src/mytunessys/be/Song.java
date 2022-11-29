@@ -3,19 +3,19 @@ package mytunessys.be;
 public class Song {
     private int id;
     private String title;
-    private Genre genre;
     private String duration;
     private String artist;
     private String absolutePath;
+    private Genre genre;
 
 
-    public Song(int id, String title, Genre genre, String duration, String artist, String absolutePath) {
+    public Song(int id, String title, String duration, String artist, String absolutePath, Genre genre) {
         this.id = id;
         this.title = title;
-        this.genre = genre;
         this.duration = duration;
         this.artist = artist;
         this.absolutePath = absolutePath;
+        this.genre = genre;
     }
 
     public String getTitle() {
@@ -66,6 +66,7 @@ public class Song {
         this.absolutePath = absolutePath;
     }
 
+    @Override
     public String toString(){
         return this.id + " " + this.title + " " + this.genre.getName() + " " + this.duration;
     }
