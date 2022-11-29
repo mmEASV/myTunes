@@ -27,6 +27,7 @@ public class BaseController {
 
     private void updateCurrentSongNameLabel(){
         //TODO display the song that is played currently on lblNameOfSong
+        //update
     }
 
     private void updateArtistLabel(){
