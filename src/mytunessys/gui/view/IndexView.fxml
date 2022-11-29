@@ -79,8 +79,10 @@
          <children>
             <TableView fx:id="tbvContentTable" layoutY="7.0" prefHeight="407.0" prefWidth="373.0">
               <columns>
-                <TableColumn fx:id="tbvCol1" prefWidth="317.5999878048897" text="C1" />
-                <TableColumn fx:id="tbvCol2" prefWidth="56.00006103515625" text="C2" />
+                <TableColumn fx:id="tbvColTitle" prefWidth="75.0" text="Title" />
+                <TableColumn fx:id="tbvColGenre" prefWidth="105.5" text="Genre" />
+                  <TableColumn fx:id="tbvColDuration" prefWidth="117.5" text="Duration" />
+                  <TableColumn fx:id="tbvColOption" prefWidth="74.0" text="Options" />
               </columns>
             </TableView>
          </children>

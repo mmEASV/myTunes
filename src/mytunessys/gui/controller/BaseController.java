@@ -9,14 +9,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.geometry.Side;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.LogicManager;
@@ -33,10 +30,12 @@ public class BaseController implements Initializable {
     @FXML
     private TableView<Song> tbvContentTable;
     @FXML
-    private TableColumn<Song, String> tbvCol1;
+    private TableColumn<Song, String> tbvColTitle;
     @FXML
-    private TableColumn<Song, String> tbvCol2;
+    private TableColumn<Song, String> tbvColGenre;
 
+    @FXML
+    private TableColumn<Song,String> tbvColOption;
     @FXML
     private Label lblNameOfSong;
     @FXML
@@ -90,8 +89,15 @@ public class BaseController implements Initializable {
 
         //change list to display songs
 
-        tbvCol1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
-        tbvContentTable.setItems(songModel.getAllSongs());
+        MenuItem menuItem = new MenuItem("here goes nothing");
+
+
+
+       // tbvColTitle.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
+      //  tbvColOption.setCellFactory(cellData -> new TableCell<>());
+       // tbvContentTable.setItems();
+
+
 
         //change the btnGoBack
 
@@ -119,10 +125,44 @@ public class BaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        btnGoBack.setVisible(false);
-        lblCurrentLocation.setText("Songs");
-        //clean up code smell
-        tbvCol1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
+//        btnGoBack.setVisible(false);
+//        lblCurrentLocation.setText("Songs");
+//        //clean up code smell
+//      //  tbvCol1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
+//        tbvContentTable.setItems(songModel.getAllSongs());
+
+
+        Callback<TableColumn<Song, String>, TableCell<Song, String>> cellFactory
+                = //
+                new Callback<TableColumn<Song, String>, TableCell<Song, String>>() {
+                    @Override
+                    public TableCell call(final TableColumn<Song, String> param) {
+                        final TableCell<Song, String> cell = new TableCell<Song, String>() {
+
+                            final Button btn = new Button("....");
+                            final ContextMenu menu = new ContextMenu(new MenuItem("edit song"),new MenuItem("add to playlist"));
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    btn.setOnAction(event -> {
+                                        menu.show(btn, Side.BOTTOM,0,0);
+                                    });
+                                    setGraphic(btn);
+                                    setText(null);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
+        tbvColOption.setCellFactory(cellFactory);
+
         tbvContentTable.setItems(songModel.getAllSongs());
+        tbvContentTable.getColumns().addAll(tbvColOption);
     }
 }
