@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="571.0" prefWidth="373.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunessys.gui.controller.IndexController">
+<BorderPane prefHeight="571.0" prefWidth="373.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunessys.gui.controller.BaseController">
    <bottom>
       <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="97.0" prefWidth="456.0" BorderPane.alignment="CENTER">
         <items>
