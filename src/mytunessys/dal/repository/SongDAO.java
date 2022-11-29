@@ -41,18 +41,51 @@ public class SongDAO implements ISongDAO {
     }
 
     @Override
-    public void createSong(String title, Genre genre, String duration, String artist, String absolutePath) {
-        // Do jdbc implementation
+    public void createSong(String title, String duration, String artist, String absolutePath, Genre genre) {
+        try(Connection connection = MSSQLConnection.createConnection()){
+            String sql = "INSERT INTO song(title, duration, artist, absolute_path, genre_id) VALUES(?,?,?,?,?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, title);
+            preparedStatement.setString(2, duration);
+            preparedStatement.setString(3, artist);
+            preparedStatement.setString(4, absolutePath);
+            preparedStatement.setInt(5, genre.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public void updateSong(int id, String title, Genre genre, String duration, String artist, String absolutePath) {
-        // Do jdbc implementation
+    public void updateSong(int id, String title, String duration, String artist, String absolutePath, Genre genre) {
+        try(Connection connection = MSSQLConnection.createConnection()){
+            String sql = "UPDATE song SET title = ?, duration = ?, artist = ?, absolute_path = ?, genre_id = ? WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, title);
+            preparedStatement.setString(2, duration);
+            preparedStatement.setString(3, artist);
+            preparedStatement.setString(4, absolutePath);
+            preparedStatement.setInt(5, genre.getId());
+            preparedStatement.setInt(6, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public boolean deleteSong(int id) {
-        // Do jdbc implementation
+        try(Connection connection = MSSQLConnection.createConnection()){
+            String sql = "DELETE FROM song WHERE(id=?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            int result = preparedStatement.executeUpdate();
+            if(result > 0){
+                return true;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return false;
-    }
+        }
 }

@@ -21,7 +21,7 @@ public interface ISongDAO {
      * @param artist string artist name of the artist for new song
      * @param absolutePath string path where the song is stored locally
      */
-    void createSong(String title, Genre genre, String duration, String artist, String absolutePath);
+    void createSong(String title, String duration, String artist, String absolutePath, Genre genre);
 
     /**
      *
@@ -32,7 +32,7 @@ public interface ISongDAO {
      * @param artist  string artist name  for song playtime
      * @param absolutePath string path where the song is stored locally
      */
-    void updateSong(int id, String title,Genre genre,String duration,String artist,String absolutePath);
+    void updateSong(int id, String title,String duration,String artist,String absolutePath,Genre genre);
 
     /**
      * boolean method that deleted song with given id from the database
