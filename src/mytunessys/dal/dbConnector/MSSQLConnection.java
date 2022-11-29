@@ -16,8 +16,8 @@ public class MSSQLConnection {
 
     /**
      * Creates connection from SQLServerDataSource and binds credentials from environmental variables
-     * @return SQL Connection
-     * @throws SQLException
+     * @return Connection (session) with specific database
+     * @throws RuntimeException if failes to connect with the session database
      */
 
     public static Connection createConnection() {

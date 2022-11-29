@@ -1,13 +1,13 @@
 package mytunessys.dal;
 
-import mytunessys.bll.types.ModelDAOType;
 import mytunessys.dal.repository.PlaylistDAO;
 import mytunessys.dal.repository.SongDAO;
+
 public class DAOFactory extends AbstractDAOFactory{
 
     /**
      *
-     * @return
+     * @return SongDAO instantiated in factory
      */
     @Override
     public SongDAO getSongDAO() {
@@ -16,7 +16,7 @@ public class DAOFactory extends AbstractDAOFactory{
 
     /**
      *
-     * @return
+     * @return PlaylistDAO instantiated in factory
      */
     @Override
     public PlaylistDAO playlistDAO() {

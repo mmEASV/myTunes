@@ -1,4 +1,9 @@
 package mytunessys.bll.exceptions;
 
-public class SongDAOException {
+import java.sql.SQLException;
+
+public class SongDAOException extends SQLException {
+    public SongDAOException(String message,Throwable cause){
+        super(message,cause);
+    }
 }

@@ -13,11 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SongDAO implements ISongDAO {
+
     @Override
     public List<Song> getAllSongs() {
         List<Song> retrievedSongs = new ArrayList<>();
         try(Connection connection = MSSQLConnection.createConnection()){
-            String sql = "SELECT * FROM song";
+            String sql = "SELECT id,title,duration,artist,absolute_path,genre_id FROM song";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
@@ -36,7 +37,7 @@ public class SongDAO implements ISongDAO {
         String artist = rs.getString("artist");
         String absolutePath = rs.getString("absolute_path");
         Genre g = new Genre(300,"Pop"); // testing not real db
-        return new Song(id,title,g,duration,artist,absolutePath);
+        return new Song(id,title,duration,artist,absolutePath,g);
     }
 
     @Override
