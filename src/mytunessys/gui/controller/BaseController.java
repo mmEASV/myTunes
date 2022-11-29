@@ -1,13 +1,19 @@
 package mytunessys.gui.controller;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -21,7 +27,15 @@ import mytunessys.gui.models.SongModel;
  * @author Bálint & Matej
  */
 
-public class BaseController {
+public class BaseController implements Initializable {
+
+
+    @FXML
+    private TableView<Song> tbvContentTable;
+    @FXML
+    private TableColumn<Song, String> tbvCol1;
+    @FXML
+    private TableColumn<Song, String> tbvCol2;
 
     @FXML
     private Label lblNameOfSong;
@@ -47,15 +61,13 @@ public class BaseController {
     private TextField txfSearchBar;
     @FXML
     private AnchorPane centerContent;
-    @FXML
-    protected ListView contentList;
+
 
     private SongModel songModel = new SongModel();
     private PlaylistModel playlistModel = new PlaylistModel();
 
-    private void getAllPlaylists(){ //waiting on backend to implement Playlist
-        //playlists = logicManager.getAllPlaylists();
-    }
+
+
 
     private void updateCurrentSongNameLabel(){
         //TODO display the song that is played currently on lblNameOfSong
@@ -78,7 +90,8 @@ public class BaseController {
 
         //change list to display songs
 
-        contentList.setItems(songModel.getAllSongs());
+        tbvCol1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
+        tbvContentTable.setItems(songModel.getAllSongs());
 
         //change the btnGoBack
 
@@ -94,7 +107,7 @@ public class BaseController {
         ShowInterface(actionEvent,"Playlists");
         //TODO switch the ui to playlist with btnPlaylists
 
-        contentList.setItems(playlistModel.getAllPlaylists());
+
     }
 
     public void ShowInterface(ActionEvent actionEvent,String name) {
@@ -104,4 +117,12 @@ public class BaseController {
     }
 
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        btnGoBack.setVisible(false);
+        lblCurrentLocation.setText("Songs");
+        //clean up code smell
+        tbvCol1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
+        tbvContentTable.setItems(songModel.getAllSongs());
+    }
 }

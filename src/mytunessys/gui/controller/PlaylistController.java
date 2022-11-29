@@ -30,7 +30,7 @@ public class PlaylistController extends BaseController {
             //playlistNames.add(p.getName());
         }
 
-        contentList.setItems(playlistNames);
+
     }
 
 }
