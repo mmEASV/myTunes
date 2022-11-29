@@ -50,7 +50,7 @@
                      <children>
                         <VBox prefHeight="43.0" prefWidth="185.0">
                            <children>
-                              <Button fx:id="btnSongs" mnemonicParsing="false" text="Songs" onAction="#switchToSongInterface" />
+                              <Button fx:id="btnSongs" mnemonicParsing="false" onAction="#switchToSongInterface" text="Songs" />
                               <Label text="Songs" />
                            </children>
                            <padding>
@@ -59,7 +59,7 @@
                         </VBox>
                         <VBox prefHeight="43.0" prefWidth="185.0">
                            <children>
-                              <Button fx:id="btnPlaylists" mnemonicParsing="false" text="Playlists" onAction="#switchToPlaylistInterface" />
+                              <Button fx:id="btnPlaylists" mnemonicParsing="false" onAction="#switchToPlaylistInterface" text="Playlists" />
                               <Label text="Playlists" />
                            </children>
                            <padding>
@@ -76,12 +76,12 @@
    <center>
       <AnchorPane fx:id="centerContent" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <ListView prefHeight="473.0" prefWidth="373.0" fx:id="contentList" />
+            <ListView fx:id="contentList" prefHeight="473.0" prefWidth="373.0" />
          </children>
       </AnchorPane>
    </center>
    <top>
-      <AnchorPane prefHeight="60.0" prefWidth="374.0" BorderPane.alignment="CENTER" fx:id="top">
+      <AnchorPane fx:id="top" prefHeight="60.0" prefWidth="374.0" BorderPane.alignment="CENTER">
          <children>
             <Label fx:id="lblCurrentLocation" layoutX="48.0" layoutY="21.0" text="Label" />
             <Button fx:id="btnGoBack" layoutX="7.0" layoutY="17.0" mnemonicParsing="false" text="&lt;" />
