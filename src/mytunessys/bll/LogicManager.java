@@ -1,5 +1,6 @@
 package mytunessys.bll;
 
+import mytunessys.be.Genre;
 import mytunessys.be.Song;
 import mytunessys.bll.interfaces.ILogicFacade;
 import mytunessys.bll.types.DatabaseType;
@@ -10,11 +11,15 @@ import java.util.List;
 
 public class LogicManager implements ILogicFacade {
 
-    AbstractDAOFactory songFactory = AbstractDAOFactory.getDAO(DatabaseType.MSSQL); // fixed with extracted enums
-    SongDAO songDAO = songFactory.getSongDAO();
+
+
 
     public List<Song> getAllSongs() {
         return List.of();
        // return songDAO.getAllSongs();
+    }
+
+    public void createSong(String title, String duration, String artist, String absolutePath, Genre genre){
+        //songDAO.createSong(title, duration, artist, absolutePath, genre);
     }
 }
