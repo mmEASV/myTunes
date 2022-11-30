@@ -15,11 +15,19 @@ import java.util.List;
 
 public class SongDAO implements ISongDAO {
 
+    public static void main(String[] args) {
+        SongDAO song = new SongDAO();
+
+        List<Song> test2 =  (List<Song>) (Object)song.getAllSongs();
+        System.out.println("breakpoint");
+    }
+
     @Override
     public List<Object> getAllSongs() {
         List<Object> retrievedSongs = new ArrayList<>();
         try(Connection connection = MSSQLConnection.createConnection()){
-            String sql = "SELECT id,title,duration,artist,absolute_path,genre_id FROM song";
+            String sql = "SELECT s.id,s.title,s.duration,s.artist,s.absolute_path,s.genre_id,g.genre_name\n" +
+                          "FROM song s JOIN genre g ON g.id = s.genre_id";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
             while(rs.next()){
@@ -37,8 +45,11 @@ public class SongDAO implements ISongDAO {
         String duration = rs.getString("duration");
         String artist = rs.getString("artist");
         String absolutePath = rs.getString("absolute_path");
-        Genre g = new Genre(300,"Pop"); // testing not real db
-        return new Song(id,title,duration,artist,absolutePath,g);
+
+        int genreId = rs.getInt("genre_id");
+        String genreName = rs.getString("genre_name");
+        Genre fetchedGenre = new Genre(genreId,genreName);
+        return new Song(id,title,duration,artist,absolutePath,fetchedGenre);
     }
 
     @Override

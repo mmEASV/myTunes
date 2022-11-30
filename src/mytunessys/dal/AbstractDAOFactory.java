@@ -3,11 +3,14 @@ package mytunessys.dal;
 import mytunessys.bll.types.DatabaseType;
 import mytunessys.dal.repository.interfaces.IPlaylistDAO;
 import mytunessys.dal.repository.interfaces.ISongDAO;
+import mytunessys.dal.repository.interfaces.ISongOnPlaylistDAO;
 
 public abstract class AbstractDAOFactory {
     public abstract ISongDAO getSongDAO();
 
     public abstract IPlaylistDAO playlistDAO();
+
+    public abstract ISongOnPlaylistDAO songOnPlaylistDAO();
 
     /**
      * getDao method that generates DAO factory with predefined db connection
