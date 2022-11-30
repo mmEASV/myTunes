@@ -1,12 +1,8 @@
 package mytunessys.gui.controller;
 
-import java.util.List;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import mytunessys.be.Playlist;
-import mytunessys.bll.LogicManager;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * @author Bálint & Matej
@@ -14,24 +10,28 @@ import mytunessys.bll.LogicManager;
 
 public class PlaylistController {
 
-    private List<Playlist> playlists;
+    public void Show(AnchorPane centerContent){
+        var table = new TableView<>();
 
-    public PlaylistController(){
-        //playlists = getAllPlaylists();
+        var NameCollumn = new TableColumn<>();
+        NameCollumn.setText("Playlist Name");
+        NameCollumn.prefWidthProperty().set(283);
+
+        var CurrentlyPlayingCollumn = new TableColumn<>();
+        CurrentlyPlayingCollumn.setText("Currently Playing");
+
+        var NumberOfSongsCollumn = new TableColumn<>();
+        NumberOfSongsCollumn.setText("Number of Songs");
+
+        table.editableProperty().set(false);
+        table.getColumns().add(NameCollumn);
+        table.getColumns().add(CurrentlyPlayingCollumn);
+        table.getColumns().add(NumberOfSongsCollumn);
+        table.setFocusTraversable(false);
+        centerContent.getChildren().add(table);
     }
 
-    private List<Playlist> getAllPlaylists(){ //waiting on backend to develop
-        //return logicManager.getAllPlaylists();
-        return null;
-    }
-
-    private void displayPlaylistsOnListView(){ //waiting on backend to develop
-        ObservableList<String> playlistNames = FXCollections.observableArrayList();
-        for (Playlist p : playlists) {
-            //playlistNames.add(p.getName());
-        }
 
 
-    }
 
 }
