@@ -144,7 +144,7 @@ public class BaseController implements Initializable {
         songCont = new SongController();
         playlistCont = new PlaylistController();
         btnGoBack.setVisible(false);
-        btnPrevious.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Prev.png")));
+        //btnPrevious.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Prev.png")));
         btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
         btnNext.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Next.png")));
         switchToSongInterface(new ActionEvent());
