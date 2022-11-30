@@ -36,6 +36,7 @@ public class SongController{
         Table.getColumns().add(GenreCollumn);
         Table.getColumns().add(DurationCollumn);
         Table.getColumns().add(OptionsCollumn);
+        Table.setFocusTraversable(false);
         centerContent.getChildren().add(Table);
     }
 

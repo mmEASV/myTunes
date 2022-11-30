@@ -124,6 +124,7 @@ public class BaseController implements Initializable {
         //btnSongs.setBackground(new Background(new BackgroundImage("mytunessys/gui/icons/Songs2.png")));
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists2.png")));
+        playlistCont.Show(centerContent);
         //TODO switch the ui to playlist with btnPlaylists
 
 
@@ -137,7 +138,6 @@ public class BaseController implements Initializable {
         lblCurrentLocation.setText(name);
 
     }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
