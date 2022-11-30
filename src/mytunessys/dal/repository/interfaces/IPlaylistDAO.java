@@ -11,20 +11,19 @@ public interface IPlaylistDAO {
      *
      * @return List of playlists from database
      */
-    List<Playlist> getAllPlaylists();
+    List<Object> getAllPlaylists();
 
     /**
-     *
-     * @param playlistName string given when creating new playlist
+     * creates new playlist from object model playlist
+     * @param playlist object
      */
-    void createPlaylist(String playlistName);
+    void createPlaylist(Playlist playlist);
 
     /**
-     *
-     * @param id int given id for playlist that will be updated
-     * @param playlistName string of new given name for playlist
+     * updates playlist from object playlist
+     * @param playlist object
      */
-    void updatePlaylist(int id, String playlistName);
+    void updatePlaylist(Playlist playlist);
 
     /**
      * boolean method that deleted playlist with given id from the database

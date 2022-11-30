@@ -1,45 +1,45 @@
 package mytunessys.bll;
 
-import mytunessys.be.Song;
+import mytunessys.be.Playlist;
 import mytunessys.bll.interfaces.ILogicFacade;
 import mytunessys.bll.types.DatabaseType;
 import mytunessys.dal.AbstractDAOFactory;
+import mytunessys.dal.repository.PlaylistDAO;
+import mytunessys.dal.repository.interfaces.IPlaylistDAO;
 import mytunessys.dal.repository.interfaces.ISongDAO;
 
 import java.util.List;
 
-public class LogicManager implements ILogicFacade {
+public class PlaylistManager implements ILogicFacade {
 
     AbstractDAOFactory abstractDAOFactory = AbstractDAOFactory.getDAO(DatabaseType.MSSQL);
-    ISongDAO songDAO;
+    IPlaylistDAO playlistDAO;
 
-    public LogicManager() {
-        this.songDAO = abstractDAOFactory.getSongDAO();
+    public PlaylistManager(){
+        this.playlistDAO = new PlaylistDAO();
     }
-
     @Override
     public List<Object> getAllObject() {
-        return songDAO.getAllSongs();
+        return playlistDAO.getAllPlaylists();
     }
 
     @Override
     public void createObject(Object object) {
-        songDAO.createSong((Song) object);
+        playlistDAO.createPlaylist((Playlist) object);
     }
 
     @Override
     public void updateObject(Object object) {
-        songDAO.updateSong((Song) object);
+        playlistDAO.updatePlaylist((Playlist) object);
     }
 
     @Override
     public boolean deleteObject(int id) {
-        return songDAO.deleteSong(id);
+        return playlistDAO.deletePlaylist(id);
     }
 
     @Override
     public List<Object> searchObjects(List<Object> list, String query) {
         return null;
     }
-
 }

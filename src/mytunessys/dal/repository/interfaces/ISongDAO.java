@@ -9,30 +9,21 @@ public interface ISongDAO {
 
     /**
      *
-     * @return List of song from database
+     * @return List of object parse as songs later from database
      */
-    List<Song> getAllSongs();
+    List<Object> getAllSongs();
 
     /**
-     *
-     * @param title string given when creating new song
-     * @param genre genre object with given id,name when creating new song
-     * @param duration string given for song playtime
-     * @param artist string artist name of the artist for new song
-     * @param absolutePath string path where the song is stored locally
+     * creates new song in the database with given params
+     * @param song object
      */
-    void createSong(String title, String duration, String artist, String absolutePath, Genre genre);
+    void createSong(Song song);
 
     /**
-     *
-     * @param id int given id for song that will be updated
-     * @param title string of new given title for song
-     * @param genre object with id,name for new creation of the song
-     * @param duration new string given for song playtime
-     * @param artist  string artist name  for song playtime
-     * @param absolutePath string path where the song is stored locally
+     * updates song in the database from param object
+     * @param song object
      */
-    void updateSong(int id, String title,String duration,String artist,String absolutePath,Genre genre);
+    void updateSong(Song song);
 
     /**
      * boolean method that deleted song with given id from the database

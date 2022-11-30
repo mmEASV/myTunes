@@ -2,11 +2,11 @@ package mytunessys.dal.dbConnector;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
+import mytunessys.bll.exceptions.ConnectionExceptions;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class MSSQLConnection {
@@ -35,9 +35,8 @@ public class MSSQLConnection {
         try {
             conn  = ds.getConnection();
         } catch (SQLServerException e) {
-            throw new RuntimeException(e); // throw custom exception or Logger.SEVER etc
+            throw new ConnectionExceptions("Could not establish connection with the database",e.getCause()); // throw custom exception or Logger.SEVER etc
         }
-
         return conn;
     }
 

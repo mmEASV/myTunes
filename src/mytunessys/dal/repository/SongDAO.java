@@ -2,6 +2,7 @@ package mytunessys.dal.repository;
 
 import mytunessys.be.Genre;
 import mytunessys.be.Song;
+import mytunessys.bll.exceptions.SongDAOException;
 import mytunessys.dal.dbConnector.MSSQLConnection;
 import mytunessys.dal.repository.interfaces.ISongDAO;
 
@@ -15,8 +16,8 @@ import java.util.List;
 public class SongDAO implements ISongDAO {
 
     @Override
-    public List<Song> getAllSongs() {
-        List<Song> retrievedSongs = new ArrayList<>();
+    public List<Object> getAllSongs() {
+        List<Object> retrievedSongs = new ArrayList<>();
         try(Connection connection = MSSQLConnection.createConnection()){
             String sql = "SELECT id,title,duration,artist,absolute_path,genre_id FROM song";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -25,7 +26,7 @@ public class SongDAO implements ISongDAO {
                 retrievedSongs.add(instantiateSongObject(rs));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SongDAOException("Could not retrieve songs from database",e.getCause());
         }
         return retrievedSongs;
     }
@@ -41,15 +42,15 @@ public class SongDAO implements ISongDAO {
     }
 
     @Override
-    public void createSong(String title, String duration, String artist, String absolutePath, Genre genre) {
+    public void createSong(Song song) {
         try(Connection connection = MSSQLConnection.createConnection()){
             String sql = "INSERT INTO song(title, duration, artist, absolute_path, genre_id) VALUES(?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, title);
-            preparedStatement.setString(2, duration);
-            preparedStatement.setString(3, artist);
-            preparedStatement.setString(4, absolutePath);
-            preparedStatement.setInt(5, genre.getId());
+            preparedStatement.setString(1, song.getTitle());
+            preparedStatement.setString(2, song.getDuration());
+            preparedStatement.setString(3, song.getArtist());
+            preparedStatement.setString(4, song.getAbsolutePath());
+            preparedStatement.setInt(5,song.getGenre().getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -57,16 +58,16 @@ public class SongDAO implements ISongDAO {
     }
 
     @Override
-    public void updateSong(int id, String title, String duration, String artist, String absolutePath, Genre genre) {
+    public void updateSong(Song song) {
         try(Connection connection = MSSQLConnection.createConnection()){
             String sql = "UPDATE song SET title = ?, duration = ?, artist = ?, absolute_path = ?, genre_id = ? WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, title);
-            preparedStatement.setString(2, duration);
-            preparedStatement.setString(3, artist);
-            preparedStatement.setString(4, absolutePath);
-            preparedStatement.setInt(5, genre.getId());
-            preparedStatement.setInt(6, id);
+            preparedStatement.setString(1, song.getTitle());
+            preparedStatement.setString(2, song.getDuration());
+            preparedStatement.setString(3, song.getArtist());
+            preparedStatement.setString(4, song.getAbsolutePath());
+            preparedStatement.setInt(5,song.getGenre().getId());
+            preparedStatement.setInt(6, song.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
