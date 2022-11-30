@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="571.0" prefWidth="373.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunessys.gui.controller.BaseController">
+<BorderPane prefHeight="571.0" prefWidth="373.0" styleClass="borderPane" stylesheets="@../css/temp.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunessys.gui.controller.BaseController">
    <bottom>
       <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="97.0" prefWidth="456.0" BorderPane.alignment="CENTER">
         <items>
@@ -28,17 +20,17 @@
                         </VBox>
                         <VBox prefHeight="45.0" prefWidth="50.0">
                            <children>
-                              <Button fx:id="btnPrevious" focusTraversable="false" mnemonicParsing="false" text="&lt;" />
+                              <Button fx:id="btnPrevious" focusTraversable="false" mnemonicParsing="false" />
                            </children>
                         </VBox>
                         <VBox prefHeight="45.0" prefWidth="50.0">
                            <children>
-                              <Button fx:id="btnPlay" focusTraversable="false" mnemonicParsing="false" text="Play" />
+                              <Button fx:id="btnPlay" focusTraversable="false" mnemonicParsing="false" />
                            </children>
                         </VBox>
                         <VBox layoutX="240.0" layoutY="10.0" prefHeight="45.0" prefWidth="50.0">
                            <children>
-                              <Button fx:id="btnNext" focusTraversable="false" mnemonicParsing="false" text="&gt;" />
+                              <Button fx:id="btnNext" focusTraversable="false" mnemonicParsing="false" />
                            </children>
                         </VBox>
                      </children>
@@ -51,7 +43,7 @@
                      <children>
                         <VBox prefHeight="43.0" prefWidth="185.0">
                            <children>
-                              <Button fx:id="btnSongs" focusTraversable="false" mnemonicParsing="false" onAction="#switchToSongInterface" text="Songs" />
+                              <Button fx:id="btnSongs" focusTraversable="false" mnemonicParsing="false" onAction="#switchToSongInterface" />
                               <Label text="Songs" />
                            </children>
                            <padding>
@@ -60,7 +52,7 @@
                         </VBox>
                         <VBox prefHeight="43.0" prefWidth="185.0">
                            <children>
-                              <Button fx:id="btnPlaylists" focusTraversable="false" mnemonicParsing="false" onAction="#switchToPlaylistInterface" text="Playlists" />
+                              <Button fx:id="btnPlaylists" focusTraversable="false" mnemonicParsing="false" onAction="#switchToPlaylistInterface" />
                               <Label text="Playlists" />
                            </children>
                            <padding>
@@ -75,15 +67,15 @@
       </SplitPane>
    </bottom>
    <center>
-      <AnchorPane fx:id="centerContent" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="centerContent" prefHeight="200.0" prefWidth="200.0" style="-fx-padding: 5;" BorderPane.alignment="CENTER">
          <children>
-            <TableView fx:id="tbvContentTable" layoutY="7.0" prefHeight="407.0" prefWidth="373.0">
-              <columns>
-                <TableColumn fx:id="tbvColTitle" prefWidth="75.0" text="Title" />
-                <TableColumn fx:id="tbvColGenre" prefWidth="105.5" text="Genre" />
-                  <TableColumn fx:id="tbvColDuration" prefWidth="117.5" text="Duration" />
-                  <TableColumn fx:id="tbvColOption" prefWidth="74.0" text="Options" />
-              </columns>
+            <TableView fx:id="tbvContentTable" editable="true" layoutX="8.0" layoutY="10.0" prefHeight="407.0" prefWidth="373.0">
+               <columns>
+                  <TableColumn fx:id="tbvColTitle" prefWidth="203.0" resizable="false" text="Title" />
+                  <TableColumn fx:id="tbvColGenre" prefWidth="47.0" resizable="false" text="Genre" />
+                  <TableColumn fx:id="tbvColDuration" prefWidth="49.0" resizable="false" text="Duration" />
+                  <TableColumn fx:id="tbvColOption" prefWidth="74.0" sortable="false" text="Options" />
+               </columns>
             </TableView>
          </children>
       </AnchorPane>

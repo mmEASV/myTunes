@@ -11,8 +11,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
 import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
@@ -81,6 +85,8 @@ public class BaseController implements Initializable {
     @FXML
     private void switchToSongInterface(ActionEvent actionEvent){
         ShowInterface(actionEvent,"Songs");
+        btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
+        btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
         //TODO switch the ui to song with btnSongs
 
         //change list to display songs
@@ -89,17 +95,17 @@ public class BaseController implements Initializable {
 
 
 
-       // tbvColTitle.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
-      //  tbvColOption.setCellFactory(cellData -> new TableCell<>());
-       // tbvContentTable.setItems();
+        // tbvColTitle.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
+        // tbvColOption.setCellFactory(cellData -> new TableCell<>());
+        // tbvContentTable.setItems();
 
 
 
-        //change the btnGoBack
+        // change the btnGoBack
 
 
 
-        //change the btnAdd
+        // change the btnAdd
 
 
 
@@ -107,6 +113,9 @@ public class BaseController implements Initializable {
     @FXML
     private void switchToPlaylistInterface(ActionEvent actionEvent){
         ShowInterface(actionEvent,"Playlists");
+        //btnSongs.setBackground(new Background(new BackgroundImage("mytunessys/gui/icons/Songs2.png")));
+        //btnSongs.setBackground(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
+        btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists2.png")));
         //TODO switch the ui to playlist with btnPlaylists
 
 
@@ -121,10 +130,16 @@ public class BaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        btnPrevious.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Prev.png")));
+        btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
+        btnNext.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Next.png")));
+        btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
+        btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
+
 //        btnGoBack.setVisible(false);
 //        lblCurrentLocation.setText("Songs");
 //        //clean up code smell
-//      //  tbvCol1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
+//        //tbvCol1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
 //        tbvContentTable.setItems(songModel.getAllSongs());
 
 
@@ -135,7 +150,7 @@ public class BaseController implements Initializable {
                     public TableCell call(final TableColumn<Song, String> param) {
                         final TableCell<Song, String> cell = new TableCell<Song, String>() {
 
-                            final Button btn = new Button("....");
+                            final Button btn = new Button("...");
                             final ContextMenu menu = new ContextMenu(new MenuItem("edit song"),new MenuItem("add to playlist"));
                             @Override
                             public void updateItem(String item, boolean empty) {
