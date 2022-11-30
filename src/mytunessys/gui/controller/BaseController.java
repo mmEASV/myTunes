@@ -17,6 +17,15 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.geometry.Side;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.LogicManager;
@@ -86,18 +95,29 @@ public class BaseController implements Initializable {
     @FXML
     private void switchToSongInterface(ActionEvent actionEvent){
         ShowInterface(actionEvent,"Songs");
+        btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
+        btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
         //TODO switch the ui to song with btnSongs
 
         //change list to display songs
 
         tbvCol1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
         tbvContentTable.setItems(songModel.getAllSongs());
-
-        //change the btnGoBack
-
+        MenuItem menuItem = new MenuItem("here goes nothing");
 
 
-        //change the btnAdd
+
+        // tbvColTitle.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
+        // tbvColOption.setCellFactory(cellData -> new TableCell<>());
+        // tbvContentTable.setItems();
+
+
+
+        // change the btnGoBack
+
+
+
+        // change the btnAdd
 
 
 
@@ -105,6 +125,9 @@ public class BaseController implements Initializable {
     @FXML
     private void switchToPlaylistInterface(ActionEvent actionEvent){
         ShowInterface(actionEvent,"Playlists");
+        //btnSongs.setBackground(new Background(new BackgroundImage("mytunessys/gui/icons/Songs2.png")));
+        //btnSongs.setBackground(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
+        btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists2.png")));
         //TODO switch the ui to playlist with btnPlaylists
 
 
@@ -119,10 +142,49 @@ public class BaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        btnGoBack.setVisible(false);
-        lblCurrentLocation.setText("Songs");
-        //clean up code smell
-        tbvCol1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
+        btnPrevious.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Prev.png")));
+        btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
+        btnNext.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Next.png")));
+        btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
+        btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
+
+//        btnGoBack.setVisible(false);
+//        lblCurrentLocation.setText("Songs");
+//        //clean up code smell
+//        //tbvCol1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
+//        tbvContentTable.setItems(songModel.getAllSongs());
+
+
+        Callback<TableColumn<Song, String>, TableCell<Song, String>> cellFactory
+                = //
+                new Callback<TableColumn<Song, String>, TableCell<Song, String>>() {
+                    @Override
+                    public TableCell call(final TableColumn<Song, String> param) {
+                        final TableCell<Song, String> cell = new TableCell<Song, String>() {
+
+                            final Button btn = new Button("...");
+                            final ContextMenu menu = new ContextMenu(new MenuItem("edit song"),new MenuItem("add to playlist"));
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    btn.setOnAction(event -> {
+                                        menu.show(btn, Side.BOTTOM,0,0);
+                                    });
+                                    setGraphic(btn);
+                                    setText(null);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+
+        tbvColOption.setCellFactory(cellFactory);
+
         tbvContentTable.setItems(songModel.getAllSongs());
     }
 }

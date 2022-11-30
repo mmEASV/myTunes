@@ -1,0 +1,38 @@
+* {
+    -fx-nord0: #2E3440;
+    -fx-nord1: #3B4252;
+    -fx-nord2: #434C5E;
+    -fx-nord3: #4C566A;
+    -fx-nord4: #D8DEE9;
+    -fx-nord5: #E5E9F0;
+    -fx-nord6: #ECEFF4;
+    -fx-nord7: #8FBCBB;
+    -fx-nord8: #88C0D0;
+    -fx-nord9: #81A1C1;
+    -fx-nord10:#5E81AC;
+}
+
+.button{
+    -fx-background-color: none;
+    -fx-text-fill: -fx-nord0;
+    -fx-max-height: 30px;
+}
+.borderPane{
+    -fx-background-color: -fx-nord6;
+}
+
+.table-view{
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+}
+.table-view .column-header,
+.table-view .column-header .filler,
+.table-view .column-header-background .filler {
+    -fx-background-color: none;
+}
+
+.table-view .scroll-bar * {
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+}
