@@ -20,17 +20,17 @@
                         </VBox>
                         <VBox prefHeight="45.0" prefWidth="50.0">
                            <children>
-                              <Button fx:id="btnPrevious" focusTraversable="false" mnemonicParsing="false" />
+                              <Button fx:id="btnPrevious" styleClass="btnPrev" focusTraversable="false" mnemonicParsing="false" />
                            </children>
                         </VBox>
                         <VBox prefHeight="45.0" prefWidth="50.0">
                            <children>
-                              <Button fx:id="btnPlay" focusTraversable="false" mnemonicParsing="false" />
+                              <Button fx:id="btnPlay" styleClass="btnPlay" focusTraversable="false" mnemonicParsing="false" />
                            </children>
                         </VBox>
                         <VBox layoutX="240.0" layoutY="10.0" prefHeight="45.0" prefWidth="50.0">
                            <children>
-                              <Button fx:id="btnNext" focusTraversable="false" mnemonicParsing="false" />
+                              <Button fx:id="btnNext" styleClass="btnNext" focusTraversable="false" mnemonicParsing="false" />
                            </children>
                         </VBox>
                      </children>
@@ -43,7 +43,7 @@
                      <children>
                         <VBox prefHeight="43.0" prefWidth="185.0">
                            <children>
-                              <Button fx:id="btnSongs" focusTraversable="false" mnemonicParsing="false" onAction="#switchToSongInterface" />
+                              <Button fx:id="btnSongs" focusTraversable="false" mnemonicParsing="false" onAction="#switchToSongInterface" prefHeight="40" prefWidth="40" />
                               <Label text="Songs" />
                            </children>
                            <padding>
@@ -68,7 +68,6 @@
    </bottom>
    <center>
       <AnchorPane fx:id="centerContent" prefHeight="200.0" prefWidth="200.0" style="-fx-padding: 5;" BorderPane.alignment="CENTER">
-
       </AnchorPane>
    </center>
    <top>

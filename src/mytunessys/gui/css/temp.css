@@ -12,6 +12,8 @@
     -fx-nord10:#5E81AC;
 }
 
+
+
 .button{
     -fx-background-color: none;
     -fx-text-fill: -fx-nord0;
@@ -35,4 +37,13 @@
     -fx-min-width: 0;
     -fx-pref-width: 0;
     -fx-max-width: 0;
+}
+
+.btnPrev{
+    -fx-background-image: url('../icons/Prev.png');
+    -fx-background-size: 40px;
+}
+
+.btnPlay {
+
 }
