@@ -67,6 +67,8 @@ public class BaseController implements Initializable {
 
     private SongModel songModel = new SongModel();
     private PlaylistModel playlistModel = new PlaylistModel();
+    private SongController songCont;
+    private PlaylistController playlistCont;
 
     private void updateCurrentSongNameLabel(){
         //TODO display the song that is played currently on lblNameOfSong
@@ -84,9 +86,14 @@ public class BaseController implements Initializable {
 
     @FXML
     private void switchToSongInterface(ActionEvent actionEvent){
+        CleanCenterContent();
         ShowInterface(actionEvent,"Songs");
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
+        songCont.Show(centerContent);
+
+
+
         //TODO switch the ui to song with btnSongs
 
         //change list to display songs
@@ -112,6 +119,7 @@ public class BaseController implements Initializable {
     }
     @FXML
     private void switchToPlaylistInterface(ActionEvent actionEvent){
+        CleanCenterContent();
         ShowInterface(actionEvent,"Playlists");
         //btnSongs.setBackground(new Background(new BackgroundImage("mytunessys/gui/icons/Songs2.png")));
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
@@ -121,8 +129,11 @@ public class BaseController implements Initializable {
 
     }
 
+    public void CleanCenterContent(){
+        centerContent.getChildren().removeAll(centerContent.getChildren());
+    }
+
     public void ShowInterface(ActionEvent actionEvent,String name) {
-        btnGoBack.setVisible(false);
         lblCurrentLocation.setText(name);
 
     }
@@ -130,11 +141,13 @@ public class BaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        songCont = new SongController();
+        playlistCont = new PlaylistController();
+        btnGoBack.setVisible(false);
         btnPrevious.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Prev.png")));
         btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
         btnNext.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Next.png")));
-        btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
-        btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
+        switchToSongInterface(new ActionEvent());
 
 //        btnGoBack.setVisible(false);
 //        lblCurrentLocation.setText("Songs");
@@ -142,7 +155,7 @@ public class BaseController implements Initializable {
 //        //tbvCol1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
 //        tbvContentTable.setItems(songModel.getAllSongs());
 
-
+/*
         Callback<TableColumn<Song, String>, TableCell<Song, String>> cellFactory
                 = //
                 new Callback<TableColumn<Song, String>, TableCell<Song, String>>() {
@@ -172,8 +185,9 @@ public class BaseController implements Initializable {
                 };
 
         tbvColOption.setCellFactory(cellFactory);
-
         tbvContentTable.setItems(songModel.getAllSongs());
         tbvContentTable.getColumns().addAll(tbvColOption);
+
+        */
     }
 }
