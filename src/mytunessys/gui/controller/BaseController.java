@@ -126,7 +126,7 @@ public class BaseController implements Initializable {
     private void switchToPlaylistInterface(ActionEvent actionEvent){
         ShowInterface(actionEvent,"Playlists");
         //btnSongs.setBackground(new Background(new BackgroundImage("mytunessys/gui/icons/Songs2.png")));
-        //btnSongs.setBackground(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
+        btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists2.png")));
         //TODO switch the ui to playlist with btnPlaylists
 
