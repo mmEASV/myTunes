@@ -16,6 +16,8 @@
 
 .button{
     -fx-background-color: none;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
     -fx-text-fill: -fx-nord0;
     -fx-max-height: 30px;
 }
@@ -41,9 +43,14 @@
 
 .btnPrev{
     -fx-background-image: url('../icons/Prev.png');
-    -fx-background-size: 40px;
+    -fx-background-size: 30px;
 }
 
 .btnPlay {
-
+    -fx-background-image: url('../icons/Play.png');
+    -fx-background-size: 30px;
+}
+.btnNext{
+    -fx-background-image: url('../icons/Next.png');
+    -fx-background-size: 30px;
 }
