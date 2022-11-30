@@ -12,21 +12,24 @@ public class PlaylistController {
 
     public void Show(AnchorPane centerContent){
         var table = new TableView<>();
+        table.setLayoutX(14);
 
-        var NameCollumn = new TableColumn<>();
-        NameCollumn.setText("Playlist Name");
-        NameCollumn.prefWidthProperty().set(283);
+        var NameColumn = new TableColumn<>();
+        NameColumn.setText("Playlist Name");
+        NameColumn.prefWidthProperty().set(173);
 
-        var CurrentlyPlayingCollumn = new TableColumn<>();
-        CurrentlyPlayingCollumn.setText("Currently Playing");
+        var CurrentlyPlayingColumn = new TableColumn<>();
+        CurrentlyPlayingColumn.setText("Currently Playing");
+        CurrentlyPlayingColumn.prefWidthProperty().set(107);
 
-        var NumberOfSongsCollumn = new TableColumn<>();
-        NumberOfSongsCollumn.setText("Number of Songs");
+        var NumberOfSongsColumn = new TableColumn<>();
+        NumberOfSongsColumn.setText("Number of Songs");
+        NumberOfSongsColumn.prefWidthProperty().set(64);
 
         table.editableProperty().set(false);
-        table.getColumns().add(NameCollumn);
-        table.getColumns().add(CurrentlyPlayingCollumn);
-        table.getColumns().add(NumberOfSongsCollumn);
+        table.getColumns().add(NameColumn);
+        table.getColumns().add(CurrentlyPlayingColumn);
+        table.getColumns().add(NumberOfSongsColumn);
         table.setFocusTraversable(false);
         centerContent.getChildren().add(table);
     }
