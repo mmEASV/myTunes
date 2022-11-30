@@ -68,16 +68,7 @@
    </bottom>
    <center>
       <AnchorPane fx:id="centerContent" prefHeight="200.0" prefWidth="200.0" style="-fx-padding: 5;" BorderPane.alignment="CENTER">
-         <children>
-            <TableView fx:id="tbvContentTable" editable="true" layoutX="8.0" layoutY="10.0" prefHeight="407.0" prefWidth="373.0">
-               <columns>
-                  <TableColumn fx:id="tbvColTitle" prefWidth="203.0" resizable="false" text="Title" />
-                  <TableColumn fx:id="tbvColGenre" prefWidth="47.0" resizable="false" text="Genre" />
-                  <TableColumn fx:id="tbvColDuration" prefWidth="49.0" resizable="false" text="Duration" />
-                  <TableColumn fx:id="tbvColOption" prefWidth="74.0" sortable="false" text="Options" />
-               </columns>
-            </TableView>
-         </children>
+
       </AnchorPane>
    </center>
    <top>

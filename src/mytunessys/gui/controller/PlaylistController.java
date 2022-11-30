@@ -4,6 +4,7 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import mytunessys.be.Playlist;
 import mytunessys.bll.LogicManager;
 
@@ -11,7 +12,7 @@ import mytunessys.bll.LogicManager;
  * @author Bálint & Matej
  */
 
-public class PlaylistController extends BaseController {
+public class PlaylistController {
 
     private List<Playlist> playlists;
 
