@@ -2,11 +2,14 @@ package mytunessys.gui.controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 /**
  * @author Bálint & Matej
@@ -46,6 +49,7 @@ public class SongController{
         anchorPane.setMinWidth(400);
         anchorPane.setMinHeight(470);
         anchorPane.getStyleClass().add("new");
+        pageContent.getChildren().add(anchorPane);
 
         var FormHolder = new AnchorPane();
         FormHolder.setLayoutX(36);
@@ -53,19 +57,50 @@ public class SongController{
         FormHolder.setMinWidth(300);
         FormHolder.setMinHeight(250);
         FormHolder.getStyleClass().add("form");
+        anchorPane.getChildren().add(FormHolder);
 
-        var BackButton = new Button();
+        var vBoxHolder = new VBox();
+        FormHolder.getChildren().add(vBoxHolder);
+
+        var TopRow = new HBox();
+        vBoxHolder.getChildren().add(TopRow);
+
+        var songLabel = new Label("Add new Song");
+        var BackButton = new Button("<-");
         BackButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 anchorPane.visibleProperty().set(false);
             }
         });
-        BackButton.setText("<-");
-        FormHolder.getChildren().add(BackButton);
+        TopRow.getChildren().addAll(songLabel,BackButton);
 
-        anchorPane.getChildren().add(FormHolder);
+        var GetFileButton = new Button("File");
+        var chooseFile = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("SoundFiles files (*.mp3)", "*.mp3");
+        chooseFile.setSelectedExtensionFilter(extFilter);
+        GetFileButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                chooseFile.showOpenDialog(new Stage());
+            }
+        });
+        vBoxHolder.getChildren().add(GetFileButton);
 
-        pageContent.getChildren().add(anchorPane);
+        var songRow = new HBox();
+        var SongNameLabel = new Label("Song");
+        var SongName = new TextField();
+        songRow.getChildren().addAll(SongNameLabel,SongName);
+        vBoxHolder.getChildren().addAll(songRow);
+
+        var ArtistRow = new HBox();
+        var ArtistNameLabel = new Label("Artist");
+        var ArtistName = new TextField();
+        ArtistRow.getChildren().addAll(ArtistNameLabel,ArtistName);
+        vBoxHolder.getChildren().addAll(ArtistRow);
+
+
+
+
     }
 }
