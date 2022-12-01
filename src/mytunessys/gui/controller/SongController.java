@@ -71,6 +71,7 @@ public class SongController{
             @Override
             public void handle(ActionEvent event) {
                 anchorPane.visibleProperty().set(false);
+
             }
         });
         TopRow.getChildren().addAll(songLabel,BackButton);
@@ -98,9 +99,5 @@ public class SongController{
         var ArtistName = new TextField();
         ArtistRow.getChildren().addAll(ArtistNameLabel,ArtistName);
         vBoxHolder.getChildren().addAll(ArtistRow);
-
-
-
-
     }
 }

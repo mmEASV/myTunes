@@ -190,5 +190,7 @@ public class BaseController implements Initializable {
     public void NewItem(ActionEvent actionEvent) {
         if(lblCurrentLocation.getText().equals("Songs"))
             songCont.NewSong(contentWindow);
+        else
+            playlistCont.NewPlaylist(contentWindow);
     }
 }

@@ -6,11 +6,13 @@ import mytunessys.be.Genre;
 import mytunessys.be.Song;
 import mytunessys.bll.LogicManager;
 import mytunessys.bll.interfaces.ILogicFacade;
+import mytunessys.gui.controller.SongController;
 
 public class SongModel {
 
     private ILogicFacade logicManager = new LogicManager();
     ObservableList<Song> songs = FXCollections.observableArrayList();
+
 
     public SongModel(){ //waiting for backend to develop
         //songs = logicManager.getAllSongs();
