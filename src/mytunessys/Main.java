@@ -24,6 +24,7 @@ public final class Main extends Application
         Parent root = FXMLLoader.load(getClass().getResource("/mytunessys/gui/view/IndexView.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
