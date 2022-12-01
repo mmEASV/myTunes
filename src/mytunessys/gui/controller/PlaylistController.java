@@ -45,7 +45,7 @@ public class PlaylistController {
         TableColumn<Playlist, Object> OptionsColumn = new TableColumn<>();
         OptionsColumn.setText("Options");
         OptionsColumn.prefWidthProperty().set(47);
-        OptionsColumn.setCellValueFactory(new PropertyValueFactory<>("button"));//change this later
+        OptionsColumn.setCellValueFactory(new PropertyValueFactory<>("button")); //change this later
 
         table.editableProperty().set(false);
 
