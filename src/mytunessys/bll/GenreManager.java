@@ -1,49 +1,43 @@
 package mytunessys.bll;
 
-import mytunessys.be.Song;
 import mytunessys.bll.exceptions.CustomException;
-import mytunessys.bll.helpers.SearchHelper;
 import mytunessys.bll.interfaces.ILogicFacade;
 import mytunessys.bll.types.DatabaseType;
 import mytunessys.dal.AbstractDAOFactory;
-import mytunessys.dal.repository.interfaces.ISongDAO;
+import mytunessys.dal.repository.interfaces.IGenreDAO;
 
 import java.util.List;
 
-public class LogicManager implements ILogicFacade {
-
+public class GenreManager implements ILogicFacade {
     AbstractDAOFactory abstractDAOFactory = AbstractDAOFactory.getDAO(DatabaseType.MSSQL);
-    ISongDAO songDAO;
-    SearchHelper searchHelper;
+    IGenreDAO genreDAO;
 
-    public LogicManager() {
-        this.songDAO = abstractDAOFactory.getSongDAO();
-        this.searchHelper = new SearchHelper();
+    public GenreManager(){
+        this.genreDAO = abstractDAOFactory.genreDAO();
     }
-
     @Override
     public List<Object> getAllObject() throws CustomException {
-        return this.songDAO.getAllSongs();
+        return this.genreDAO.getAllGenre();
     }
 
     @Override
     public void createObject(Object object) throws CustomException {
-        this.songDAO.createSong((Song) object);
+            // does nothing for now
     }
 
     @Override
-    public void updateObject(Object object) throws CustomException {
-        this.songDAO.updateSong((Song) object);
+    public void updateObject(Object object) throws CustomException{
+        // does nothing for now
     }
 
     @Override
     public boolean deleteObject(Object object) throws CustomException {
-        return this.songDAO.deleteSong(((Song) object).getId());
+        // does nothing for now
+        return false;
     }
 
     @Override
     public List<Object> searchObjects(List<Object> list, String query) {
-        return List.of();
+        return null;
     }
-
 }

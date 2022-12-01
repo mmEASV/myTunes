@@ -1,6 +1,7 @@
 package mytunessys.bll;
 
 import mytunessys.be.Playlist;
+import mytunessys.bll.exceptions.CustomException;
 import mytunessys.bll.interfaces.ILogicFacade;
 import mytunessys.bll.types.DatabaseType;
 import mytunessys.dal.AbstractDAOFactory;
@@ -15,27 +16,28 @@ public class PlaylistManager implements ILogicFacade {
     AbstractDAOFactory abstractDAOFactory = AbstractDAOFactory.getDAO(DatabaseType.MSSQL);
     IPlaylistDAO playlistDAO;
 
-    public PlaylistManager(){
-        this.playlistDAO = new PlaylistDAO();
-    }
-    @Override
-    public List<Object> getAllObject() {
-        return playlistDAO.getAllPlaylists();
+    public PlaylistManager() {
+        this.playlistDAO = abstractDAOFactory.playlistDAO();
     }
 
     @Override
-    public void createObject(Object object) {
-        playlistDAO.createPlaylist((Playlist) object);
+    public List<Object> getAllObject() throws CustomException {
+        return this.playlistDAO.getAllPlaylists();
     }
 
     @Override
-    public void updateObject(Object object) {
-        playlistDAO.updatePlaylist((Playlist) object);
+    public void createObject(Object object)  throws CustomException  {
+        this.playlistDAO.createPlaylist((Playlist) object);
     }
 
     @Override
-    public boolean deleteObject(int id) {
-        return playlistDAO.deletePlaylist(id);
+    public void updateObject(Object object)  throws CustomException  {
+        this.playlistDAO.updatePlaylist((Playlist) object);
+    }
+
+    @Override
+    public boolean deleteObject(Object object) throws CustomException  {
+        return this.playlistDAO.deletePlaylist(((Playlist)object).getId());
     }
 
     @Override

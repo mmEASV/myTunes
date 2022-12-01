@@ -5,39 +5,42 @@
  */
 package mytunessys.bll.interfaces;
 
+import mytunessys.bll.exceptions.CustomException;
+
 import java.util.List;
 
 /**
  *
- * @author
+ * @author Tomas Simko, MatejMazur
  */
 public interface ILogicFacade
 {
     /**
-     *
-     * @return
+     * Gets list of object that needs to be castes into given object
+     * @return object that will be cast in order to get list of Songs
+     * @throws CustomException if fails to establish connection due to some unexpected reasons
      */
-    List<Object> getAllObject();
+    List<Object> getAllObject() throws CustomException;
+
+    /**
+     * Creates object that will be cast
+     * @throws CustomException if fails to establish connection due to some unexpected reasons
+     */
+    void createObject(Object object) throws CustomException;
+
+    /**
+     * Creates object
+     * @throws CustomException if fails to establish connection due to some unexpected reasons
+     */
+
+    void updateObject(Object object) throws CustomException;
 
     /**
      *
      * @param object
-     */
-    void createObject(Object object);
-
-    /**
-     *
-     * @param object
-     */
-
-    void updateObject(Object object);
-
-    /**
-     *
-     * @param id
      * @return
      */
-    boolean deleteObject(int id);
+    boolean deleteObject(Object object) throws CustomException;
 
     /**
      *
@@ -46,4 +49,5 @@ public interface ILogicFacade
      * @return
      */
     List<Object> searchObjects(List<Object> list,String query);
+
 }

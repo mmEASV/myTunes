@@ -1,7 +1,9 @@
 package mytunessys.bll.exceptions;
 
-public class ConnectionExceptions extends RuntimeException{
-    public ConnectionExceptions(String message,Throwable cause){
-        super(message,cause);
+import java.sql.SQLException;
+
+public class ConnectionExceptions extends SQLException {
+    public ConnectionExceptions(String message, Throwable cause) {
+        super(message, cause);
     }
 }
