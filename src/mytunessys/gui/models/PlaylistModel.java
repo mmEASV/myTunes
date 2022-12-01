@@ -14,7 +14,7 @@ public class PlaylistModel {
     ObservableList<Playlist> playlists = FXCollections.observableArrayList();
 
     public PlaylistModel(){
-        playlists.add(new Playlist());
+        playlists.add(new Playlist(1,"Hello"));
     }
 
     public ObservableList<Playlist> getAllPlaylists(){ //waiting for backend to develop
