@@ -93,9 +93,6 @@ public class BaseController implements Initializable {
         //TODO display the artist for the song on lblArtist
     }
 
-    private void goBackToMainMenu(){
-        //TODO go back to the main menu with btnPrevious
-    }
 
     @FXML
     private void switchToSongInterface(ActionEvent actionEvent){
@@ -103,28 +100,8 @@ public class BaseController implements Initializable {
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
         songCont.Show(centerContent);
-
-
-
-        //TODO switch the ui to song with btnSongs
         //change list to display songs
         MenuItem menuItem = new MenuItem("here goes nothing");
-
-
-
-        // tbvColTitle.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
-        // tbvColOption.setCellFactory(cellData -> new TableCell<>());
-        // tbvContentTable.setItems();
-
-
-
-        // change the btnGoBack
-
-
-
-        // change the btnAdd
-
-
 
     }
     @FXML

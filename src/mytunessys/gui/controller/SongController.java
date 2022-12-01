@@ -1,40 +1,52 @@
 package mytunessys.gui.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
+import mytunessys.be.Genre;
+import mytunessys.be.Song;
+import mytunessys.bll.LogicManager;
+import mytunessys.gui.models.SongModel;
 
 /**
  * @author Bálint & Matej
  */
 public class SongController{
 
+    SongModel songModel = new SongModel();
+
     public void Show(AnchorPane centerContent){
-        var Table = new TableView<>();
+        TableView<Song> Table = new TableView<>();
         Table.setFocusTraversable(false);
 
-        var TitleColumn = new TableColumn<>();
+        TableColumn<Song, String> TitleColumn = new TableColumn<>();
         TitleColumn.setText("Title");
         TitleColumn.prefWidthProperty().set(203);
+        TitleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("title"));
 
-        var GenreColumn = new TableColumn<>();
+        TableColumn<Song, String> GenreColumn = new TableColumn<>();
         GenreColumn.setText("Genre");
         GenreColumn.prefWidthProperty().set(47);
+        GenreColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("genre"));
 
-        var DurationColumn = new TableColumn<>();
+        TableColumn<Song, String> DurationColumn = new TableColumn<>();
         DurationColumn.setText("Duration");
         DurationColumn.prefWidthProperty().set(47);
+        DurationColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("duration"));
 
-        var OptionsColumn = new TableColumn<>();
+        TableColumn<Song, Object> OptionsColumn = new TableColumn<>();
         OptionsColumn.setText("Options");
         OptionsColumn.prefWidthProperty().set(47);
+        OptionsColumn.setCellValueFactory(new PropertyValueFactory<Song, Object>("button"));//change this later
 
         Table.editableProperty().set(false);
         Table.getColumns().add(TitleColumn);
@@ -43,6 +55,9 @@ public class SongController{
         Table.getColumns().add(OptionsColumn);
         Table.setFocusTraversable(false);
         centerContent.getChildren().add(Table);
+
+        Table.setItems(songModel.getAllSongs());
+
     }
     public void NewSong(AnchorPane pageContent){
         var anchorPane = new AnchorPane();
@@ -100,4 +115,5 @@ public class SongController{
         ArtistRow.getChildren().addAll(ArtistNameLabel,ArtistName);
         vBoxHolder.getChildren().addAll(ArtistRow);
     }
+
 }
