@@ -6,7 +6,14 @@ public class Playlist {
 
     private String playlistName;
 
-    public Playlist(int id, String playlistName) {
+    private int songAmount;
+
+    public Playlist(int id, String playlistName, int songAmount) {
+        this.id = id;
+        this.playlistName = playlistName;
+        this.songAmount = songAmount;
+    }
+    public Playlist(int id,String playlistName){
         this.id = id;
         this.playlistName = playlistName;
     }
@@ -25,5 +32,13 @@ public class Playlist {
 
     public void setPlaylistName(String playlistName) {
         this.playlistName = playlistName;
+    }
+
+    public int getSongAmount() {
+        return songAmount;
+    }
+
+    public void setSongAmount(int songAmount) {
+        this.songAmount = songAmount;
     }
 }

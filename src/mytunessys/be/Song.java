@@ -67,7 +67,7 @@ public class Song {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return this.id + " " + this.title + " " + this.genre.getName() + " " + this.duration;
     }
 }
