@@ -99,7 +99,6 @@ public class BaseController implements Initializable {
 
     @FXML
     private void switchToSongInterface(ActionEvent actionEvent){
-        CleanCenterContent();
         ShowInterface(actionEvent,"Songs");
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
@@ -130,7 +129,6 @@ public class BaseController implements Initializable {
     }
     @FXML
     private void switchToPlaylistInterface(ActionEvent actionEvent){
-        CleanCenterContent();
         ShowInterface(actionEvent,"Playlists");
         //btnSongs.setBackground(new Background(new BackgroundImage("mytunessys/gui/icons/Songs2.png")));
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
@@ -146,8 +144,8 @@ public class BaseController implements Initializable {
     }
 
     public void ShowInterface(ActionEvent actionEvent,String name) {
+        CleanCenterContent();
         lblCurrentLocation.setText(name);
-
     }
 
     @Override
