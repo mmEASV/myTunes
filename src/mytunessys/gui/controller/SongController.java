@@ -1,7 +1,11 @@
 package mytunessys.gui.controller;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -11,7 +15,6 @@ public class SongController{
 
     public void Show(AnchorPane centerContent){
         var Table = new TableView<>();
-        Table.setLayoutX(14);
         Table.setFocusTraversable(false);
 
         var TitleColumn = new TableColumn<>();
@@ -38,7 +41,31 @@ public class SongController{
         Table.setFocusTraversable(false);
         centerContent.getChildren().add(Table);
     }
+    public void NewSong(AnchorPane pageContent){
+        var anchorPane = new AnchorPane();
+        anchorPane.setMinWidth(400);
+        anchorPane.setMinHeight(470);
+        anchorPane.getStyleClass().add("new");
 
+        var FormHolder = new AnchorPane();
+        FormHolder.setLayoutX(36);
+        FormHolder.setLayoutY(100);
+        FormHolder.setMinWidth(300);
+        FormHolder.setMinHeight(250);
+        FormHolder.getStyleClass().add("form");
 
+        var BackButton = new Button();
+        BackButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                anchorPane.visibleProperty().set(false);
+            }
+        });
+        BackButton.setText("<-");
+        FormHolder.getChildren().add(BackButton);
 
+        anchorPane.getChildren().add(FormHolder);
+
+        pageContent.getChildren().add(anchorPane);
+    }
 }

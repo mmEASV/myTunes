@@ -12,7 +12,6 @@ public class PlaylistController {
 
     public void Show(AnchorPane centerContent){
         var table = new TableView<>();
-        table.setLayoutX(14);
 
         var NameColumn = new TableColumn<>();
         NameColumn.setText("Playlist Name");
