@@ -1,6 +1,8 @@
 package mytunessys.bll;
 
 import mytunessys.be.Playlist;
+import mytunessys.be.Song;
+import mytunessys.bll.helpers.SearchHelper;
 import mytunessys.bll.interfaces.ILogicFacade;
 import mytunessys.bll.types.DatabaseType;
 import mytunessys.dal.AbstractDAOFactory;
@@ -42,4 +44,5 @@ public class PlaylistManager implements ILogicFacade {
     public List<Object> searchObjects(List<Object> list, String query) {
         return null;
     }
+
 }

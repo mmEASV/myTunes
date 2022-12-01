@@ -31,4 +31,5 @@ public interface ISongDAO {
      * @return return true if song was deleted otherwise return false if failed
      */
     boolean deleteSong(int id);
+
 }

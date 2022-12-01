@@ -5,6 +5,7 @@ import mytunessys.bll.helpers.SearchHelper;
 import mytunessys.bll.interfaces.ILogicFacade;
 import mytunessys.bll.types.DatabaseType;
 import mytunessys.dal.AbstractDAOFactory;
+import mytunessys.dal.repository.SongDAO;
 import mytunessys.dal.repository.interfaces.ISongDAO;
 import mytunessys.dal.repository.interfaces.ISongOnPlaylistDAO;
 
@@ -44,7 +45,8 @@ public class LogicManager implements ILogicFacade {
 
     @Override
     public List<Object> searchObjects(List<Object> list, String query) {
-       return null;
+
+        return null;
     }
 
 }
