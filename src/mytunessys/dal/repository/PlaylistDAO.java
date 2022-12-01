@@ -13,13 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistDAO implements IPlaylistDAO {
+    private PreparedStatement preparedStatement;
 
     public List<Object> getAllPlaylists() throws CustomException {
         List<Object> retrievedPlaylists = new ArrayList<>();
         try (Connection connection = MSSQLConnection.createConnection()) {
             String sql = "SELECT Count(ps.song_id) as amount,p.id,p.playlist_name FROM playlist p JOIN playlist_song ps on p.id = ps.playlist_id\n" +
                     "GROUP BY p.playlist_name, p.id";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 retrievedPlaylists.add(instantiatePlaylistObject(rs));
@@ -34,7 +35,7 @@ public class PlaylistDAO implements IPlaylistDAO {
     public void createPlaylist(Playlist playlist) throws CustomException {
         try (Connection connection = MSSQLConnection.createConnection()) {
             String sql = "INSERT INTO playlist(playlist_name) VALUES(?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, playlist.getPlaylistName());
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
@@ -46,7 +47,7 @@ public class PlaylistDAO implements IPlaylistDAO {
     public void updatePlaylist(Playlist playlist) throws CustomException {
         try (Connection connection = MSSQLConnection.createConnection()) {
             String sql = "UPDATE playlist SET playlist_name = ? WHERE id = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, playlist.getPlaylistName());
             preparedStatement.setInt(2, playlist.getId());
             preparedStatement.executeUpdate();
@@ -59,7 +60,7 @@ public class PlaylistDAO implements IPlaylistDAO {
     public boolean deletePlaylist(int id) throws CustomException {
         try (Connection connection = MSSQLConnection.createConnection()) {
             String sql = "DELETE FROM playlist WHERE(id=?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             int result = preparedStatement.executeUpdate();
             if (result > 0) {
@@ -70,7 +71,6 @@ public class PlaylistDAO implements IPlaylistDAO {
         }
         return false;
     }
-
 
     private Playlist instantiatePlaylistObject(ResultSet rs) throws SQLException {
         int amount = rs.getInt("amount");

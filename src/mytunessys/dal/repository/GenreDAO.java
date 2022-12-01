@@ -31,7 +31,7 @@ public class GenreDAO implements IGenreDAO {
         }
         return retrievedGenreList;
     }
-    private Object instantiateGenreObject(ResultSet rs) throws SQLException {
+    private Genre instantiateGenreObject(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         String playlistName = rs.getString("genre_name");
         return new Genre(id, playlistName);
