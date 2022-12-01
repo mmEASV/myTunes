@@ -1,6 +1,7 @@
 package mytunessys.dal.repository;
 
 
+import mytunessys.be.Genre;
 import mytunessys.be.Playlist;
 import mytunessys.bll.exceptions.CustomException;
 import mytunessys.dal.connectors.MSSQLConnection;
@@ -33,6 +34,6 @@ public class GenreDAO implements IGenreDAO {
     private Object instantiateGenreObject(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         String playlistName = rs.getString("genre_name");
-        return new Playlist(id, playlistName);
+        return new Genre(id, playlistName);
     }
 }
