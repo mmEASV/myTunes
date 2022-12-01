@@ -54,3 +54,12 @@
     -fx-background-image: url('../icons/Next.png');
     -fx-background-size: 30px;
 }
+
+.new{
+    -fx-background-color: rgba(0,0,0,0.7);
+}
+
+.form{
+    -fx-background-color: white;
+    -fx-background-radius: 20px;
+}

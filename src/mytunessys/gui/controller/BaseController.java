@@ -25,6 +25,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
@@ -39,6 +40,8 @@ import mytunessys.gui.models.SongModel;
 public class BaseController implements Initializable {
 
 
+    public AnchorPane top;
+    public AnchorPane contentWindow;
     @FXML
     private TableView<Song> tbvContentTable;
     @FXML
@@ -105,11 +108,7 @@ public class BaseController implements Initializable {
 
 
         //TODO switch the ui to song with btnSongs
-
         //change list to display songs
-
-        tbvCol1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
-        tbvContentTable.setItems(songModel.getAllSongs());
         MenuItem menuItem = new MenuItem("here goes nothing");
 
 
@@ -198,5 +197,10 @@ public class BaseController implements Initializable {
         tbvContentTable.getColumns().addAll(tbvColOption);
 
         */
+    }
+
+    public void NewItem(ActionEvent actionEvent) {
+        if(lblCurrentLocation.getText().equals("Songs"))
+            songCont.NewSong(contentWindow);
     }
 }
