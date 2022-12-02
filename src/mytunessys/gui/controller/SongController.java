@@ -1,11 +1,15 @@
 package mytunessys.gui.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.fxml.FXML;
+import javafx.geometry.Side;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -13,14 +17,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import mytunessys.be.Genre;
 import mytunessys.be.Song;
 import mytunessys.bll.LogicManager;
+import mytunessys.bll.exceptions.CustomException;
 import mytunessys.gui.models.SongModel;
 import javafx.stage.Window;
 
 /**
- * @author Bálint & Matej
+ * @author Bálint, Matej & Tomas
  */
 public class SongController{
 
@@ -32,7 +38,10 @@ public class SongController{
     private ComboBox GenreOptions;
     SongModel songModel = new SongModel();
 
-    public void Show(AnchorPane centerContent){
+    public void Show(AnchorPane centerContent) throws CustomException {
+
+
+
         TableView<Song> Table = new TableView<>();
         Table.setFocusTraversable(false);
 
@@ -51,17 +60,47 @@ public class SongController{
         DurationColumn.prefWidthProperty().set(47);
         DurationColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("duration"));
 
-        TableColumn<Song, Object> OptionsColumn = new TableColumn<>();
-        OptionsColumn.setText("Options");
-        OptionsColumn.prefWidthProperty().set(47);
-        OptionsColumn.setCellValueFactory(new PropertyValueFactory<Song, Object>("button"));//change this later
 
+        TableColumn<Song, String> OptionsColumn = new TableColumn<>();
+        OptionsColumn.prefWidthProperty().set(47);
+
+        Callback<TableColumn<Song, String>, TableCell<Song, String>> cellFactory
+            = //
+            new Callback<TableColumn<Song, String>, TableCell<Song, String>>() {
+                @Override
+                public TableCell call(final TableColumn<Song, String> param) {
+                    final TableCell<Song, String> cell = new TableCell<Song, String>() {
+
+                        final Button btn = new Button("...");
+                        final ContextMenu menu = new ContextMenu(new MenuItem("edit song"),new MenuItem("add to playlist"));
+                        @Override
+                        public void updateItem(String item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setGraphic(null);
+                                setText(null);
+                            } else {
+                                btn.setOnAction(event -> {
+                                    menu.show(btn, Side.BOTTOM,0,0);
+                                });
+                                setGraphic(btn);
+                                setText(null);
+                            }
+                        }
+                    };
+                    return cell;
+                }
+            };
+
+        OptionsColumn.setCellFactory(cellFactory);
         Table.editableProperty().set(false);
         Table.getColumns().addAll(TitleColumn,GenreColumn,DurationColumn,OptionsColumn);
         Table.setFocusTraversable(false);
+
         centerContent.getChildren().add(Table);
 
         Table.setItems(songModel.getAllSongs());
+
 
     }
     public void NewSong(AnchorPane pageContent){

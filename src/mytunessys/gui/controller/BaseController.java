@@ -30,11 +30,12 @@ import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.LogicManager;
+import mytunessys.bll.exceptions.CustomException;
 import mytunessys.gui.models.PlaylistModel;
 import mytunessys.gui.models.SongModel;
 
 /**
- * @author Bálint & Matej
+ * @author Bálint, Matej & Tomas
  */
 
 public class BaseController implements Initializable {
@@ -95,7 +96,7 @@ public class BaseController implements Initializable {
 
 
     @FXML
-    private void switchToSongInterface(ActionEvent actionEvent){
+    private void switchToSongInterface(ActionEvent actionEvent) throws CustomException {
         ShowInterface(actionEvent,"Songs");
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
@@ -105,7 +106,7 @@ public class BaseController implements Initializable {
 
     }
     @FXML
-    private void switchToPlaylistInterface(ActionEvent actionEvent){
+    private void switchToPlaylistInterface(ActionEvent actionEvent) throws CustomException {
         ShowInterface(actionEvent,"Playlists");
         //btnSongs.setBackground(new Background(new BackgroundImage("mytunessys/gui/icons/Songs2.png")));
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
@@ -130,9 +131,13 @@ public class BaseController implements Initializable {
         songCont = new SongController();
         playlistCont = new PlaylistController();
         btnGoBack.setVisible(false);
-        switchToSongInterface(new ActionEvent());
+        try {
+            switchToSongInterface(new ActionEvent());
+        } catch (CustomException e) {
+            e.printStackTrace();
+        }
 
-//        btnGoBack.setVisible(false);
+        //        btnGoBack.setVisible(false);
 //        lblCurrentLocation.setText("Songs");
 //        //clean up code smell
 //        //tbvCol1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
@@ -170,8 +175,8 @@ public class BaseController implements Initializable {
         tbvColOption.setCellFactory(cellFactory);
         tbvContentTable.setItems(songModel.getAllSongs());
         tbvContentTable.getColumns().addAll(tbvColOption);
+*/
 
-        */
     }
 
     public void NewItem(ActionEvent actionEvent) {

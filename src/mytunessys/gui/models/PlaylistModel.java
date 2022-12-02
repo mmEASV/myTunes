@@ -1,25 +1,34 @@
 package mytunessys.gui.models;
 
+import java.util.List;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mytunessys.be.Genre;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.LogicManager;
+import mytunessys.bll.PlaylistManager;
+import mytunessys.bll.exceptions.CustomException;
 import mytunessys.bll.interfaces.ILogicFacade;
+
+/**
+ * @author Bálint, Matej & Tomas
+ */
 
 public class PlaylistModel {
 
-    private ILogicFacade logicManager = new LogicManager();
-    ObservableList<Playlist> playlists = FXCollections.observableArrayList();
+    private ILogicFacade logicManager;
+    private ObservableList<Playlist> playlists;
 
     public PlaylistModel(){
-        playlists.add(new Playlist(1,"Hello"));
+        logicManager = new PlaylistManager();
     }
 
-    public ObservableList<Playlist> getAllPlaylists(){ //waiting for backend to develop
-        //return logicManager.getAllPlaylists();
-        return playlists;
+    public ObservableList<Playlist> getAllPlaylists() throws CustomException {
+        List<Playlist> temp =  (List<Playlist>) (Object) logicManager.getAllObject();
+
+        return playlists = FXCollections.observableArrayList(temp);
     }
 
 

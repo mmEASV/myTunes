@@ -1,29 +1,33 @@
 package mytunessys.gui.models;
 
+import java.util.List;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import mytunessys.be.Genre;
 import mytunessys.be.Song;
 import mytunessys.bll.LogicManager;
+import mytunessys.bll.exceptions.CustomException;
 import mytunessys.bll.interfaces.ILogicFacade;
 import mytunessys.gui.controller.SongController;
 
+/**
+ * @author Bálint, Matej & Tomas
+ */
+
 public class SongModel {
 
-    private ILogicFacade logicManager = new LogicManager();
-    ObservableList<Song> songs = FXCollections.observableArrayList();
+    private ILogicFacade logicManager;
+    private ObservableList<Song> songs;
 
-
-    public SongModel(){ //waiting for backend to develop
-        //songs = logicManager.getAllSongs();
-
-        songs.add(new Song(1, "Baby", "3300", "JB", "users/yay",new Genre(1,"POP")));
-        songs.add(new Song(2, "Baby2", "3302", "JayB", "users/woo",new Genre(2,"POPPY")));
+    public SongModel(){
+        logicManager = new LogicManager();
     }
 
-    public ObservableList<Song> getAllSongs(){ //waiting for backend to develop
-        //return logicManager.getAllSongs();
-        return songs;
+    public ObservableList<Song> getAllSongs() throws CustomException {
+        List<Song> temp =  (List<Song>) (Object) logicManager.getAllObject();
+
+        return songs = FXCollections.observableArrayList(temp);
     }
 
 }
