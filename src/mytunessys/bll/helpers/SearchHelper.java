@@ -2,13 +2,11 @@ package mytunessys.bll.helpers;
 
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
-import mytunessys.dal.repository.SongDAO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchHelper {
-    private SongDAO songDAO = new SongDAO();
 
     public List<Object> searchSongs(List<Object> listToSearch, String query){
         List<Song> castedList = (List<Song>) (Object) listToSearch;

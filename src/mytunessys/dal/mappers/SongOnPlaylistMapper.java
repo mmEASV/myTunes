@@ -16,7 +16,7 @@ public class SongOnPlaylistMapper {
         this.songOnPlaylist = null;
     }
 
-    public SongOnPlaylist instantiateSongOnPlaylist(ResultSet rs) throws SQLException {
+    public SongOnPlaylist mapSongOnPlaylist(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         String title = rs.getString("title");
         String duration = rs.getString("duration");
@@ -27,6 +27,10 @@ public class SongOnPlaylistMapper {
         int playListId = rs.getInt("playlist_id");
         String playlistName = rs.getString("playlist_name");
         songOnPlaylist = new SongOnPlaylist(new Song(id, title, duration, artist, absolutePath, new Genre(genreId, "Pop")), new Playlist(playListId, playlistName));
+        return songOnPlaylist;
+    }
+
+    public SongOnPlaylist getSongOnPlaylist(){
         return songOnPlaylist;
     }
 

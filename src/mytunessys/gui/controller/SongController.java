@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.fxml.FXML;
+import javafx.geometry.Side;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
@@ -13,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import mytunessys.be.Genre;
 import mytunessys.be.Song;
 import mytunessys.bll.LogicManager;
@@ -46,15 +48,14 @@ public class SongController{
         GenreColumn.prefWidthProperty().set(47);
         GenreColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("genre"));
 
+
         TableColumn<Song, String> DurationColumn = new TableColumn<>();
         DurationColumn.setText("Duration");
         DurationColumn.prefWidthProperty().set(47);
         DurationColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("duration"));
 
-        TableColumn<Song, Object> OptionsColumn = new TableColumn<>();
-        OptionsColumn.setText("Options");
-        OptionsColumn.prefWidthProperty().set(47);
-        OptionsColumn.setCellValueFactory(new PropertyValueFactory<Song, Object>("button"));//change this later
+        TableColumn<Song, Button> OptionsColumn = new TableColumn<>();
+
 
         Table.editableProperty().set(false);
         Table.getColumns().addAll(TitleColumn,GenreColumn,DurationColumn,OptionsColumn);

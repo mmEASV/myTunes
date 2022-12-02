@@ -31,7 +31,7 @@ public class SongOnPlaylistDAO implements ISongOnPlaylistDAO {
             ResultSet rs = preparedStatement.executeQuery();
 
             while(rs.next()){
-                SongOnPlaylist sOp = mapper.instantiateSongOnPlaylist(rs);
+                SongOnPlaylist sOp = mapper.mapSongOnPlaylist(rs);
                 retrievedSongOnPlaylist.add(sOp);
             }
         } catch (SQLException ex) {
