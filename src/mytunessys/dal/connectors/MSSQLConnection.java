@@ -33,7 +33,7 @@ public class MSSQLConnection {
             ds.setTrustServerCertificate(true);
             conn  = ds.getConnection();
         } catch (SQLServerException | IOCustomException ex) {
-            throw new ConnectionExceptions("Could not establish connection with the database",ex.getCause());
+            throw new ConnectionExceptions(ex.getMessage(), ex.getCause());
         }
         return conn;
     }

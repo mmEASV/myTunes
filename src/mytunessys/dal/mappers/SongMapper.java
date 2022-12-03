@@ -14,7 +14,7 @@ public class SongMapper {
     }
 
     public Song mapSong(ResultSet rs) throws SQLException {
-        int id = rs.getInt("id");
+        int id = rs.getInt("iddd");
         String title = rs.getString("title");
         String duration = rs.getString("duration");
         String artist = rs.getString("artist");

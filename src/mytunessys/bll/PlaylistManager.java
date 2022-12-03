@@ -1,14 +1,13 @@
 package mytunessys.bll;
 
 import mytunessys.be.Playlist;
-import mytunessys.bll.exceptions.CustomException;
+import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.bll.interfaces.ILogicFacade;
 import mytunessys.bll.types.DatabaseType;
 import mytunessys.dal.AbstractDAOFactory;
-import mytunessys.dal.repository.PlaylistDAO;
 import mytunessys.dal.repository.interfaces.IPlaylistDAO;
-import mytunessys.dal.repository.interfaces.ISongDAO;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class PlaylistManager implements ILogicFacade {
@@ -21,22 +20,22 @@ public class PlaylistManager implements ILogicFacade {
     }
 
     @Override
-    public List<Object> getAllObject() throws CustomException {
+    public List<Object> getAllObject() throws ApplicationException {
         return this.playlistDAO.getAllPlaylists();
     }
 
     @Override
-    public void createObject(Object object)  throws CustomException  {
+    public void createObject(Object object)  throws ApplicationException {
         this.playlistDAO.createPlaylist((Playlist) object);
     }
 
     @Override
-    public void updateObject(Object object)  throws CustomException  {
+    public void updateObject(Object object)  throws ApplicationException {
         this.playlistDAO.updatePlaylist((Playlist) object);
     }
 
     @Override
-    public boolean deleteObject(Object object) throws CustomException  {
+    public boolean deleteObject(Object object) throws ApplicationException {
         return this.playlistDAO.deletePlaylist(((Playlist)object).getId());
     }
 

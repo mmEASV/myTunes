@@ -3,7 +3,7 @@ package mytunessys.dal.repository;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.be.SongOnPlaylist;
-import mytunessys.bll.exceptions.CustomException;
+import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.dal.connectors.MSSQLConnection;
 import mytunessys.dal.mappers.SongOnPlaylistMapper;
 import mytunessys.dal.repository.interfaces.ISongOnPlaylistDAO;
@@ -18,7 +18,7 @@ import java.util.List;
 public class SongOnPlaylistDAO implements ISongOnPlaylistDAO {
     private PreparedStatement preparedStatement;
     @Override
-    public List<Object> getAllSongsOnPlaylist() throws CustomException {
+    public List<Object> getAllSongsOnPlaylist() throws ApplicationException {
         SongOnPlaylistMapper mapper = new SongOnPlaylistMapper();
         List<Object> retrievedSongOnPlaylist = new ArrayList<>();
         try(Connection connection = MSSQLConnection.createConnection()){
@@ -31,18 +31,18 @@ public class SongOnPlaylistDAO implements ISongOnPlaylistDAO {
             ResultSet rs = preparedStatement.executeQuery();
 
             while(rs.next()){
-                SongOnPlaylist sOp = mapper.mapSongOnPlaylist(rs);
+                SongOnPlaylist sOp = mapper.instantiateSongOnPlaylist(rs);
                 retrievedSongOnPlaylist.add(sOp);
             }
         } catch (SQLException ex) {
-            throw new CustomException("Could not retrieve songs on playlist from database",ex.getCause());
+            throw new ApplicationException(ex.getMessage(), ex.getCause());
         }
         return retrievedSongOnPlaylist;
     }
 
 
     @Override
-    public void addSongToPlaylist(Song song, Playlist playlist) throws CustomException {
+    public void addSongToPlaylist(Song song, Playlist playlist) throws ApplicationException {
         try(Connection connection = MSSQLConnection.createConnection()){
             String sql = "INSERT INTO playlist_song(song_id,playlist_id) VALUES(?,?)";
             preparedStatement = connection.prepareStatement(sql);
@@ -50,12 +50,12 @@ public class SongOnPlaylistDAO implements ISongOnPlaylistDAO {
             preparedStatement.setInt(2, playlist.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
-            throw new CustomException("Could not add song on playlist from database with Id: " + song.getId() + " to playlist with Id: " + playlist.getId() ,ex.getCause());
+            throw new ApplicationException(ex.getMessage(),ex.getCause());
         }
     }
 
     @Override
-    public boolean removeSongFromPlaylist(Song song, Playlist playlist) throws CustomException{
+    public boolean removeSongFromPlaylist(Song song, Playlist playlist) throws ApplicationException {
         try(Connection connection = MSSQLConnection.createConnection()){
             String sql = "DELETE FROM playlist_song WHERE song_id = ? AND playlist_id = ?";
             preparedStatement = connection.prepareStatement(sql);
@@ -65,7 +65,7 @@ public class SongOnPlaylistDAO implements ISongOnPlaylistDAO {
             if(result > 0)
                 return true;
         } catch (SQLException ex) {
-            throw new CustomException("Could not remove song with Id: " + song.getId() + " from playlist with Id " + playlist.getId(),ex.getCause());
+            throw new ApplicationException(ex.getMessage(),ex.getCause());
         }
         return false;
     }

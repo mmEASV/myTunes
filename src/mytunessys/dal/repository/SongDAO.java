@@ -1,7 +1,7 @@
 package mytunessys.dal.repository;
 
 import mytunessys.be.Song;
-import mytunessys.bll.exceptions.CustomException;
+import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.dal.connectors.MSSQLConnection;
 import mytunessys.dal.mappers.SongMapper;
 import mytunessys.dal.repository.interfaces.ISongDAO;
@@ -16,7 +16,7 @@ import java.util.List;
 public class SongDAO implements ISongDAO {
     private PreparedStatement preparedStatement;
     @Override
-    public List<Object> getAllSongs() throws CustomException {
+    public List<Object> getAllSongs() throws ApplicationException {
         SongMapper mapper = new SongMapper();
         List<Object> retrievedSongs = new ArrayList<>();
         try (Connection connection = MSSQLConnection.createConnection()) {
@@ -29,31 +29,31 @@ public class SongDAO implements ISongDAO {
                 retrievedSongs.add(mappedSong);
             }
         } catch (SQLException ex) {
-            throw new CustomException("Could not retrieve song from database", ex.getCause());
+            throw new ApplicationException(ex.getMessage(), ex.getCause());
         }
         return retrievedSongs;
     }
 
     @Override
-    public void createSong(Song song) throws CustomException {
+    public void createSong(Song song) throws ApplicationException {
         try (Connection connection = MSSQLConnection.createConnection()) {
             String sql = "INSERT INTO song(title, duration, artist, absolute_path, genre_id) VALUES(?,?,?,?,?)";
             prepareData(song, connection, sql);
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
-            throw new CustomException("Could not create song from database" + song.getId(), ex.getCause());
+            throw new ApplicationException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public void updateSong(Song song) throws CustomException {
+    public void updateSong(Song song) throws ApplicationException {
         try (Connection connection = MSSQLConnection.createConnection()) {
             String sql = "UPDATE song SET title = ?, duration = ?, artist = ?, absolute_path = ?, genre_id = ? WHERE id = ?";
             prepareData(song, connection, sql);
             preparedStatement.setInt(6, song.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException ex) {
-            throw new CustomException("Could not update song from database with Id: " + song.getId(), ex.getCause());
+            throw new ApplicationException(ex.getMessage(), ex.getCause());
 
         }
     }
@@ -68,7 +68,7 @@ public class SongDAO implements ISongDAO {
     }
 
     @Override
-    public boolean deleteSong(int id) throws CustomException {
+    public boolean deleteSong(int id) throws ApplicationException {
         try (Connection connection = MSSQLConnection.createConnection()) {
             String sql = "DELETE FROM song WHERE(id=?)";
             preparedStatement = connection.prepareStatement(sql);
@@ -78,7 +78,7 @@ public class SongDAO implements ISongDAO {
                 return true;
             }
         } catch (SQLException ex) {
-            throw new CustomException("Could not delete song from database with Id: " + id, ex.getCause());
+            throw new ApplicationException(ex.getMessage(), ex.getCause());
         }
         return false;
     }
