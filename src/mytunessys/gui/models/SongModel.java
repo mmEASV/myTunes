@@ -7,7 +7,7 @@ import javafx.collections.ObservableList;
 import mytunessys.be.Genre;
 import mytunessys.be.Song;
 import mytunessys.bll.LogicManager;
-import mytunessys.bll.exceptions.CustomException;
+import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.bll.interfaces.ILogicFacade;
 import mytunessys.gui.controller.SongController;
 
@@ -24,7 +24,7 @@ public class SongModel {
         logicManager = new LogicManager();
     }
 
-    public ObservableList<Song> getAllSongs() throws CustomException {
+    public ObservableList<Song> getAllSongs() throws ApplicationException {
         List<Song> temp =  (List<Song>) (Object) logicManager.getAllObject();
 
         return songs = FXCollections.observableArrayList(temp);

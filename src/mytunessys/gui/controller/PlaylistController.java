@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
-import mytunessys.bll.exceptions.CustomException;
+import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.gui.models.PlaylistModel;
 
 /**
@@ -29,7 +29,7 @@ public class PlaylistController {
 
     PlaylistModel playlistModel = new PlaylistModel();
 
-    public void Show(AnchorPane centerContent) throws CustomException {
+    public void Show(AnchorPane centerContent) throws ApplicationException {
         TableView<Playlist> table = new TableView<>();
 
         TableColumn<Playlist, String> NameColumn = new TableColumn<>();

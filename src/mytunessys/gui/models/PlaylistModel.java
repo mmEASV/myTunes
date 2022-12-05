@@ -25,7 +25,7 @@ public class PlaylistModel {
         logicManager = new PlaylistManager();
     }
 
-    public ObservableList<Playlist> getAllPlaylists() throws CustomException {
+    public ObservableList<Playlist> getAllPlaylists() throws ApplicationException {
         List<Playlist> temp =  (List<Playlist>) (Object) logicManager.getAllObject();
 
         return playlists = FXCollections.observableArrayList(temp);

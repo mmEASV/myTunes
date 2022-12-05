@@ -30,7 +30,7 @@ import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.LogicManager;
-import mytunessys.bll.exceptions.CustomException;
+import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.gui.models.PlaylistModel;
 import mytunessys.gui.models.SongModel;
 
@@ -96,7 +96,7 @@ public class BaseController implements Initializable {
 
 
     @FXML
-    private void switchToSongInterface(ActionEvent actionEvent) throws CustomException {
+    private void switchToSongInterface(ActionEvent actionEvent) throws ApplicationException {
         ShowInterface(actionEvent,"Songs");
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
@@ -106,7 +106,7 @@ public class BaseController implements Initializable {
 
     }
     @FXML
-    private void switchToPlaylistInterface(ActionEvent actionEvent) throws CustomException {
+    private void switchToPlaylistInterface(ActionEvent actionEvent) throws ApplicationException {
         ShowInterface(actionEvent,"Playlists");
         //btnSongs.setBackground(new Background(new BackgroundImage("mytunessys/gui/icons/Songs2.png")));
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
@@ -133,7 +133,7 @@ public class BaseController implements Initializable {
         btnGoBack.setVisible(false);
         try {
             switchToSongInterface(new ActionEvent());
-        } catch (CustomException e) {
+        } catch (ApplicationException e) {
             e.printStackTrace();
         }
     }

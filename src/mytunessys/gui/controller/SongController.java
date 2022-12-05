@@ -21,7 +21,7 @@ import javafx.util.Callback;
 import mytunessys.be.Genre;
 import mytunessys.be.Song;
 import mytunessys.bll.LogicManager;
-import mytunessys.bll.exceptions.CustomException;
+import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.gui.models.SongModel;
 import javafx.stage.Window;
 
@@ -38,7 +38,7 @@ public class SongController{
     private ComboBox GenreOptions;
     SongModel songModel = new SongModel();
 
-    public void Show(AnchorPane centerContent) throws CustomException {
+    public void Show(AnchorPane centerContent) throws ApplicationException {
 
 
 
