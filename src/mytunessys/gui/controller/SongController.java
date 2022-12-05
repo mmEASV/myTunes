@@ -55,10 +55,12 @@ public class SongController{
         GenreColumn.prefWidthProperty().set(47);
         GenreColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("genre"));
 
+
         TableColumn<Song, String> DurationColumn = new TableColumn<>();
         DurationColumn.setText("Duration");
         DurationColumn.prefWidthProperty().set(47);
         DurationColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("duration"));
+
 
 
         TableColumn<Song, String> OptionsColumn = new TableColumn<>();

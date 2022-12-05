@@ -20,7 +20,7 @@ public abstract class AbstractDAOFactory {
      *
      * @param databaseType takes enum parameter for predefined db type
      *                     Options : MSSQL -> connection currently available for use
-     *                     (future) : AZURE -> connection to postgres database
+     *                     (future) : AZURE -> connection to different database
      * @return DAO factory for chosen db connection
      */
 

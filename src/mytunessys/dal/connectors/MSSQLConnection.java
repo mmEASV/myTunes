@@ -15,7 +15,6 @@ public class MSSQLConnection {
     private static SQLServerDataSource ds = null;
     private static final String MSSQL_FILE = "resources/mssqlConfig.properties";
 
-    // TODO : Fix throwing custom exception with message of bad connection when conn is not estabilshed for some reason (idk VPN or smth)
     /**
      * Creates connection from SQLServerDataSource and binds credentials from environmental variables
      * @return Connection (session) with specific database
@@ -34,7 +33,7 @@ public class MSSQLConnection {
             ds.setTrustServerCertificate(true);
             conn  = ds.getConnection();
         } catch (SQLServerException | IOCustomException ex) {
-            throw new ConnectionExceptions("Could not establish connection with the database",ex.getCause());
+            throw new ConnectionExceptions(ex.getMessage(), ex.getCause());
         }
         return conn;
     }

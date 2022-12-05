@@ -9,8 +9,8 @@ import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.LogicManager;
 import mytunessys.bll.PlaylistManager;
-import mytunessys.bll.exceptions.CustomException;
 import mytunessys.bll.interfaces.ILogicFacade;
+import mytunessys.bll.exceptions.ApplicationException;
 
 /**
  * @author Bálint, Matej & Tomas
@@ -29,7 +29,6 @@ public class PlaylistModel {
         List<Playlist> temp =  (List<Playlist>) (Object) logicManager.getAllObject();
 
         return playlists = FXCollections.observableArrayList(temp);
+
     }
-
-
 }
