@@ -136,47 +136,6 @@ public class BaseController implements Initializable {
         } catch (CustomException e) {
             e.printStackTrace();
         }
-
-        //        btnGoBack.setVisible(false);
-//        lblCurrentLocation.setText("Songs");
-//        //clean up code smell
-//        //tbvCol1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
-//        tbvContentTable.setItems(songModel.getAllSongs());
-
-/*
-        Callback<TableColumn<Song, String>, TableCell<Song, String>> cellFactory
-                = //
-                new Callback<TableColumn<Song, String>, TableCell<Song, String>>() {
-                    @Override
-                    public TableCell call(final TableColumn<Song, String> param) {
-                        final TableCell<Song, String> cell = new TableCell<Song, String>() {
-
-                            final Button btn = new Button("...");
-                            final ContextMenu menu = new ContextMenu(new MenuItem("edit song"),new MenuItem("add to playlist"));
-                            @Override
-                            public void updateItem(String item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (empty) {
-                                    setGraphic(null);
-                                    setText(null);
-                                } else {
-                                    btn.setOnAction(event -> {
-                                        menu.show(btn, Side.BOTTOM,0,0);
-                                    });
-                                    setGraphic(btn);
-                                    setText(null);
-                                }
-                            }
-                        };
-                        return cell;
-                    }
-                };
-
-        tbvColOption.setCellFactory(cellFactory);
-        tbvContentTable.setItems(songModel.getAllSongs());
-        tbvContentTable.getColumns().addAll(tbvColOption);
-*/
-
     }
 
     public void NewItem(ActionEvent actionEvent) {

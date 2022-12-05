@@ -36,11 +36,7 @@ public class PlaylistController {
         NameColumn.setText("Playlist Name");
         NameColumn.prefWidthProperty().set(233);
         NameColumn.setCellValueFactory(new PropertyValueFactory<>("playlistName"));
-/*
-        TableColumn<Playlist, String> CurrentlyPlayingColumn = new TableColumn<>();
-        CurrentlyPlayingColumn.setText("Currently Playing");
-        CurrentlyPlayingColumn.prefWidthProperty().set(107);
-*/
+
         TableColumn<Playlist, Integer> NumberOfSongsColumn = new TableColumn<>();
         NumberOfSongsColumn.setText("Number of Songs");
         NumberOfSongsColumn.prefWidthProperty().set(64);
