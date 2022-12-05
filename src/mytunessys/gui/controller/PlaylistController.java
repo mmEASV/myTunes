@@ -42,7 +42,7 @@ public class PlaylistController {
         NumberOfSongsColumn.prefWidthProperty().set(64);
         NumberOfSongsColumn.setCellValueFactory(new PropertyValueFactory<>("NumberOfSongs"));
 
-        TableColumn<Playlist, Object> OptionsColumn = new TableColumn<>();
+        TableColumn<Playlist, Button> OptionsColumn = new TableColumn<>();
         OptionsColumn.setText("Options");
         OptionsColumn.prefWidthProperty().set(47);
         OptionsColumn.setCellValueFactory(new PropertyValueFactory<>("button")); //change this later
@@ -53,7 +53,7 @@ public class PlaylistController {
         table.setFocusTraversable(false);
         centerContent.getChildren().add(table);
 
-        table.setItems(playlistModel.getAllPlaylists());
+
     }
 
 

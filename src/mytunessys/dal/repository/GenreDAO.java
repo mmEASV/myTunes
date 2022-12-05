@@ -2,9 +2,9 @@ package mytunessys.dal.repository;
 
 
 import mytunessys.be.Genre;
-import mytunessys.be.Playlist;
-import mytunessys.bll.exceptions.CustomException;
+import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.dal.connectors.MSSQLConnection;
+import mytunessys.dal.mappers.GenreMapper;
 import mytunessys.dal.repository.interfaces.IGenreDAO;
 
 import java.sql.Connection;
@@ -17,23 +17,21 @@ import java.util.List;
 public class GenreDAO implements IGenreDAO {
 
     @Override
-    public List<Object> getAllGenre() throws CustomException {
+    public List<Object> getAllGenre() throws ApplicationException {
+        GenreMapper mapper = new GenreMapper();
         List<Object> retrievedGenreList = new ArrayList<>();
         try (Connection connection = MSSQLConnection.createConnection()) {
             String sql = "SELECT id,genre_name FROM genre";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                retrievedGenreList.add(instantiateGenreObject(rs));
+                Genre genre = mapper.mapGenre(rs);
+                retrievedGenreList.add(genre);
             }
         } catch (SQLException ex) {
-            throw new CustomException("Could not retrieve playlists from database",ex.getCause());
+            throw new ApplicationException(ex.getMessage(),ex.getCause());
         }
         return retrievedGenreList;
     }
-    private Object instantiateGenreObject(ResultSet rs) throws SQLException {
-        int id = rs.getInt("id");
-        String playlistName = rs.getString("genre_name");
-        return new Genre(id, playlistName);
-    }
+
 }

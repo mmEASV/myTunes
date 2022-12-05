@@ -6,20 +6,23 @@ import mytunessys.be.Genre;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.LogicManager;
+import mytunessys.bll.exceptions.CustomException;
 import mytunessys.bll.interfaces.ILogicFacade;
+
+import java.util.List;
 
 public class PlaylistModel {
 
-    private ILogicFacade logicManager = new LogicManager();
-    ObservableList<Playlist> playlists = FXCollections.observableArrayList();
+    private ILogicFacade logicManager;
+   private  ObservableList<Playlist> playlists;
 
     public PlaylistModel(){
-        playlists.add(new Playlist(1,"Hello"));
+        this.logicManager = new LogicManager();
     }
 
-    public ObservableList<Playlist> getAllPlaylists(){ //waiting for backend to develop
-        //return logicManager.getAllPlaylists();
-        return playlists;
+    public ObservableList<Playlist> getAllPlaylists() throws CustomException { //waiting for backend to develop
+        List<Playlist> test =  (List<Playlist>) (Object) logicManager.getAllObject();
+        return playlists = FXCollections.observableArrayList(test);
     }
 
 

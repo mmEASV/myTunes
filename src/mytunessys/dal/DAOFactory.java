@@ -22,7 +22,7 @@ public class DAOFactory extends AbstractDAOFactory{
 
     /**
      *
-     * @return PlaylistDAO instantiated in factory  from its interface
+     * @return PlaylistDAO instantiated in factory from its interface
      */
     @Override
     public IPlaylistDAO playlistDAO() {

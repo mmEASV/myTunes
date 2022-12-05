@@ -1,7 +1,7 @@
 package mytunessys.bll;
 
 import mytunessys.be.Song;
-import mytunessys.bll.exceptions.CustomException;
+import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.bll.helpers.SearchHelper;
 import mytunessys.bll.interfaces.ILogicFacade;
 import mytunessys.bll.types.DatabaseType;
@@ -22,22 +22,22 @@ public class LogicManager implements ILogicFacade {
     }
 
     @Override
-    public List<Object> getAllObject() throws CustomException {
+    public List<Object> getAllObject() throws ApplicationException {
         return this.songDAO.getAllSongs();
     }
 
     @Override
-    public void createObject(Object object) throws CustomException {
+    public void createObject(Object object) throws ApplicationException {
         this.songDAO.createSong((Song) object);
     }
 
     @Override
-    public void updateObject(Object object) throws CustomException {
+    public void updateObject(Object object) throws ApplicationException {
         this.songDAO.updateSong((Song) object);
     }
 
     @Override
-    public boolean deleteObject(Object object) throws CustomException {
+    public boolean deleteObject(Object object) throws ApplicationException {
         return this.songDAO.deleteSong(((Song) object).getId());
     }
 
