@@ -1,5 +1,6 @@
 package mytunessys.bll;
 
+import mytunessys.be.Genre;
 import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.bll.interfaces.ILogicFacade;
 import mytunessys.bll.types.DatabaseType;
@@ -8,7 +9,7 @@ import mytunessys.dal.repository.interfaces.IGenreDAO;
 
 import java.util.List;
 
-public class GenreManager implements ILogicFacade {
+public class GenreManager implements ILogicFacade<Genre> {
     AbstractDAOFactory abstractDAOFactory = AbstractDAOFactory.getDAO(DatabaseType.MSSQL);
     IGenreDAO genreDAO;
 
@@ -16,28 +17,28 @@ public class GenreManager implements ILogicFacade {
         this.genreDAO = abstractDAOFactory.genreDAO();
     }
     @Override
-    public List<Object> getAllObject() throws ApplicationException {
+    public List<Genre> getAllObject() throws ApplicationException {
         return this.genreDAO.getAllGenre();
     }
 
     @Override
-    public void createObject(Object object) throws ApplicationException {
+    public void createObject(Genre object) throws ApplicationException {
             // does nothing for now
     }
 
     @Override
-    public void updateObject(Object object) throws ApplicationException {
+    public void updateObject(Genre object) throws ApplicationException {
         // does nothing for now
     }
 
     @Override
-    public boolean deleteObject(Object object) throws ApplicationException {
+    public boolean deleteObject(Genre object) throws ApplicationException {
         // does nothing for now
         return false;
     }
 
     @Override
-    public List<Object> searchObjects(List<Object> list, String query) {
+    public List<Genre> searchObjects(List<Genre> list, String query) {
         return null;
     }
 }

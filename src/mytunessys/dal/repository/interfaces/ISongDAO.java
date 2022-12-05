@@ -14,7 +14,7 @@ public interface ISongDAO {
      * @return List of object parse as songs later from database
      * @throws ApplicationException when data are not able to be retrieved with message and cause
      */
-    List<Object> getAllSongs() throws ApplicationException;
+    List<Song> getAllSongs() throws ApplicationException;
 
     /**
      * Creates given song into the database

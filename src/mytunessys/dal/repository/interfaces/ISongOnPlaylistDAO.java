@@ -2,6 +2,7 @@ package mytunessys.dal.repository.interfaces;
 
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
+import mytunessys.be.SongOnPlaylist;
 import mytunessys.bll.exceptions.ApplicationException;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface ISongOnPlaylistDAO {
      * @return list of objects song that are on playlist from SongOnPlaylistDAO
      * @throws ApplicationException when data are not able to be retrieved with message and cause
      */
-    List<Object> getAllSongsOnPlaylist() throws ApplicationException;
+    List<SongOnPlaylist> getAllSongsOnPlaylist() throws ApplicationException;
 
     /**
      * Adds given song to be added into the database table

@@ -1,5 +1,6 @@
 package mytunessys.dal.repository.interfaces;
 
+import mytunessys.be.Genre;
 import mytunessys.bll.exceptions.ApplicationException;
 
 import java.util.List;
@@ -11,6 +12,6 @@ public interface IGenreDAO {
      * @return List of object genre from genreDAO
      * @throws ApplicationException when problem with fetching all genre from db occurs
      */
-    List<Object> getAllGenre() throws ApplicationException;
+    List<Genre> getAllGenre() throws ApplicationException;
 }
 

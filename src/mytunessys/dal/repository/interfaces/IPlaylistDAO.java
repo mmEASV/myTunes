@@ -13,7 +13,7 @@ public interface IPlaylistDAO {
      * @return List of playlists from database
      * @throws ApplicationException when data are not able to be updated with message and cause
      */
-    List<Object> getAllPlaylists() throws ApplicationException;
+    List<Playlist> getAllPlaylists() throws ApplicationException;
 
     /**
      * Creates new playlist from object model playlist
