@@ -2,8 +2,12 @@ package mytunessys.gui.controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Side;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -11,45 +15,75 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
+import mytunessys.bll.exceptions.CustomException;
 import mytunessys.gui.models.PlaylistModel;
 
 /**
- * @author Bálint & Matej
+ * @author Bálint, Matej & Tomas
  */
 
 public class PlaylistController {
 
-    TextField playlistName;
     PlaylistModel playlistModel = new PlaylistModel();
 
-    public void Show(AnchorPane centerContent){
+    public void Show(AnchorPane centerContent) throws CustomException {
         TableView<Playlist> table = new TableView<>();
 
         TableColumn<Playlist, String> NameColumn = new TableColumn<>();
         NameColumn.setText("Playlist Name");
-        NameColumn.prefWidthProperty().set(126);
+        NameColumn.prefWidthProperty().set(233);
         NameColumn.setCellValueFactory(new PropertyValueFactory<>("playlistName"));
-
-        TableColumn<Playlist, String> CurrentlyPlayingColumn = new TableColumn<>();
-        CurrentlyPlayingColumn.setText("Currently Playing");
-        CurrentlyPlayingColumn.prefWidthProperty().set(107);
-        CurrentlyPlayingColumn.setCellValueFactory(new PropertyValueFactory<>("currentlyPlaying"));
 
         TableColumn<Playlist, Integer> NumberOfSongsColumn = new TableColumn<>();
         NumberOfSongsColumn.setText("Number of Songs");
         NumberOfSongsColumn.prefWidthProperty().set(64);
-        NumberOfSongsColumn.setCellValueFactory(new PropertyValueFactory<>("NumberOfSongs"));
+        NumberOfSongsColumn.setCellValueFactory(new PropertyValueFactory<>("songAmount"));
 
-        TableColumn<Playlist, Button> OptionsColumn = new TableColumn<>();
+
+        TableColumn<Playlist, String> OptionsColumn = new TableColumn<>();
         OptionsColumn.setText("Options");
+
         OptionsColumn.prefWidthProperty().set(47);
-        OptionsColumn.setCellValueFactory(new PropertyValueFactory<>("button")); //change this later
+
+
+        Callback<TableColumn<Playlist, String>, TableCell<Playlist, String>> cellFactory
+            = //
+            new Callback<TableColumn<Playlist, String>, TableCell<Playlist, String>>() {
+                @Override
+                public TableCell call(final TableColumn<Playlist, String> param) {
+                    final TableCell<Playlist, String> cell = new TableCell<Playlist, String>() {
+
+                        final Button btn = new Button("...");
+                        final ContextMenu menu = new ContextMenu(new MenuItem("edit Playlist"),new MenuItem("add to playlist"));
+                        @Override
+                        public void updateItem(String item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setGraphic(null);
+                                setText(null);
+                            } else {
+                                btn.setOnAction(event -> {
+                                    menu.show(btn, Side.BOTTOM,0,0);
+                                });
+                                setGraphic(btn);
+                                setText(null);
+                            }
+                        }
+                    };
+                    return cell;
+                }
+            };
+
+        OptionsColumn.setCellFactory(cellFactory);
+
+
 
         table.editableProperty().set(false);
 
-        table.getColumns().addAll(NameColumn,CurrentlyPlayingColumn,NumberOfSongsColumn,OptionsColumn);
+        table.getColumns().addAll(NameColumn,NumberOfSongsColumn,OptionsColumn);
         table.setFocusTraversable(false);
         centerContent.getChildren().add(table);
 
@@ -93,7 +127,7 @@ public class PlaylistController {
 
         var playlistRow = new HBox();
         var playlistNameLabel = new Label("Playlist Name");
-        playlistName = new TextField();
+        var playlistName = new TextField();
         playlistName.setPromptText("Playlist Name...");
 
 

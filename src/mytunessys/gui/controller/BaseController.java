@@ -30,11 +30,12 @@ import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.LogicManager;
+import mytunessys.bll.exceptions.CustomException;
 import mytunessys.gui.models.PlaylistModel;
 import mytunessys.gui.models.SongModel;
 
 /**
- * @author Bálint & Matej
+ * @author Bálint, Matej & Tomas
  */
 
 public class BaseController implements Initializable {
@@ -95,7 +96,7 @@ public class BaseController implements Initializable {
 
 
     @FXML
-    private void switchToSongInterface(ActionEvent actionEvent){
+    private void switchToSongInterface(ActionEvent actionEvent) throws CustomException {
         ShowInterface(actionEvent,"Songs");
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
@@ -105,7 +106,7 @@ public class BaseController implements Initializable {
 
     }
     @FXML
-    private void switchToPlaylistInterface(ActionEvent actionEvent){
+    private void switchToPlaylistInterface(ActionEvent actionEvent) throws CustomException {
         ShowInterface(actionEvent,"Playlists");
         //btnSongs.setBackground(new Background(new BackgroundImage("mytunessys/gui/icons/Songs2.png")));
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
@@ -130,48 +131,11 @@ public class BaseController implements Initializable {
         songCont = new SongController();
         playlistCont = new PlaylistController();
         btnGoBack.setVisible(false);
-        switchToSongInterface(new ActionEvent());
-
-//        btnGoBack.setVisible(false);
-//        lblCurrentLocation.setText("Songs");
-//        //clean up code smell
-//        //tbvCol1.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getTitle()));
-//        tbvContentTable.setItems(songModel.getAllSongs());
-
-/*
-        Callback<TableColumn<Song, String>, TableCell<Song, String>> cellFactory
-                = //
-                new Callback<TableColumn<Song, String>, TableCell<Song, String>>() {
-                    @Override
-                    public TableCell call(final TableColumn<Song, String> param) {
-                        final TableCell<Song, String> cell = new TableCell<Song, String>() {
-
-                            final Button btn = new Button("...");
-                            final ContextMenu menu = new ContextMenu(new MenuItem("edit song"),new MenuItem("add to playlist"));
-                            @Override
-                            public void updateItem(String item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (empty) {
-                                    setGraphic(null);
-                                    setText(null);
-                                } else {
-                                    btn.setOnAction(event -> {
-                                        menu.show(btn, Side.BOTTOM,0,0);
-                                    });
-                                    setGraphic(btn);
-                                    setText(null);
-                                }
-                            }
-                        };
-                        return cell;
-                    }
-                };
-
-        tbvColOption.setCellFactory(cellFactory);
-        tbvContentTable.setItems(songModel.getAllSongs());
-        tbvContentTable.getColumns().addAll(tbvColOption);
-
-        */
+        try {
+            switchToSongInterface(new ActionEvent());
+        } catch (CustomException e) {
+            e.printStackTrace();
+        }
     }
 
     public void NewItem(ActionEvent actionEvent) {
