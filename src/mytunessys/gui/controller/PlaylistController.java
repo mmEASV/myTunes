@@ -85,9 +85,8 @@ public class PlaylistController {
 
         table.getColumns().addAll(NameColumn,NumberOfSongsColumn,OptionsColumn);
         table.setFocusTraversable(false);
+        table.setItems(playlistModel.getAllPlaylists());
         centerContent.getChildren().add(table);
-
-
     }
 
 
