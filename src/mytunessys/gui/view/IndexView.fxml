@@ -10,7 +10,7 @@
          <children>
             <AnchorPane fx:id="top" prefHeight="60.0" prefWidth="374.0">
                <children>
-                  <Label fx:id="lblCurrentLocation" layoutX="48.0" layoutY="21.0" text="Label" />
+                  <Label fx:id="lblCurrentLocation" layoutX="48.0" layoutY="15.0" text="Label" styleClass="currentSiteLabel" />
                   <Button fx:id="btnGoBack" focusTraversable="false" layoutX="7.0" layoutY="17.0" mnemonicParsing="false" text="&lt;" />
                   <Button fx:id="btnAdd" focusTraversable="false" layoutX="335.0" layoutY="17.0" mnemonicParsing="false" onAction="#NewItem" text="+" />
                   <TextField fx:id="txfSearchBar" focusTraversable="false" layoutX="179.0" layoutY="18.0" promptText="Search..." />
@@ -23,14 +23,14 @@
    <bottom>
       <VBox prefHeight="98.0" prefWidth="374.0" BorderPane.alignment="CENTER">
          <children>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="51.0" prefWidth="374.0">
+            <AnchorPane styleClass="bottomPanel" minHeight="0.0" minWidth="0.0" prefHeight="51.0" prefWidth="374.0">
                <children>
                   <HBox prefHeight="45.0" prefWidth="373.0">
                      <children>
                         <VBox prefHeight="45.0" prefWidth="209.0">
                            <children>
-                              <Label fx:id="lblNameOfSong" prefHeight="17.0" prefWidth="182.0" text="Name of Song" />
-                              <Label fx:id="lblArtist" prefHeight="17.0" prefWidth="309.0" text="Artist" />
+                              <Label fx:id="lblNameOfSong" styleClass="songLabel" prefHeight="17.0" prefWidth="182.0" text="Name of Song" />
+                              <Label fx:id="lblArtist" styleClass="songArtist" prefHeight="17.0" prefWidth="309.0" text="Artist" />
                            </children>
                         </VBox>
                         <VBox prefHeight="45.0" prefWidth="50.0">
@@ -52,7 +52,7 @@
                   </HBox>
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="45.0" prefWidth="374.0">
+            <AnchorPane styleClass="bottomPanel" minHeight="0.0" minWidth="0.0" prefHeight="45.0" prefWidth="374.0">
                <children>
                   <HBox prefHeight="43.0" prefWidth="373.0">
                      <children>
