@@ -128,8 +128,8 @@ public class BaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        songCont = new SongController();
-        playlistCont = new PlaylistController();
+        songCont = new SongController(contentWindow);
+        playlistCont = new PlaylistController(contentWindow);
         btnGoBack.setVisible(false);
         try {
             switchToSongInterface(new ActionEvent());
@@ -140,8 +140,8 @@ public class BaseController implements Initializable {
 
     public void NewItem(ActionEvent actionEvent) {
         if(lblCurrentLocation.getText().equals("Songs"))
-            songCont.NewSong(contentWindow);
+            songCont.NewSong();
         else
-            playlistCont.NewPlaylist(contentWindow);
+            playlistCont.NewPlaylist();
     }
 }
