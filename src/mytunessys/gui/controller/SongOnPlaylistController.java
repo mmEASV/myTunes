@@ -25,7 +25,7 @@ public class SongOnPlaylistController {
     SongOnPlaylistModel songOnPlaylistModel;
     AnchorPane contentWindow;
 
-    PlaylistModel playlist;
+    PlaylistModel playlistModel;
 
     ObservableList<Song> currentSongsInPlaylist;
 
@@ -33,11 +33,11 @@ public class SongOnPlaylistController {
     public SongOnPlaylistController(AnchorPane contentWindow,SongOnPlaylistModel model,PlaylistModel playlist) {
         this.contentWindow = contentWindow;
         this.songOnPlaylistModel = model;
-        this.playlist = playlist;
+        this.playlistModel = playlist;
        // this.currentSongsInPlaylist = playlist;
     }
 
-    public void Show(AnchorPane centerContent) throws ApplicationException {
+    public void Show(AnchorPane centerContent,Playlist playlist) throws ApplicationException {
 
         TableView<Song> table = new TableView<>();
         table.setFocusTraversable(false);
@@ -95,7 +95,7 @@ public class SongOnPlaylistController {
         table.setFocusTraversable(false);
 
         centerContent.getChildren().add(table);
-        table.setItems(currentSongsInPlaylist);
+        table.setItems(playlistModel.getPlaylistById(playlist));
 
     }
 }

@@ -119,10 +119,10 @@ public class BaseController implements Initializable {
         playlistCont.Show(centerContent);
     }
 
-    public void switchToSongOnPlaylistInterface(ActionEvent actionEvent) throws ApplicationException {
+    public void switchToSongOnPlaylistInterface(ActionEvent actionEvent,Playlist playlist) throws ApplicationException {
         //TODO do this when a playlist is double clicked
         ShowInterface(actionEvent,"Songs in the Playlist");
-        songOnPlaylistCont.Show(centerContent);
+        songOnPlaylistCont.Show(centerContent,playlist);
     }
 
     public void CleanCenterContent(){

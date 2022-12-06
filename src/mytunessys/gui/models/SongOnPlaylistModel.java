@@ -40,18 +40,18 @@ public class SongOnPlaylistModel {
 //        return songs = FXCollections.observableArrayList(temp);
 //    }
 
-    public ObservableList<Song> getAllSongOnPlaylist() throws ApplicationException{
-        List<SongOnPlaylist> temp =  songOnPlaylistManager.getAllObject();
-        List<Song> songForPlaylist = new ArrayList<>();
-        for (SongOnPlaylist s : temp
-             ) {
-            if(s.getPlaylist().getId() == 4){
-                songForPlaylist.add(s.getSong());
-            }
-        }
-        // return songs = FXCollections.observableArrayList(temp);
-        return songs = FXCollections.observableArrayList(songForPlaylist);
-
-    }
+//    public ObservableList<Song> getAllSongOnPlaylist() throws ApplicationException{
+//        List<SongOnPlaylist> temp =  songOnPlaylistManager.getAllObject();
+//        List<Song> songForPlaylist = new ArrayList<>();
+//        for (SongOnPlaylist s : temp
+//             ) {
+//            if(s.getPlaylist().getId() == 4){
+//                songForPlaylist.add(s.getSong());
+//            }
+//        }
+//        // return songs = FXCollections.observableArrayList(temp);
+//        return songs = FXCollections.observableArrayList(songForPlaylist);
+//
+//    }
 
 }
