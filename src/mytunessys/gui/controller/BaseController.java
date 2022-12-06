@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,10 +31,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
+import mytunessys.be.SongOnPlaylist;
 import mytunessys.bll.LogicManager;
 import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.gui.models.PlaylistModel;
 import mytunessys.gui.models.SongModel;
+import mytunessys.gui.models.SongOnPlaylistModel;
 
 /**
  * @author Bálint, Matej & Tomas
@@ -40,9 +44,11 @@ import mytunessys.gui.models.SongModel;
 
 public class BaseController implements Initializable {
 
+    //TODO QUESTION: SHOULD BE ANNOTATED AS FXML ?
 
     public AnchorPane top;
     public AnchorPane contentWindow;
+    // ----
     @FXML
     private TableView<Song> tbvContentTable;
     @FXML
@@ -78,6 +84,7 @@ public class BaseController implements Initializable {
 
     private SongModel songModel = new SongModel();
     private PlaylistModel playlistModel = new PlaylistModel();
+    private SongOnPlaylistModel songOnPlaylist = new SongOnPlaylistModel();
     private SongController songCont;
     private PlaylistController playlistCont;
     private SongOnPlaylistController songOnPlaylistCont;
@@ -112,11 +119,9 @@ public class BaseController implements Initializable {
         playlistCont.Show(centerContent);
     }
 
-    private void switchToSongOnPlaylistInterface(ActionEvent actionEvent) throws ApplicationException {
+    public void switchToSongOnPlaylistInterface(ActionEvent actionEvent) throws ApplicationException {
         //TODO do this when a playlist is double clicked
-
         ShowInterface(actionEvent,"Songs in the Playlist");
-
         songOnPlaylistCont.Show(centerContent);
     }
 
@@ -129,10 +134,16 @@ public class BaseController implements Initializable {
         lblCurrentLocation.setText(name);
     }
 
+    public void hideSearchBar(ActionEvent actionEvent){
+        txfSearchBar.setVisible(false);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        songCont = new SongController();
-        playlistCont = new PlaylistController();
+        songCont = new SongController(contentWindow,songModel);
+        playlistCont = new PlaylistController(contentWindow,playlistModel,this);
+        songOnPlaylistCont = new SongOnPlaylistController(contentWindow,songOnPlaylist,playlistModel);
+        setSearch();
         btnGoBack.setVisible(false);
         try {
             switchToSongInterface(new ActionEvent());
@@ -141,10 +152,24 @@ public class BaseController implements Initializable {
         }
     }
 
+    private void setSearch() {
+        txfSearchBar.textProperty().addListener((obs,oldValue,newValue)-> {
+            try{
+                if (lblCurrentLocation.getText().equals("Playlists")) { // not so type safe but works for now
+                    playlistModel.searchPlaylist(newValue);
+                } else {
+                    songModel.searchSongs(newValue);
+                }
+            }catch(Exception e){
+                throw new RuntimeException();
+            }
+        } );
+    }
+
     public void NewItem(ActionEvent actionEvent) {
         if(lblCurrentLocation.getText().equals("Songs"))
-            songCont.NewSong(contentWindow);
+            songCont.NewSong();
         else
-            playlistCont.NewPlaylist(contentWindow);
+            playlistCont.NewPlaylist();
     }
 }

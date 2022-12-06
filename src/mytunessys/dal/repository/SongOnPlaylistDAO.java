@@ -18,9 +18,9 @@ import java.util.List;
 public class SongOnPlaylistDAO implements ISongOnPlaylistDAO {
     private PreparedStatement preparedStatement;
     @Override
-    public List<Object> getAllSongsOnPlaylist() throws ApplicationException {
+    public List<SongOnPlaylist> getAllSongsOnPlaylist() throws ApplicationException {
         SongOnPlaylistMapper mapper = new SongOnPlaylistMapper();
-        List<Object> retrievedSongOnPlaylist = new ArrayList<>();
+        List<SongOnPlaylist> retrievedSongOnPlaylist = new ArrayList<>();
         try(Connection connection = MSSQLConnection.createConnection()){
             String sql = " SELECT s.id,s.title,s.duration,s.artist,s.absolute_path,g.id AS genre_id,g.genre_name,p.id AS playlist_id,p.playlist_name\n" +
                     " FROM song s\n" +

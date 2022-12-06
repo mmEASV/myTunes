@@ -22,7 +22,7 @@ public class SongMapper {
 
         int genreId = rs.getInt("genre_id");
         String genreName = rs.getString("genre_name");
-        Genre fetchedGenre = new Genre(genreId, genreName);
+        Genre fetchedGenre = new Genre(genreId,genreName);
         song = new Song(id, title, duration, artist, absolutePath, fetchedGenre);
         return song;
     }

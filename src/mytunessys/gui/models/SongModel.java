@@ -4,12 +4,10 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import mytunessys.be.Genre;
 import mytunessys.be.Song;
 import mytunessys.bll.LogicManager;
 import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.bll.interfaces.ILogicFacade;
-import mytunessys.gui.controller.SongController;
 
 /**
  * @author Bálint, Matej & Tomas
@@ -17,17 +15,33 @@ import mytunessys.gui.controller.SongController;
 
 public class SongModel {
 
-    private ILogicFacade logicManager;
+    private final ILogicFacade<Song> songManager;
     private ObservableList<Song> songs;
 
-    public SongModel(){
-        logicManager = new LogicManager();
+    public SongModel() {
+        songManager = new LogicManager();
     }
 
     public ObservableList<Song> getAllSongs() throws ApplicationException {
-        List<Song> temp =  (List<Song>) (Object) logicManager.getAllObject();
-
+        List<Song> temp =  songManager.getAllObject();
         return songs = FXCollections.observableArrayList(temp);
+    }
+
+    public void createSong(Song song) throws ApplicationException {
+        songManager.createObject(song);
+    }
+
+    public void updateSong(Song song) throws ApplicationException {
+        songManager.updateObject(song);
+    }
+
+    public boolean deleteSong(Song song) throws ApplicationException {
+        return songManager.deleteObject(song);
+    }
+    public void searchSongs(String query) throws ApplicationException {
+        List<Song> searched = songManager.searchObjects(songManager.getAllObject(), query);
+        songs.clear();
+        songs.addAll(searched);
     }
 
 }

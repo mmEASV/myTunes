@@ -1,7 +1,5 @@
 package mytunessys.bll;
 
-import mytunessys.be.Playlist;
-import mytunessys.be.Song;
 import mytunessys.be.SongOnPlaylist;
 import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.bll.interfaces.ILogicFacade;
@@ -11,7 +9,7 @@ import mytunessys.dal.repository.interfaces.ISongOnPlaylistDAO;
 
 import java.util.List;
 
-public class SongOnPlaylistManager implements ILogicFacade {
+public class SongOnPlaylistManager implements ILogicFacade<SongOnPlaylist> {
 
     AbstractDAOFactory abstractDAOFactory = AbstractDAOFactory.getDAO(DatabaseType.MSSQL);
     ISongOnPlaylistDAO songOnPlaylistDAO;
@@ -21,27 +19,32 @@ public class SongOnPlaylistManager implements ILogicFacade {
     }
 
     @Override
-    public List<Object> getAllObject() throws ApplicationException {
+    public List<SongOnPlaylist> getAllObject() throws ApplicationException {
         return this.songOnPlaylistDAO.getAllSongsOnPlaylist();
     }
 
     @Override
-    public void createObject(Object object) throws ApplicationException {
+    public SongOnPlaylist getObjectById(SongOnPlaylist object) throws ApplicationException {
+        return null;
+    }
+
+    @Override
+    public void createObject(SongOnPlaylist object) throws ApplicationException {
         this.songOnPlaylistDAO.addSongToPlaylist((((SongOnPlaylist) object).getSong()),((SongOnPlaylist) object).getPlaylist());
     }
 
     @Override
-    public void updateObject(Object object) throws ApplicationException {
+    public void updateObject(SongOnPlaylist object) throws ApplicationException {
         // does nothing now
     }
 
     @Override
-    public boolean deleteObject(Object object) throws ApplicationException {
-        return this.songOnPlaylistDAO.removeSongFromPlaylist(((Song) object),((Playlist) object));
+    public boolean deleteObject(SongOnPlaylist object) throws ApplicationException {
+        return this.songOnPlaylistDAO.removeSongFromPlaylist(object.getSong(),object.getPlaylist());
     }
 
     @Override
-    public List<Object> searchObjects(List<Object> list, String query) {
+    public List<SongOnPlaylist> searchObjects(List<SongOnPlaylist> list, String query) {
         return null;
     }
 }

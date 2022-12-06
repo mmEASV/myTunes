@@ -1,19 +1,21 @@
 package mytunessys.gui.controller;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.Side;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
+import mytunessys.be.SongOnPlaylist;
 import mytunessys.bll.exceptions.ApplicationException;
+import mytunessys.gui.models.PlaylistModel;
+import mytunessys.gui.models.SongModel;
 import mytunessys.gui.models.SongOnPlaylistModel;
+
+import java.util.List;
 
 /**
  * @author Bálint
@@ -21,10 +23,18 @@ import mytunessys.gui.models.SongOnPlaylistModel;
 public class SongOnPlaylistController {
 
     SongOnPlaylistModel songOnPlaylistModel;
-    Playlist playlist;
+    AnchorPane contentWindow;
 
-    public SongOnPlaylistController(Playlist playlist){
+    PlaylistModel playlist;
+
+    ObservableList<Song> currentSongsInPlaylist;
+
+
+    public SongOnPlaylistController(AnchorPane contentWindow,SongOnPlaylistModel model,PlaylistModel playlist) {
+        this.contentWindow = contentWindow;
+        this.songOnPlaylistModel = model;
         this.playlist = playlist;
+       // this.currentSongsInPlaylist = playlist;
     }
 
     public void Show(AnchorPane centerContent) throws ApplicationException {
@@ -85,8 +95,7 @@ public class SongOnPlaylistController {
         table.setFocusTraversable(false);
 
         centerContent.getChildren().add(table);
-
-        table.setItems(songOnPlaylistModel.getAllSongsForPlaylist(playlist));
+        table.setItems(currentSongsInPlaylist);
 
     }
 }
