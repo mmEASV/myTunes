@@ -4,9 +4,12 @@ public class SongOnPlaylist {
     private Song song;
     private Playlist playlist;
 
-    public SongOnPlaylist(Song song, Playlist playlist) {
+    private int order;
+
+    public SongOnPlaylist(Song song, Playlist playlist,int order) {
         this.song = song;
         this.playlist = playlist;
+        this.order = order;
     }
 
     public Song getSong() {
@@ -25,4 +28,10 @@ public class SongOnPlaylist {
         this.playlist = playlist;
     }
 
+    public int getOrder(){
+        return this.order;
+    }
+    public void setSong(int order) {
+        this.order = order;
+    }
 }
