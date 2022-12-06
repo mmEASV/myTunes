@@ -1,5 +1,6 @@
 package mytunessys.bll;
 
+import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.bll.helpers.SearchHelper;
@@ -41,9 +42,22 @@ public class LogicManager implements ILogicFacade {
         return this.songDAO.deleteSong(((Song) object).getId());
     }
 
+
+
+    //need to check out
     @Override
     public List<Object> searchObjects(List<Object> list, String query) {
-        return List.of();
+        return  searchHelper.searchSongs(list, query);
     }
+
+    public static void main(String[] args) throws ApplicationException {
+        LogicManager lm = new LogicManager();
+        List<Object> songs = lm.getAllObject();
+        List<Song> searched = (List<Song>) (Object) lm.searchObjects(songs, "ba");
+        for(Song s : searched){
+            System.out.println(s.getTitle());
+        }
+    }
+
 
 }

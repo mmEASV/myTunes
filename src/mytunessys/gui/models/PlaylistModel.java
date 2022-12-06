@@ -31,4 +31,11 @@ public class PlaylistModel {
         return playlists = FXCollections.observableArrayList(temp);
 
     }
+
+    public void searchPlaylists(String query) throws ApplicationException {
+        List<Object> playlists1 = logicManager.getAllObject();
+        List<Playlist> searched = (List<Playlist>) (Object) logicManager.searchObjects(playlists1, query);
+        playlists.clear();
+        playlists.addAll(searched);
+    }
 }

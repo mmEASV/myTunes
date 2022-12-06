@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -76,7 +78,7 @@ public class BaseController implements Initializable {
     private AnchorPane centerContent;
 
 
-    private SongModel songModel = new SongModel();
+    private SongModel songModel;
     private PlaylistModel playlistModel = new PlaylistModel();
     private SongController songCont;
     private PlaylistController playlistCont;
@@ -128,6 +130,11 @@ public class BaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        try {
+            this.songModel = new SongModel();
+        } catch (ApplicationException e) {
+            throw new RuntimeException(e);
+        }
         songCont = new SongController();
         playlistCont = new PlaylistController();
         btnGoBack.setVisible(false);
@@ -136,6 +143,19 @@ public class BaseController implements Initializable {
         } catch (ApplicationException e) {
             e.printStackTrace();
         }
+
+
+        //need to check out
+        txfSearchBar.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                try {
+                    songModel.searchSongs(newValue);
+                } catch (ApplicationException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     public void NewItem(ActionEvent actionEvent) {

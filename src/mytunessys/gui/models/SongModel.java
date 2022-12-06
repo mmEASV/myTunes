@@ -20,8 +20,9 @@ public class SongModel {
     private ILogicFacade logicManager;
     private ObservableList<Song> songs;
 
-    public SongModel(){
+    public SongModel() throws ApplicationException {
         logicManager = new LogicManager();
+        getAllSongs();
     }
 
     public ObservableList<Song> getAllSongs() throws ApplicationException {
@@ -29,5 +30,18 @@ public class SongModel {
 
         return songs = FXCollections.observableArrayList(temp);
     }
+
+    //need to check out
+
+    public void searchSongs(String query) throws ApplicationException {
+        songs = getAllSongs();
+        List<Song> searched = (List<Song>) (Object) logicManager.searchObjects(songs, query);
+        songs.clear();
+        if(searched!=null){
+            songs.addAll(searched);
+        }
+
+    }
+
 
 }
