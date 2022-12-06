@@ -2,6 +2,7 @@ package mytunessys.bll;
 
 import mytunessys.be.Playlist;
 import mytunessys.bll.exceptions.ApplicationException;
+import mytunessys.bll.helpers.SearchHelper;
 import mytunessys.bll.interfaces.ILogicFacade;
 import mytunessys.bll.types.DatabaseType;
 import mytunessys.dal.AbstractDAOFactory;
@@ -15,8 +16,11 @@ public class PlaylistManager implements ILogicFacade<Playlist> {
     AbstractDAOFactory abstractDAOFactory = AbstractDAOFactory.getDAO(DatabaseType.MSSQL);
     IPlaylistDAO playlistDAO;
 
+    SearchHelper searchHelper;
+
     public PlaylistManager() {
         this.playlistDAO = abstractDAOFactory.playlistDAO();
+        this.searchHelper = new SearchHelper();
     }
 
     @Override
@@ -41,6 +45,6 @@ public class PlaylistManager implements ILogicFacade<Playlist> {
 
     @Override
     public List<Playlist> searchObjects(List<Playlist> list, String query) {
-        return null;
+        return this.searchHelper.searchPlaylists(list, query);
     }
 }

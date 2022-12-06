@@ -27,10 +27,12 @@ import mytunessys.gui.models.PlaylistModel;
  */
 
 public class PlaylistController {
+    // TODO: do not write inst var with upper case letter first please
     private AnchorPane Window;
-    PlaylistModel playlistModel = new PlaylistModel();
-    public PlaylistController(AnchorPane contentWindow){
-        Window = contentWindow;
+    private final PlaylistModel playlistModel;
+    public PlaylistController(AnchorPane contentWindow,PlaylistModel playlistModel){
+        Window = contentWindow; // refer to this. instead of just the name  :)
+        this.playlistModel = playlistModel;
     }
 
     public void Show(AnchorPane centerContent) throws ApplicationException {
@@ -94,8 +96,8 @@ public class PlaylistController {
 
         table.getColumns().addAll(NameColumn,NumberOfSongsColumn,OptionsColumn);
         table.setFocusTraversable(false);
-        table.setItems(playlistModel.getAllPlaylists());
         centerContent.getChildren().add(table);
+        table.setItems(playlistModel.getAllPlaylists());
     }
     public void NewPlaylist(){
         DisplayPlaylistPopUp(null);

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -128,14 +130,29 @@ public class BaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        songCont = new SongController(contentWindow);
-        playlistCont = new PlaylistController(contentWindow);
+        songCont = new SongController(contentWindow,songModel);
+        playlistCont = new PlaylistController(contentWindow,playlistModel);
+        setSearch();
         btnGoBack.setVisible(false);
         try {
             switchToSongInterface(new ActionEvent());
         } catch (ApplicationException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setSearch() {
+        txfSearchBar.textProperty().addListener((obs,oldValue,newValue)-> {
+            try{
+                if (lblCurrentLocation.getText().equals("Playlists")) { // not so type safe but works for now
+                    playlistModel.searchPlaylist(newValue);
+                } else {
+                    songModel.searchSongs(newValue);
+                }
+            }catch(Exception e){
+                throw new RuntimeException();
+            }
+        } );
     }
 
     public void NewItem(ActionEvent actionEvent) {

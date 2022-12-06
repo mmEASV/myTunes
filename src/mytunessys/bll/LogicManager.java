@@ -1,5 +1,6 @@
 package mytunessys.bll;
 
+import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.bll.helpers.SearchHelper;
@@ -43,7 +44,9 @@ public class LogicManager implements ILogicFacade<Song> {
 
     @Override
     public List<Song> searchObjects(List<Song> list, String query) {
-        return List.of();
+        return this.searchHelper.searchSongs(list, query);
     }
+
+
 
 }

@@ -1,9 +1,16 @@
 package mytunessys.gui.controller;
 
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -26,7 +33,9 @@ import java.io.Console;
 /**
  * @author Bálint, Matej & Tomas
  */
-public class SongController{
+
+public class SongController {
+    // TODO: why some of them are first cap and some of them are not ?
     private AnchorPane Window;
     private AnchorPane popUpContent;
     private TextField FilePath;
@@ -34,10 +43,13 @@ public class SongController{
     private TextField ArtistName;
 
     private ComboBox GenreOptions;
-    SongModel songModel = new SongModel();
+    private SongModel songModel;
 
-    public SongController(AnchorPane contentWindow){
+
+
+    public SongController(AnchorPane contentWindow,SongModel model){
         Window = contentWindow;
+        this.songModel = model;
     }
 
     public void Show(AnchorPane centerContent) throws ApplicationException {
@@ -213,4 +225,6 @@ public class SongController{
     {
 
     }
+
+
 }
