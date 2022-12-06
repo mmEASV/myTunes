@@ -3,15 +3,9 @@ package mytunessys.gui.controller;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Side;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -41,7 +35,6 @@ public class PlaylistController {
         NumberOfSongsColumn.setText("Number of Songs");
         NumberOfSongsColumn.prefWidthProperty().set(64);
         NumberOfSongsColumn.setCellValueFactory(new PropertyValueFactory<>("songAmount"));
-
 
         TableColumn<Playlist, String> OptionsColumn = new TableColumn<>();
         OptionsColumn.setText("Options");
@@ -79,7 +72,24 @@ public class PlaylistController {
 
         OptionsColumn.setCellFactory(cellFactory);
 
+        table.setRowFactory(new Callback<TableView<Playlist>, TableRow<Playlist>>() {
+            @Override
+            public TableRow<Playlist> call(TableView<Playlist> param) {
+                TableRow<Playlist> row = new TableRow<>();
+                row.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if(event.getClickCount() == 2 && (!row.isEmpty())){
+                            Playlist serialData = row.getItem();
+                            System.out.println(serialData.getPlaylistName() + " " + serialData.getSongAmount());
+                            centerContent.getChildren().remove(table);
 
+                        }
+                    }
+                });
+                return row;
+            }
+        });
 
         table.editableProperty().set(false);
 
