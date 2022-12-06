@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -21,6 +23,7 @@ import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.gui.models.SongModel;
 
 import java.io.Console;
+
 
 /**
  * @author Bálint, Matej & Tomas
@@ -140,19 +143,24 @@ public class SongController{
 
         var TopRow = new HBox();
         var songLabel = new Label("Add new Song");
-        var BackButton = new Button("<-");
+        var BackButton = new Button();
+        BackButton.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Close.png")));
+        BackButton.setAlignment(Pos.CENTER_RIGHT);
+        var Space = new Region();
+        HBox.setHgrow(Space, Priority.ALWAYS);
         BackButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 Window.getChildren().remove(popUpContent);
             }
         });
-        TopRow.getChildren().addAll(songLabel,BackButton);
+        TopRow.getChildren().addAll(songLabel,Space,BackButton);
         vBoxHolder.getChildren().add(TopRow);
 
         var FileRow = new HBox();
         FilePath = new TextField();
-        var GetFileButton = new Button("File");
+        var GetFileButton = new Button();
+        GetFileButton.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Folder.png")));
         var chooseFile = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("SoundFiles files (*.mp3)", "*.mp3");
         chooseFile.setSelectedExtensionFilter(extFilter);

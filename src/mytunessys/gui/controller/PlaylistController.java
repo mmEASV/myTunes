@@ -126,8 +126,11 @@ public class PlaylistController {
         vBoxHolder.getChildren().add(TopRow);
 
 
-        var CloseButton = new Button("X");
+        var CloseButton = new Button();
+        CloseButton.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Close.png")));
         var playlistLabel = new Label("Add new Playlist");
+        var Space = new Region();
+        HBox.setHgrow(Space, Priority.ALWAYS);
         CloseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -135,7 +138,7 @@ public class PlaylistController {
 
             }
         });
-        TopRow.getChildren().addAll(playlistLabel, CloseButton);
+        TopRow.getChildren().addAll(playlistLabel, Space, CloseButton);
 
 
         var playlistRow = new HBox();
