@@ -80,6 +80,7 @@ public class BaseController implements Initializable {
     private PlaylistModel playlistModel = new PlaylistModel();
     private SongController songCont;
     private PlaylistController playlistCont;
+    private SongOnPlaylistController songOnPlaylistCont;
 
 
 
@@ -101,20 +102,22 @@ public class BaseController implements Initializable {
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
         songCont.Show(centerContent);
-        //change list to display songs
-        MenuItem menuItem = new MenuItem("here goes nothing");
 
     }
     @FXML
     private void switchToPlaylistInterface(ActionEvent actionEvent) throws ApplicationException {
         ShowInterface(actionEvent,"Playlists");
-        //btnSongs.setBackground(new Background(new BackgroundImage("mytunessys/gui/icons/Songs2.png")));
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists2.png")));
         playlistCont.Show(centerContent);
-        //TODO switch the ui to playlist with btnPlaylists
+    }
 
+    private void switchToSongOnPlaylistInterface(ActionEvent actionEvent) throws ApplicationException {
+        //TODO do this when a playlist is double clicked
 
+        ShowInterface(actionEvent,"Songs in the Playlist");
+
+        songOnPlaylistCont.Show(centerContent);
     }
 
     public void CleanCenterContent(){
