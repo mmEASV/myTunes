@@ -1,8 +1,5 @@
 package mytunessys.gui.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,25 +10,26 @@ import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import mytunessys.be.Genre;
 import mytunessys.be.Song;
-import mytunessys.bll.LogicManager;
 import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.gui.models.SongModel;
-import javafx.stage.Window;
+
+import java.io.Console;
 
 
 /**
  * @author Bálint, Matej & Tomas
  */
 public class SongController{
-
+    private AnchorPane Window;
     private AnchorPane popUpContent;
     private TextField FilePath;
     private TextField SongName;
@@ -40,9 +38,11 @@ public class SongController{
     private ComboBox GenreOptions;
     SongModel songModel = new SongModel();
 
+    public SongController(AnchorPane contentWindow){
+        Window = contentWindow;
+    }
+
     public void Show(AnchorPane centerContent) throws ApplicationException {
-
-
 
         TableView<Song> Table = new TableView<>();
         Table.setFocusTraversable(false);
@@ -50,23 +50,31 @@ public class SongController{
         TableColumn<Song, String> TitleColumn = new TableColumn<>();
         TitleColumn.setText("Title");
         TitleColumn.prefWidthProperty().set(203);
+        TitleColumn.setResizable(false);
         TitleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("title"));
 
         TableColumn<Song, String> GenreColumn = new TableColumn<>();
         GenreColumn.setText("Genre");
         GenreColumn.prefWidthProperty().set(47);
+        GenreColumn.setResizable(false);
         GenreColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("genre"));
 
 
         TableColumn<Song, String> DurationColumn = new TableColumn<>();
         DurationColumn.setText("Duration");
         DurationColumn.prefWidthProperty().set(47);
+        DurationColumn.setResizable(false);
         DurationColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("duration"));
 
 
 
         TableColumn<Song, String> OptionsColumn = new TableColumn<>();
         OptionsColumn.prefWidthProperty().set(47);
+        OptionsColumn.setResizable(false);
+
+        MenuItem editItem = new MenuItem("edit song");
+        MenuItem addToPlaylist = new MenuItem("add to playlist");
+        var menu = new ContextMenu(editItem,addToPlaylist);
 
         Callback<TableColumn<Song, String>, TableCell<Song, String>> cellFactory
             = //
@@ -76,7 +84,6 @@ public class SongController{
                     final TableCell<Song, String> cell = new TableCell<Song, String>() {
 
                         final Button btn = new Button("...");
-                        final ContextMenu menu = new ContextMenu(new MenuItem("edit song"),new MenuItem("add to playlist"));
                         @Override
                         public void updateItem(String item, boolean empty) {
                             super.updateItem(item, empty);
@@ -84,6 +91,10 @@ public class SongController{
                                 setGraphic(null);
                                 setText(null);
                             } else {
+                                editItem.setOnAction(event -> {
+                                    EditSong(getTableRow().getItem());
+                                    event.consume();
+                                });
                                 btn.setOnAction(event -> {
                                     menu.show(btn, Side.BOTTOM,0,0);
                                 });
@@ -107,11 +118,17 @@ public class SongController{
 
 
     }
-    public void NewSong(AnchorPane pageContent){
+
+    public void NewSong() {
+        DisplayEditPopUp(null);
+    }
+    public void EditSong(Song song){DisplayEditPopUp(song);}
+
+    private void DisplayEditPopUp(Song content){
         popUpContent = new AnchorPane();
         popUpContent.setMinSize(400,470);
         popUpContent.getStyleClass().add("new");
-        pageContent.getChildren().add(popUpContent);
+        Window.getChildren().add(popUpContent);
 
         var FormHolder = new AnchorPane();
         FormHolder.setLayoutX(36);
@@ -134,7 +151,7 @@ public class SongController{
         BackButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                pageContent.getChildren().remove(popUpContent);
+                Window.getChildren().remove(popUpContent);
             }
         });
         TopRow.getChildren().addAll(songLabel,Space,BackButton);
@@ -150,7 +167,7 @@ public class SongController{
         GetFileButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                var selectedFile =  chooseFile.showOpenDialog(new Stage());
+                var selectedFile = chooseFile.showOpenDialog(new Stage());
                 FilePath.setText(selectedFile.getPath());
             }
         });
@@ -185,6 +202,13 @@ public class SongController{
         var SubmitButton = new Button("Submit");
         SubmitRow.getChildren().addAll(SubmitButton);
         vBoxHolder.getChildren().add(SubmitRow);
+
+        if(content != null){
+            FilePath.setText(content.getAbsolutePath());
+            SongName.setText(content.getTitle());
+            ArtistName.setText(content.getArtist());
+            GenreOptions.setValue(content.getGenre());
+        }
     }
 
     private void CreateSong()
