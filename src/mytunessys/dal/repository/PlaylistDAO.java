@@ -70,7 +70,7 @@ public class PlaylistDAO implements IPlaylistDAO {
         } catch (SQLException ex) {
             throw new ApplicationException(ex.getMessage(), ex.getCause());
         }
-        return new Playlist(3,name,0,fetchedSongs);
+        return new Playlist(playlist.getId(), name,fetchedSongs);
     }
 
     @Override

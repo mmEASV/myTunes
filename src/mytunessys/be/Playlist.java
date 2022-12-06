@@ -19,9 +19,10 @@ public class Playlist {
         this.songAmount = songAmount;
         this.songList = songz;
     }
-    public Playlist(int id,String playlistName){
+    public Playlist(int id,String playlistName,HashMap<Integer,Song> songz){
         this.id = id;
         this.playlistName = playlistName;
+        this.songList = songz;
     }
 
     public int getId() {

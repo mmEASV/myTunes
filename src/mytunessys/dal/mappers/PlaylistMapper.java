@@ -19,7 +19,7 @@ public class PlaylistMapper {
         int id = rs.getInt("id");
         String playlistName = rs.getString("playlist_name");
 
-        return new Playlist(id, playlistName, amount,new HashMap<>());
+        return new Playlist(id, playlistName,amount, new HashMap<>());
     }
 
     public Playlist getPlaylist(){

@@ -101,7 +101,6 @@ public class PlaylistController {
                     public void handle(MouseEvent event) {
                         if(event.getClickCount() == 2 && (!row.isEmpty())){
                             Playlist serialData = row.getItem();
-                            System.out.println(serialData.getPlaylistName() + " " + serialData.getSongAmount());
                             try {
                                 baseController.switchToSongOnPlaylistInterface(new ActionEvent(),serialData);
                             } catch (ApplicationException e) {

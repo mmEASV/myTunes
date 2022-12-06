@@ -16,11 +16,6 @@ import mytunessys.bll.exceptions.ApplicationException;
  */
 
 public class PlaylistModel {
-    public static void main(String[] args) throws ApplicationException{
-        PlaylistModel model = new PlaylistModel();
-        var test = model.getPlaylistById(new Playlist(4,"test"));
-        System.out.println("win");
-    }
 
     private final ILogicFacade<Playlist> playlistManager;
     private ObservableList<Playlist> playlists;

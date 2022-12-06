@@ -106,6 +106,7 @@ public class BaseController implements Initializable {
     @FXML
     private void switchToSongInterface(ActionEvent actionEvent) throws ApplicationException {
         ShowInterface(actionEvent,"Songs");
+        showSearchBar();
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
         songCont.Show(centerContent);
@@ -114,14 +115,15 @@ public class BaseController implements Initializable {
     @FXML
     private void switchToPlaylistInterface(ActionEvent actionEvent) throws ApplicationException {
         ShowInterface(actionEvent,"Playlists");
+        showSearchBar();
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists2.png")));
         playlistCont.Show(centerContent);
     }
 
     public void switchToSongOnPlaylistInterface(ActionEvent actionEvent,Playlist playlist) throws ApplicationException {
-        //TODO do this when a playlist is double clicked
         ShowInterface(actionEvent,"Songs in the Playlist");
+        txfSearchBar.setVisible(false);
         songOnPlaylistCont.Show(centerContent,playlist);
     }
 
@@ -134,8 +136,8 @@ public class BaseController implements Initializable {
         lblCurrentLocation.setText(name);
     }
 
-    public void hideSearchBar(ActionEvent actionEvent){
-        txfSearchBar.setVisible(false);
+    public void showSearchBar(){
+        txfSearchBar.setVisible(true);
     }
 
     @Override
