@@ -1,5 +1,6 @@
 package mytunessys.bll;
 
+import jdk.jshell.spi.ExecutionControl;
 import mytunessys.be.SongOnPlaylist;
 import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.bll.interfaces.ILogicFacade;
@@ -25,12 +26,12 @@ public class SongOnPlaylistManager implements ILogicFacade<SongOnPlaylist> {
 
     @Override
     public void createObject(SongOnPlaylist object) throws ApplicationException {
-        this.songOnPlaylistDAO.addSongToPlaylist((((SongOnPlaylist) object).getSong()),((SongOnPlaylist) object).getPlaylist());
+        this.songOnPlaylistDAO.addSongToPlaylist( object.getSong(), object.getPlaylist());
     }
 
     @Override
     public void updateObject(SongOnPlaylist object) throws ApplicationException {
-        // does nothing now
+        throw new ApplicationException("Method not implemented",new Throwable());
     }
 
     @Override
@@ -40,6 +41,6 @@ public class SongOnPlaylistManager implements ILogicFacade<SongOnPlaylist> {
 
     @Override
     public List<SongOnPlaylist> searchObjects(List<SongOnPlaylist> list, String query) {
-        return null;
+        return List.of();
     }
 }
