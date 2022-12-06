@@ -4,10 +4,7 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import mytunessys.be.Genre;
 import mytunessys.be.Playlist;
-import mytunessys.be.Song;
-import mytunessys.bll.LogicManager;
 import mytunessys.bll.PlaylistManager;
 import mytunessys.bll.interfaces.ILogicFacade;
 import mytunessys.bll.exceptions.ApplicationException;
@@ -18,23 +15,28 @@ import mytunessys.bll.exceptions.ApplicationException;
 
 public class PlaylistModel {
 
-    private ILogicFacade logicManager;
+    private final ILogicFacade<Playlist> playlistManager;
     private ObservableList<Playlist> playlists;
 
     public PlaylistModel(){
-        logicManager = new PlaylistManager();
+        playlistManager = new PlaylistManager();
     }
 
     public ObservableList<Playlist> getAllPlaylists() throws ApplicationException {
-        List<Playlist> temp =  (List<Playlist>) (Object) logicManager.getAllObject();
-
+        List<Playlist> temp =  playlistManager.getAllObject();
         return playlists = FXCollections.observableArrayList(temp);
-
     }
-
-    public void searchPlaylists(String query) throws ApplicationException {
-        List<Object> playlists1 = logicManager.getAllObject();
-        List<Playlist> searched = (List<Playlist>) (Object) logicManager.searchObjects(playlists1, query);
+    public void createPlaylist(Playlist playlist) throws ApplicationException {
+        playlistManager.createObject(playlist);
+    }
+    public void updatePlaylist(Playlist playlist) throws ApplicationException {
+        playlistManager.updateObject(playlist);
+    }
+    public boolean deletePlaylist(Playlist playlist) throws ApplicationException {
+        return playlistManager.deleteObject(playlist);
+    }
+    public void searchPlaylist(String query) throws ApplicationException {
+        List<Playlist> searched = playlistManager.searchObjects(playlistManager.getAllObject(), query);
         playlists.clear();
         playlists.addAll(searched);
     }

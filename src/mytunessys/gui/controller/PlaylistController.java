@@ -2,6 +2,7 @@ package mytunessys.gui.controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
@@ -12,9 +13,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
@@ -26,8 +27,13 @@ import mytunessys.gui.models.PlaylistModel;
  */
 
 public class PlaylistController {
-
-    PlaylistModel playlistModel = new PlaylistModel();
+    // TODO: do not write inst var with upper case letter first please
+    private AnchorPane Window;
+    private final PlaylistModel playlistModel;
+    public PlaylistController(AnchorPane contentWindow,PlaylistModel playlistModel){
+        Window = contentWindow; // refer to this. instead of just the name  :)
+        this.playlistModel = playlistModel;
+    }
 
     public void Show(AnchorPane centerContent) throws ApplicationException {
         TableView<Playlist> table = new TableView<>();
@@ -48,6 +54,8 @@ public class PlaylistController {
 
         OptionsColumn.prefWidthProperty().set(47);
 
+        MenuItem editItem = new MenuItem("edit song");
+        var menu = new ContextMenu(editItem);
 
         Callback<TableColumn<Playlist, String>, TableCell<Playlist, String>> cellFactory
             = //
@@ -57,7 +65,6 @@ public class PlaylistController {
                     final TableCell<Playlist, String> cell = new TableCell<Playlist, String>() {
 
                         final Button btn = new Button("...");
-                        final ContextMenu menu = new ContextMenu(new MenuItem("edit Playlist"),new MenuItem("add to playlist"));
                         @Override
                         public void updateItem(String item, boolean empty) {
                             super.updateItem(item, empty);
@@ -65,6 +72,10 @@ public class PlaylistController {
                                 setGraphic(null);
                                 setText(null);
                             } else {
+                                editItem.setOnAction(event -> {
+                                    EditPlaylist(getTableRow().getItem());
+                                    event.consume();
+                                });
                                 btn.setOnAction(event -> {
                                     menu.show(btn, Side.BOTTOM,0,0);
                                 });
@@ -85,17 +96,21 @@ public class PlaylistController {
 
         table.getColumns().addAll(NameColumn,NumberOfSongsColumn,OptionsColumn);
         table.setFocusTraversable(false);
-        table.setItems(playlistModel.getAllPlaylists());
         centerContent.getChildren().add(table);
+        table.setItems(playlistModel.getAllPlaylists());
     }
-
-
-    public void NewPlaylist(AnchorPane pageContent){
+    public void NewPlaylist(){
+        DisplayPlaylistPopUp(null);
+    }
+    public void EditPlaylist(Playlist playlist) {
+        DisplayPlaylistPopUp(playlist);
+    }
+    public void DisplayPlaylistPopUp(Playlist content){
         var anchorPane = new AnchorPane();
         anchorPane.setMinWidth(400);
         anchorPane.setMinHeight(470);
         anchorPane.getStyleClass().add("new");
-        pageContent.getChildren().add(anchorPane);
+        Window.getChildren().add(anchorPane);
 
         var FormHolder = new AnchorPane();
         FormHolder.setLayoutX(36);
@@ -106,14 +121,18 @@ public class PlaylistController {
         anchorPane.getChildren().add(FormHolder);
 
         var vBoxHolder = new VBox();
+        vBoxHolder.setPadding(new Insets(10));
         FormHolder.getChildren().add(vBoxHolder);
 
         var TopRow = new HBox();
         vBoxHolder.getChildren().add(TopRow);
 
 
-        var CloseButton = new Button("X");
+        var CloseButton = new Button();
+        CloseButton.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Close.png")));
         var playlistLabel = new Label("Add new Playlist");
+        var Space = new Region();
+        HBox.setHgrow(Space, Priority.ALWAYS);
         CloseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -121,7 +140,7 @@ public class PlaylistController {
 
             }
         });
-        TopRow.getChildren().addAll(playlistLabel, CloseButton);
+        TopRow.getChildren().addAll(playlistLabel, Space, CloseButton);
 
 
         var playlistRow = new HBox();
@@ -144,6 +163,10 @@ public class PlaylistController {
             }
         });
         vBoxHolder.getChildren().addAll(addPlaylistButton);
+
+        if(content != null){
+            playlistName.setText(content.getPlaylistName());
+        }
     }
 
 

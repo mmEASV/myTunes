@@ -16,9 +16,9 @@ import java.util.List;
 public class PlaylistDAO implements IPlaylistDAO {
     private PreparedStatement preparedStatement;
 
-    public List<Object> getAllPlaylists() throws ApplicationException {
+    public List<Playlist> getAllPlaylists() throws ApplicationException {
         PlaylistMapper playlistMapper = new PlaylistMapper();
-        List<Object> retrievedPlaylists = new ArrayList<>();
+        List<Playlist> retrievedPlaylists = new ArrayList<>();
         try (Connection connection = MSSQLConnection.createConnection()) {
             String sql = """
                     SELECT COALESCE(count(ps.song_id), 0) as amount,

@@ -5,6 +5,7 @@
  */
 package mytunessys.bll.interfaces;
 
+
 import mytunessys.bll.exceptions.ApplicationException;
 
 import java.util.List;
@@ -13,34 +14,34 @@ import java.util.List;
  *
  * @author Tomas Simko, MatejMazur
  */
-public interface ILogicFacade
+public interface ILogicFacade<T>
 {
     /**
      * Gets list of object that needs to be castes into given object
      * @return object that will be cast in order to get list of Songs
      * @throws ApplicationException if fails to establish connection due to some unexpected reasons
      */
-    List<Object> getAllObject() throws ApplicationException;
+    List<T> getAllObject() throws ApplicationException;
 
     /**
      * Creates object that will be cast
      * @throws ApplicationException if fails to establish connection due to some unexpected reasons
      */
-    void createObject(Object object) throws ApplicationException;
+    void createObject(T object) throws ApplicationException;
 
     /**
      * Creates object
      * @throws ApplicationException if fails to establish connection due to some unexpected reasons
      */
 
-    void updateObject(Object object) throws ApplicationException;
+    void updateObject(T object) throws ApplicationException;
 
     /**
      *
      * @param object
      * @return
      */
-    boolean deleteObject(Object object) throws ApplicationException;
+    boolean deleteObject(T object) throws ApplicationException;
 
     /**
      *
@@ -48,6 +49,6 @@ public interface ILogicFacade
      * @param query
      * @return
      */
-    List<Object> searchObjects(List<Object> list,String query);
+    List<T> searchObjects(List<T> list,String query);
 
 }

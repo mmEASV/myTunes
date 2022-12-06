@@ -78,7 +78,7 @@ public class BaseController implements Initializable {
     private AnchorPane centerContent;
 
 
-    private SongModel songModel;
+    private SongModel songModel = new SongModel();
     private PlaylistModel playlistModel = new PlaylistModel();
     private SongController songCont;
     private PlaylistController playlistCont;
@@ -130,38 +130,35 @@ public class BaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        try {
-            this.songModel = new SongModel();
-        } catch (ApplicationException e) {
-            throw new RuntimeException(e);
-        }
-        songCont = new SongController();
-        playlistCont = new PlaylistController();
+        songCont = new SongController(contentWindow,songModel);
+        playlistCont = new PlaylistController(contentWindow,playlistModel);
+        setSearch();
         btnGoBack.setVisible(false);
         try {
             switchToSongInterface(new ActionEvent());
         } catch (ApplicationException e) {
             e.printStackTrace();
         }
+    }
 
-
-        //need to check out
-        txfSearchBar.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                try {
+    private void setSearch() {
+        txfSearchBar.textProperty().addListener((obs,oldValue,newValue)-> {
+            try{
+                if (lblCurrentLocation.getText().equals("Playlists")) { // not so type safe but works for now
+                    playlistModel.searchPlaylist(newValue);
+                } else {
                     songModel.searchSongs(newValue);
-                } catch (ApplicationException e) {
-                    throw new RuntimeException(e);
                 }
+            }catch(Exception e){
+                throw new RuntimeException();
             }
-        });
+        } );
     }
 
     public void NewItem(ActionEvent actionEvent) {
         if(lblCurrentLocation.getText().equals("Songs"))
-            songCont.NewSong(contentWindow);
+            songCont.NewSong();
         else
-            playlistCont.NewPlaylist(contentWindow);
+            playlistCont.NewPlaylist();
     }
 }

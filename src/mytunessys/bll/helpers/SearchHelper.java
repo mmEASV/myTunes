@@ -8,11 +8,10 @@ import java.util.List;
 
 public class SearchHelper {
 
-    public List<Object> searchSongs(List<Object> listToSearch, String query){
-        List<Song> castedList = (List<Song>) (Object) listToSearch;
-        List<Object> filtered = new ArrayList<>();
+    public List<Song> searchSongs(List<Song> listToSearch, String query){
+        List<Song> filtered = new ArrayList<>();
         for (Song s:
-                castedList) {
+                listToSearch) {
             if(s.getTitle().toLowerCase().contains(query.toLowerCase()) ||
                     s.getArtist().toLowerCase().contains(query.toLowerCase()) ||
                     s.getGenre().getName().toLowerCase().contains(query.toLowerCase())){
@@ -22,11 +21,10 @@ public class SearchHelper {
         return filtered;
     }
 
-    public List<Object> searchPlaylists(List<Object> listToSearch, String query){
-        List<Playlist> castedList = (List<Playlist>) (Object) listToSearch;
-        List<Object> filtered = new ArrayList<>();
+    public List<Playlist> searchPlaylists(List<Playlist> listToSearch, String query){
+        List<Playlist> filtered = new ArrayList<>();
         for (Playlist p:
-                castedList) {
+                listToSearch) {
             if(p.getPlaylistName().toLowerCase().contains(query.toLowerCase())){
                 filtered.add(p);
             }
