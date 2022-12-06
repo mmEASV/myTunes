@@ -16,9 +16,9 @@ import java.util.List;
 public class SongDAO implements ISongDAO {
     private PreparedStatement preparedStatement;
     @Override
-    public List<Object> getAllSongs() throws ApplicationException {
+    public List<Song> getAllSongs() throws ApplicationException {
         SongMapper mapper = new SongMapper();
-        List<Object> retrievedSongs = new ArrayList<>();
+        List<Song> retrievedSongs = new ArrayList<>();
         try (Connection connection = MSSQLConnection.createConnection()) {
             String sql = "SELECT s.id,s.title,s.duration,s.artist,s.absolute_path,s.genre_id,g.genre_name\n" +
                     "FROM song s JOIN genre g ON g.id = s.genre_id";

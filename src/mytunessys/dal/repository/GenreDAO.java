@@ -17,9 +17,9 @@ import java.util.List;
 public class GenreDAO implements IGenreDAO {
 
     @Override
-    public List<Object> getAllGenre() throws ApplicationException {
+    public List<Genre> getAllGenre() throws ApplicationException {
         GenreMapper mapper = new GenreMapper();
-        List<Object> retrievedGenreList = new ArrayList<>();
+        List<Genre> retrievedGenreList = new ArrayList<>();
         try (Connection connection = MSSQLConnection.createConnection()) {
             String sql = "SELECT id,genre_name FROM genre";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
