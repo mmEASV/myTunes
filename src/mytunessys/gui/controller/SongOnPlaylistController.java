@@ -1,5 +1,7 @@
 package mytunessys.gui.controller;
 
+import javafx.beans.property.ReadOnlyIntegerProperty;
+import javafx.beans.value.ObservableValue; //remove later with other data
 import javafx.collections.ObservableList;
 import javafx.geometry.Side;
 import javafx.scene.Node;
@@ -16,18 +18,23 @@ import mytunessys.gui.models.SongModel;
 import mytunessys.gui.models.SongOnPlaylistModel;
 
 import java.util.List;
+import java.util.Random;
+import java.util.function.Function; //remove later with other data
 
 /**
  * @author Bálint
  */
 public class SongOnPlaylistController {
 
-    SongOnPlaylistModel songOnPlaylistModel;
-    AnchorPane contentWindow;
+    private SongOnPlaylistModel songOnPlaylistModel;
+    private AnchorPane contentWindow;
 
-    PlaylistModel playlistModel;
+    private PlaylistModel playlistModel;
 
-    ObservableList<Song> currentSongsInPlaylist;
+    private ObservableList<Song> currentSongsInPlaylist;
+
+    private TableView<Song> table;
+
 
 
     public SongOnPlaylistController(AnchorPane contentWindow,SongOnPlaylistModel model,PlaylistModel playlist) {
@@ -39,8 +46,10 @@ public class SongOnPlaylistController {
 
     public void Show(AnchorPane centerContent,Playlist playlist) throws ApplicationException {
 
-        TableView<Song> table = new TableView<>();
+        table = new TableView<>();
         table.setFocusTraversable(false);
+
+        ReadOnlyIntegerProperty selectedIndex = table.getSelectionModel().selectedIndexProperty();
 
         TableColumn<Song, String> TitleColumn = new TableColumn<>();
         TitleColumn.setText("Title");
@@ -55,47 +64,79 @@ public class SongOnPlaylistController {
 
         TableColumn<Song, String> DurationColumn = new TableColumn<>();
         DurationColumn.setText("Duration");
-        DurationColumn.prefWidthProperty().set(47);
+        DurationColumn.prefWidthProperty().set(94);
         DurationColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("duration"));
 
-        TableColumn<Song, String> OptionsColumn = new TableColumn<>();
-        OptionsColumn.prefWidthProperty().set(47);
-
-        Callback<TableColumn<Song, String>, TableCell<Song, String>> cellFactory
-            = //
-            new Callback<TableColumn<Song, String>, TableCell<Song, String>>() {
-                @Override
-                public TableCell call(final TableColumn<Song, String> param) {
-                    final TableCell<Song, String> cell = new TableCell<Song, String>() {
-
-                        final Button btn = new Button("...");
-                        final ContextMenu menu = new ContextMenu(new MenuItem("edit song"));
-                        @Override
-                        public void updateItem(String item, boolean empty) {
-                            super.updateItem(item, empty);
-                            if (empty) {
-                                setGraphic(null);
-                                setText(null);
-                            } else {
-                                btn.setOnAction(event -> {
-                                    menu.show(btn, Side.BOTTOM,0,0);
-                                });
-                                setGraphic(btn);
-                                setText(null);
-                            }
-                        }
-                    };
-                    return cell;
+        TableColumn<Song, Void> indexCol = createColumn("Index", Song -> null, 0);
+        indexCol.setCellFactory(col -> new TableCell<Song, Void>() {
+            @Override
+            public void updateIndex(int index) {
+                super.updateIndex(index);
+                if (isEmpty() || index < 0) {
+                    setText(null);
+                } else {
+                    setText(Integer.toString(index));
                 }
-            };
+            }
+        });
 
-        OptionsColumn.setCellFactory(cellFactory);
+
         table.editableProperty().set(false);
-        table.getColumns().addAll(TitleColumn,GenreColumn,DurationColumn,OptionsColumn);
+        table.getColumns().addAll(TitleColumn,GenreColumn,DurationColumn);
         table.setFocusTraversable(false);
 
         centerContent.getChildren().add(table);
         table.setItems(playlistModel.getPlaylistById(playlist));
+    }
+
+    private <S, T> TableColumn<S, T> createColumn(String title,
+        Function<S, ObservableValue<T>> property, double width) {
+        TableColumn<S, T> col = new TableColumn<>(title);
+        col.setCellValueFactory(cellData -> property.apply(cellData.getValue()));
+        col.setPrefWidth(width);
+        return col;
+    }
+
+    public void moveUp(){
+        if(table.getSelectionModel().getSelectedIndex() > 0){
+            int index = table.getSelectionModel().getSelectedIndex();
+            table.getItems().add(index-1, table.getItems().remove(index));
+            table.getSelectionModel().clearAndSelect(index-1);
+        }
+
 
     }
+
+    public void moveDown(){
+        if(table.getSelectionModel().getSelectedIndex() < table.getItems().size() - 1 &&
+            table.getSelectionModel().getSelectedIndex() != -1){
+            int index = table.getSelectionModel().getSelectedIndex();
+            table.getItems().add(index+1, table.getItems().remove(index));
+            table.getSelectionModel().clearAndSelect(index+1);
+        }
+    }
+    //TODO need to save the positions in the database (idea: maybe with a save song order button?)
+
+    public void shuffleSongs(){         //need to test
+        Random rnd = new Random();
+        //moveUp the 2nd half of the songs by a random value
+
+        int middle;
+        int moveSongAmount;
+
+        if(table.getItems().size() % 2 == 0)
+            middle = table.getItems().size() / 2;
+        else
+            middle = (table.getItems().size() / 2) + 1;
+
+        for (int i = middle; i < table.getItems().size(); i++) {    //for every row after the middle point
+            moveSongAmount = rnd.nextInt(table.getSelectionModel().getSelectedIndex());
+            //move up by the random amount
+            table.getItems().add(i-moveSongAmount, table.getItems().remove(i));
+            table.getSelectionModel().clearAndSelect(i-moveSongAmount);
+        }
+
+
+    }
+
 }

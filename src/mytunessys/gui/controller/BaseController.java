@@ -44,10 +44,15 @@ import mytunessys.gui.models.SongOnPlaylistModel;
 
 public class BaseController implements Initializable {
 
+    //region FXML
     //TODO QUESTION: SHOULD BE ANNOTATED AS FXML ?
 
     public AnchorPane top;
     public AnchorPane contentWindow;
+    @FXML
+    public Button btnUp;
+    @FXML
+    public Button btnDown;
     // ----
     @FXML
     private TableView<Song> tbvContentTable;
@@ -80,7 +85,7 @@ public class BaseController implements Initializable {
     private TextField txfSearchBar;
     @FXML
     private AnchorPane centerContent;
-
+    //endregion
 
     private SongModel songModel = new SongModel();
     private PlaylistModel playlistModel = new PlaylistModel();
@@ -122,8 +127,8 @@ public class BaseController implements Initializable {
     }
 
     public void switchToSongOnPlaylistInterface(ActionEvent actionEvent,Playlist playlist) throws ApplicationException {
-        ShowInterface(actionEvent,"Songs in the Playlist");
-        txfSearchBar.setVisible(false);
+        ShowInterface(actionEvent,"Songs in Playlist");//implement playlist.getName() smart display
+        hideSearchBar();
         songOnPlaylistCont.Show(centerContent,playlist);
     }
 
@@ -138,6 +143,16 @@ public class BaseController implements Initializable {
 
     public void showSearchBar(){
         txfSearchBar.setVisible(true);
+        btnDown.setVisible(false);
+        btnUp.setVisible(false);
+        btnAdd.setVisible(true);
+    }
+
+    public void hideSearchBar(){
+        txfSearchBar.setVisible(false);
+        btnDown.setVisible(true);
+        btnUp.setVisible(true);
+        btnAdd.setVisible(false);
     }
 
     @Override
@@ -173,5 +188,13 @@ public class BaseController implements Initializable {
             songCont.NewSong();
         else
             playlistCont.NewPlaylist();
+    }
+
+    public void btnUpAction(ActionEvent actionEvent) {
+        songOnPlaylistCont.moveUp();
+    }
+
+    public void btnDownAction(ActionEvent actionEvent) {
+        songOnPlaylistCont.moveDown();
     }
 }
