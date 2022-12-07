@@ -4,6 +4,7 @@ package mytunessys.gui.controller;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -12,36 +13,39 @@ import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import mytunessys.be.Genre;
+import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.GenreManager;
 import mytunessys.bll.exceptions.ApplicationException;
+import mytunessys.bll.utilities.AlertNotification;
+import mytunessys.gui.models.PlaylistModel;
 import mytunessys.gui.models.SongModel;
-
-import java.io.Console;
-
 
 /**
  * @author Bálint, Matej & Tomas
  */
 
 public class SongController {
-    // TODO: why some of them are first cap and some of them are not ?
-    private AnchorPane Window;
+    private AnchorPane window;
     private AnchorPane popUpContent;
     private TextField FilePath;
     private TextField SongName;
@@ -50,12 +54,16 @@ public class SongController {
 
     private ComboBox GenreOptions;
     private SongModel songModel;
+    private PlaylistModel playlistModel;
     private Button SubmitButton;
     private File selectedFile;
     private int SongId;
+    private MouseEvent mouseEventType;
 
-    public SongController(AnchorPane contentWindow,SongModel model){
-        Window = contentWindow;
+
+    public SongController(AnchorPane contentWindow, SongModel model, PlaylistModel playlistModel){
+        this.window = contentWindow;
+        this.playlistModel = playlistModel;
         this.songModel = model;
     }
 
@@ -83,12 +91,12 @@ public class SongController {
         DurationColumn.setResizable(false);
         DurationColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("duration"));
 
-
-
         TableColumn<Song, String> OptionsColumn = new TableColumn<>();
         OptionsColumn.prefWidthProperty().set(47);
         OptionsColumn.setResizable(false);
 
+
+        List<Playlist> allPlaylists = playlistModel.getAllPlaylists();
 
         Callback<TableColumn<Song, String>, TableCell<Song, String>> cellFactory
             = //
@@ -106,9 +114,16 @@ public class SongController {
                                 setText(null);
                             } else {
                                 MenuItem editItem = new MenuItem("edit song");
-                                MenuItem addToPlaylist = new MenuItem("add to playlist");
+                                Menu addToPlaylist = new Menu("add to playlist");
                                 MenuItem deleteSong = new MenuItem("delete song");
-                                var menu = new ContextMenu(editItem,addToPlaylist, deleteSong);
+
+                                List<MenuItem> playlistMenuItems = new ArrayList<>();
+                                allPlaylists.forEach((x) -> playlistMenuItems.add(new MenuItem(x.getPlaylistName())));
+                                addToPlaylist.getItems().addAll(playlistMenuItems);
+                                // creating a separator
+                                SeparatorMenuItem sep = new SeparatorMenuItem();
+                                // adding all items to context menu
+                                var menu = new ContextMenu(editItem,addToPlaylist, sep,deleteSong);
                                 editItem.setOnAction(event -> {
                                     EditSong(getTableRow().getItem());
                                     event.consume();
@@ -117,6 +132,14 @@ public class SongController {
                                     DeleteSong(getTableRow().getItem());
                                     event.consume();
                                 });
+                                playlistMenuItems.forEach(x -> x.setOnAction(event -> {
+                                    Playlist currentPlaylist = allPlaylists.stream()
+                                            .filter(y -> y.getPlaylistName()
+                                                    .equals(x.getText()))
+                                            .findFirst()
+                                            .get();
+                                    addSongToPlaylist(getTableRow().getItem(),currentPlaylist);
+                                }));
                                 btn.setOnAction(event -> {
                                     menu.show(btn, Side.BOTTOM,0,0);
                                 });
@@ -135,10 +158,7 @@ public class SongController {
         Table.setFocusTraversable(false);
 
         centerContent.getChildren().add(Table);
-
         Table.setItems(songModel.getAllSongs());
-
-
     }
 
     public void NewSong() {
@@ -151,7 +171,7 @@ public class SongController {
             } catch (ApplicationException e) {
                 throw new RuntimeException(e);
             }
-            Window.getChildren().remove(popUpContent);
+            window.getChildren().remove(popUpContent);
             event.consume();
         });
     }
@@ -165,7 +185,7 @@ public class SongController {
             } catch (ApplicationException e) {
                 throw new RuntimeException(e);
             }
-            Window.getChildren().remove(popUpContent);
+            window.getChildren().remove(popUpContent);
             event.consume();
         });
     }
@@ -177,7 +197,7 @@ public class SongController {
     private void DisplayedDeleteConfirmation(Song songToDelete){
         popUpContent = new AnchorPane();
         popUpContent.setMinSize(200, 250);
-        Window.getChildren().add(popUpContent);
+        window.getChildren().add(popUpContent);
 
         var FormHolder = new AnchorPane();
         FormHolder.setLayoutX(36);
@@ -185,8 +205,6 @@ public class SongController {
         FormHolder.setMinSize(200,250);
         FormHolder.getStyleClass().add("form");
         popUpContent.getChildren().add(FormHolder);
-
-
 
         var vBoxHolder = new VBox();
         vBoxHolder.setPadding(new Insets(20));
@@ -216,14 +234,14 @@ public class SongController {
                 } catch (ApplicationException e) {
                     throw new RuntimeException(e);
                 }
-                Window.getChildren().remove(popUpContent);
+                window.getChildren().remove(popUpContent);
             }
         });
 
         btnNo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Window.getChildren().remove(popUpContent);
+                window.getChildren().remove(popUpContent);
             }
         });
     }
@@ -232,7 +250,7 @@ public class SongController {
         popUpContent = new AnchorPane();
         popUpContent.setMinSize(400,470);
         popUpContent.getStyleClass().add("new");
-        Window.getChildren().add(popUpContent);
+        window.getChildren().add(popUpContent);
 
         var FormHolder = new AnchorPane();
         FormHolder.setLayoutX(36);
@@ -255,7 +273,7 @@ public class SongController {
         BackButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Window.getChildren().remove(popUpContent);
+                window.getChildren().remove(popUpContent);
             }
         });
         TopRow.getChildren().addAll(songLabel,Space,BackButton);
@@ -341,6 +359,31 @@ public class SongController {
             }
         });
 
+    }
+
+    private void addSongToPlaylist(Song songToBeAdded,Playlist playlistToBeFilled) {
+        boolean finalResult;
+
+        try {
+            List<Song> fetchedPlaylist =  playlistModel.getPlaylistById(playlistToBeFilled);
+            if(findSongInPlaylist(fetchedPlaylist,songToBeAdded.getTitle())){
+                finalResult = false;
+            } else {
+                finalResult = playlistModel.addSongToPlaylist(songToBeAdded,playlistToBeFilled);
+            }
+        } catch (ApplicationException e) {
+            throw new RuntimeException(e);
+        }
+        if(finalResult){
+            AlertNotification.showAlertWindow("Successfully added song with id " + playlistToBeFilled.getId() + " to playlist " + playlistToBeFilled.getPlaylistName(), Alert.AlertType.INFORMATION);
+        }else {
+            AlertNotification.showAlertWindow("Could not add song " + songToBeAdded.getTitle() + " to playlist with id :" + playlistToBeFilled.getId(), Alert.AlertType.WARNING);
+        }
+    }
+    private boolean findSongInPlaylist(List<Song> fetchedPlaylist,String songTitle){
+        return fetchedPlaylist.stream()
+                .anyMatch(row -> row.getTitle()
+                        .contains(songTitle));
     }
 
     private void CreateSong()

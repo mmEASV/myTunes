@@ -33,6 +33,11 @@ public class PlaylistModel {
         List<Song> songs = new ArrayList<>(playlistManager.getObjectById(playlist).getSongList().values());
         return FXCollections.observableArrayList(songs);
     }
+
+    public boolean addSongToPlaylist(Song song,Playlist playlist) throws ApplicationException {
+        return this.playlistManager.addToObject(song,playlist);
+    }
+
     public void createPlaylist(Playlist playlist) throws ApplicationException {
         this.playlistManager.createObject(playlist);
     }
@@ -46,5 +51,8 @@ public class PlaylistModel {
         List<Playlist> searched = playlistManager.searchObjects(playlistManager.getAllObject(), query);
         playlists.clear();
         playlists.addAll(searched);
+    }
+    public boolean removeSongFromPlaylist(Playlist playlist) throws ApplicationException{
+        return this.playlistManager.removeObjectFrom(playlist);
     }
 }
