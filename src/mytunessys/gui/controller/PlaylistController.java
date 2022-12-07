@@ -22,6 +22,8 @@ import mytunessys.be.Song;
 import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.gui.models.PlaylistModel;
 
+import java.util.HashMap;
+
 /**
  * @author Bálint, Matej & Tomas
  */
@@ -180,7 +182,11 @@ public class PlaylistController {
         addPlaylistButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //TODO add a playlist to the lists
+                try {
+                    playlistModel.createPlaylist(new Playlist(1, playlistName.getText(0,playlistName.getLength()), 0, new HashMap<>()));
+                } catch (ApplicationException e) {
+                    throw new RuntimeException(e);
+                }
                 anchorPane.visibleProperty().set(false);
             }
         });
