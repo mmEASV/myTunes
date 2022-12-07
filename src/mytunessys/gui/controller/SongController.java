@@ -30,6 +30,7 @@ import mytunessys.be.Genre;
 import mytunessys.be.Song;
 import mytunessys.bll.GenreManager;
 import mytunessys.bll.exceptions.ApplicationException;
+import mytunessys.bll.utilities.AlertNotification;
 import mytunessys.gui.models.SongModel;
 
 import java.io.Console;
@@ -175,57 +176,17 @@ public class SongController {
     }
 
     private void DisplayedDeleteConfirmation(Song songToDelete){
-        popUpContent = new AnchorPane();
-        popUpContent.setMinSize(200, 250);
-        Window.getChildren().add(popUpContent);
 
-        var FormHolder = new AnchorPane();
-        FormHolder.setLayoutX(36);
-        FormHolder.setLayoutY(100);
-        FormHolder.setMinSize(200,250);
-        FormHolder.getStyleClass().add("form");
-        popUpContent.getChildren().add(FormHolder);
-
-
-
-        var vBoxHolder = new VBox();
-        vBoxHolder.setPadding(new Insets(20));
-        FormHolder.getChildren().add(vBoxHolder);
-
-        var lblConfirmation = new Label("Are you sure you want to delete this song?");
-        lblConfirmation.setAlignment(Pos.CENTER);
-        vBoxHolder.getChildren().add(lblConfirmation);
-
-        var btnYes = new Button("Yes");
-        btnYes.setAlignment(Pos.CENTER_LEFT);
-        var btnNo = new Button("No");
-        btnNo.setAlignment(Pos.CENTER_RIGHT);
-        var yesOrNo = new HBox();
-        yesOrNo.setPadding(new Insets(10));
-        yesOrNo.getChildren().add(btnYes);
-        yesOrNo.getChildren().add(btnNo);
-
-        vBoxHolder.getChildren().add(yesOrNo);
-
-
-        btnYes.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    songModel.deleteSong(songToDelete);
-                } catch (ApplicationException e) {
-                    throw new RuntimeException(e);
-                }
-                Window.getChildren().remove(popUpContent);
+        var confirm = AlertNotification.showAlertWindow("Delete Song", "You are about to delete this song.",
+                Alert.AlertType.CONFIRMATION);
+        if(confirm.get().equals(ButtonType.OK)){
+            try {
+                songModel.deleteSong(songToDelete);
+            } catch (ApplicationException e) {
+                throw new RuntimeException(e);
             }
-        });
+        }
 
-        btnNo.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Window.getChildren().remove(popUpContent);
-            }
-        });
     }
 
     private void DisplayEditPopUp(Song content){

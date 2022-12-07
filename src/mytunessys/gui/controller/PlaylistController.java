@@ -20,6 +20,7 @@ import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.exceptions.ApplicationException;
+import mytunessys.bll.utilities.AlertNotification;
 import mytunessys.gui.models.PlaylistModel;
 
 /**
@@ -55,8 +56,9 @@ public class PlaylistController {
 
         OptionsColumn.prefWidthProperty().set(47);
 
-        MenuItem editItem = new MenuItem("edit song");
-        var menu = new ContextMenu(editItem);
+        MenuItem editItem = new MenuItem("edit playlist");
+        MenuItem deletePlaylist = new MenuItem("delete playlist");
+        var menu = new ContextMenu(editItem, deletePlaylist);
 
         Callback<TableColumn<Playlist, String>, TableCell<Playlist, String>> cellFactory
             = //
@@ -75,6 +77,10 @@ public class PlaylistController {
                             } else {
                                 editItem.setOnAction(event -> {
                                     EditPlaylist(getTableRow().getItem());
+                                    event.consume();
+                                });
+                                deletePlaylist.setOnAction(event -> {
+                                    DeletePlaylist(getTableRow().getItem());
                                     event.consume();
                                 });
                                 btn.setOnAction(event -> {
@@ -126,6 +132,20 @@ public class PlaylistController {
     }
     public void EditPlaylist(Playlist playlist) {
         DisplayPlaylistPopUp(playlist);
+    }
+    public void DeletePlaylist(Playlist playlist){
+        DisplayedDeleteConfirmation(playlist);
+    }
+    public void DisplayedDeleteConfirmation(Playlist playlistToDelete){
+        var confirm = AlertNotification.showAlertWindow("Delete Song", "You are about to delete this playlist.",
+                Alert.AlertType.CONFIRMATION);
+        if(confirm.get().equals(ButtonType.OK)){
+            try {
+                playlistModel.deletePlaylist(playlistToDelete);
+            } catch (ApplicationException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
     public void DisplayPlaylistPopUp(Playlist content){
         var anchorPane = new AnchorPane();
