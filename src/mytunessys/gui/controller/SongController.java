@@ -1,12 +1,14 @@
 package mytunessys.gui.controller;
 
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,10 +22,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import mytunessys.be.Genre;
 import mytunessys.be.Song;
+import mytunessys.bll.GenreManager;
 import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.gui.models.SongModel;
 
@@ -40,11 +45,14 @@ public class SongController {
     private AnchorPane popUpContent;
     private TextField FilePath;
     private TextField SongName;
+    private TextField SongDuration;
     private TextField ArtistName;
 
     private ComboBox GenreOptions;
     private SongModel songModel;
-
+    private Button SubmitButton;
+    private File selectedFile;
+    private int SongId;
 
     public SongController(AnchorPane contentWindow,SongModel model){
         Window = contentWindow;
@@ -81,10 +89,6 @@ public class SongController {
         OptionsColumn.prefWidthProperty().set(47);
         OptionsColumn.setResizable(false);
 
-        MenuItem editItem = new MenuItem("edit song");
-        MenuItem addToPlaylist = new MenuItem("add to playlist");
-        MenuItem deleteSong = new MenuItem("delete song");
-        var menu = new ContextMenu(editItem,addToPlaylist, deleteSong);
 
         Callback<TableColumn<Song, String>, TableCell<Song, String>> cellFactory
             = //
@@ -100,7 +104,11 @@ public class SongController {
                             if (empty) {
                                 setGraphic(null);
                                 setText(null);
-                            } else{
+                            } else {
+                                MenuItem editItem = new MenuItem("edit song");
+                                MenuItem addToPlaylist = new MenuItem("add to playlist");
+                                MenuItem deleteSong = new MenuItem("delete song");
+                                var menu = new ContextMenu(editItem,addToPlaylist, deleteSong);
                                 editItem.setOnAction(event -> {
                                     EditSong(getTableRow().getItem());
                                     event.consume();
@@ -135,8 +143,32 @@ public class SongController {
 
     public void NewSong() {
         DisplayEditPopUp(null);
+        SubmitButton.setOnAction(event -> {
+            var _song = new Song(2000,SongName.getText(),SongDuration.getText(),ArtistName.getText(),FilePath.getText(),(Genre) GenreOptions.getSelectionModel().getSelectedItem());
+
+            try {
+                songModel.createSong(_song);
+            } catch (ApplicationException e) {
+                throw new RuntimeException(e);
+            }
+            Window.getChildren().remove(popUpContent);
+            event.consume();
+        });
     }
-    public void EditSong(Song song){DisplayEditPopUp(song);}
+    public void EditSong(Song song){
+        DisplayEditPopUp(song);
+        SubmitButton.setOnAction(event -> {
+            var _song = new Song(SongId,SongName.getText(),SongDuration.getText(),ArtistName.getText(),FilePath.getText(),(Genre) GenreOptions.getSelectionModel().getSelectedItem());
+
+            try {
+                songModel.updateSong(_song);
+            } catch (ApplicationException e) {
+                throw new RuntimeException(e);
+            }
+            Window.getChildren().remove(popUpContent);
+            event.consume();
+        });
+    }
 
     public void DeleteSong(Song song){
         DisplayedDeleteConfirmation(song);
@@ -236,13 +268,6 @@ public class SongController {
         var chooseFile = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("SoundFiles files (*.mp3)", "*.mp3");
         chooseFile.setSelectedExtensionFilter(extFilter);
-        GetFileButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                var selectedFile = chooseFile.showOpenDialog(new Stage());
-                FilePath.setText(selectedFile.getPath());
-            }
-        });
         FileRow.getChildren().addAll(FilePath,GetFileButton);
         vBoxHolder.getChildren().add(FileRow);
 
@@ -252,6 +277,12 @@ public class SongController {
         songRow.getChildren().addAll(SongNameLabel,SongName);
         vBoxHolder.getChildren().add(songRow);
 
+        var DurationRow = new HBox();
+        var DurationLabel = new Label("Duration");
+        SongDuration = new TextField();
+        DurationRow.getChildren().addAll(DurationLabel,SongDuration);
+        vBoxHolder.getChildren().add(DurationRow);
+
         var ArtistRow = new HBox();
         var ArtistNameLabel = new Label("Artist");
         ArtistName = new TextField();
@@ -260,27 +291,56 @@ public class SongController {
 
         var GenreRow = new HBox();
         var GenreNameLabel = new Label("Genre");
-        ObservableList<String> Items =
-                FXCollections.observableArrayList(
-                        "Option 1",
-                        "Option 2",
-                        "Option 3"
-                );
+        ObservableList<Genre> Items =
+                null;
+        try {
+            Items = FXCollections.observableArrayList(new GenreManager().getAllObject());
+        } catch (ApplicationException e) {
+            throw new RuntimeException(e);
+        }
         GenreOptions = new ComboBox(Items);
         GenreRow.getChildren().addAll(GenreNameLabel,GenreOptions);
         vBoxHolder.getChildren().add(GenreRow);
 
         var SubmitRow = new HBox();
-        var SubmitButton = new Button("Submit");
+        SubmitButton = new Button("Submit");
         SubmitRow.getChildren().addAll(SubmitButton);
         vBoxHolder.getChildren().add(SubmitRow);
 
         if(content != null){
+            SongId = content.getId();
             FilePath.setText(content.getAbsolutePath());
             SongName.setText(content.getTitle());
             ArtistName.setText(content.getArtist());
             GenreOptions.setValue(content.getGenre());
         }
+
+        GetFileButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                selectedFile = chooseFile.showOpenDialog(new Stage());
+                FilePath.setText(selectedFile.toURI().toString());
+                var media = new Media(selectedFile.toURI().toString().replace("\\","/"));
+                media.getMetadata().addListener(new MapChangeListener<String, Object>() {
+                    @Override
+                    public void onChanged(Change<? extends String, ? extends Object> ch) {
+                        if (ch.wasAdded()) {
+                            var key = ch.getKey();
+                            var value = ch.getValueAdded();
+                            System.out.println(key+"  "+value);
+                            if (key.equals("artist"))
+                                ArtistName.setText(value.toString());
+                            if (key.equals("title"))
+                                SongName.setText(value.toString());
+                        }
+                    }
+                });
+                SongDuration.setText(media.getDuration().toString());
+                if(SongName.getText().isBlank())
+                    SongName.setText(selectedFile.getName());
+            }
+        });
+
     }
 
     private void CreateSong()
