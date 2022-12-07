@@ -3,11 +3,9 @@ package mytunessys.dal;
 import mytunessys.dal.repository.GenreDAO;
 import mytunessys.dal.repository.PlaylistDAO;
 import mytunessys.dal.repository.SongDAO;
-import mytunessys.dal.repository.SongOnPlaylistDAO;
 import mytunessys.dal.repository.interfaces.IGenreDAO;
 import mytunessys.dal.repository.interfaces.IPlaylistDAO;
 import mytunessys.dal.repository.interfaces.ISongDAO;
-import mytunessys.dal.repository.interfaces.ISongOnPlaylistDAO;
 
 public class DAOFactory extends AbstractDAOFactory{
 
@@ -27,15 +25,6 @@ public class DAOFactory extends AbstractDAOFactory{
     @Override
     public IPlaylistDAO playlistDAO() {
         return new PlaylistDAO();
-    }
-
-    /**
-     *
-     * @return SongOnPlaylistDAO instantiated in the factory from its interface
-     */
-    @Override
-    public ISongOnPlaylistDAO songOnPlaylistDAO() {
-        return new SongOnPlaylistDAO();
     }
 
     /**

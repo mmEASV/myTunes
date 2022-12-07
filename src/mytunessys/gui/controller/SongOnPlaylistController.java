@@ -3,21 +3,14 @@ package mytunessys.gui.controller;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.value.ObservableValue; //remove later with other data
 import javafx.collections.ObservableList;
-import javafx.geometry.Side;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
-import mytunessys.be.SongOnPlaylist;
 import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.gui.models.PlaylistModel;
-import mytunessys.gui.models.SongModel;
-import mytunessys.gui.models.SongOnPlaylistModel;
 
-import java.util.List;
 import java.util.Random;
 import java.util.function.Function; //remove later with other data
 
@@ -25,8 +18,6 @@ import java.util.function.Function; //remove later with other data
  * @author Bálint
  */
 public class SongOnPlaylistController {
-
-    private SongOnPlaylistModel songOnPlaylistModel;
     private AnchorPane contentWindow;
 
     private PlaylistModel playlistModel;
@@ -37,11 +28,9 @@ public class SongOnPlaylistController {
 
 
 
-    public SongOnPlaylistController(AnchorPane contentWindow,SongOnPlaylistModel model,PlaylistModel playlist) {
+    public SongOnPlaylistController(AnchorPane contentWindow,PlaylistModel playlist) {
         this.contentWindow = contentWindow;
-        this.songOnPlaylistModel = model;
         this.playlistModel = playlist;
-       // this.currentSongsInPlaylist = playlist;
     }
 
     public void Show(AnchorPane centerContent,Playlist playlist) throws ApplicationException {

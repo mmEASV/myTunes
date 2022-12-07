@@ -1,42 +1,24 @@
 package mytunessys.gui.controller;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.geometry.Side;
-import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BorderPane;
-import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
-import mytunessys.be.SongOnPlaylist;
-import mytunessys.bll.LogicManager;
 import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.gui.models.PlaylistModel;
 import mytunessys.gui.models.SongModel;
-import mytunessys.gui.models.SongOnPlaylistModel;
 
 /**
  * @author Bálint, Matej & Tomas
@@ -89,7 +71,6 @@ public class BaseController implements Initializable {
 
     private SongModel songModel = new SongModel();
     private PlaylistModel playlistModel = new PlaylistModel();
-    private SongOnPlaylistModel songOnPlaylist = new SongOnPlaylistModel();
     private SongController songCont;
     private PlaylistController playlistCont;
     private SongOnPlaylistController songOnPlaylistCont;
@@ -159,7 +140,7 @@ public class BaseController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         songCont = new SongController(contentWindow,songModel);
         playlistCont = new PlaylistController(contentWindow,playlistModel,this);
-        songOnPlaylistCont = new SongOnPlaylistController(contentWindow,songOnPlaylist,playlistModel);
+        songOnPlaylistCont = new SongOnPlaylistController(contentWindow,playlistModel);
         setSearch();
         btnGoBack.setVisible(false);
         try {
