@@ -10,9 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
-import mytunessys.be.SongOnPlaylist;
 import mytunessys.bll.exceptions.ApplicationException;
-import mytunessys.dal.repository.interfaces.ISongOnPlaylistDAO;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
