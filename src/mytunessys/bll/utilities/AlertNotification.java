@@ -9,6 +9,8 @@ import javafx.stage.StageStyle;
 import java.util.Optional;
 
 public class AlertNotification {
+
+
     public static Optional<ButtonType> showAlertWindow(String title, String content,Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
