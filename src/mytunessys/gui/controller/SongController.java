@@ -84,7 +84,8 @@ public class SongController {
 
         MenuItem editItem = new MenuItem("edit song");
         MenuItem addToPlaylist = new MenuItem("add to playlist");
-        var menu = new ContextMenu(editItem,addToPlaylist);
+        MenuItem deleteSong = new MenuItem("delete song");
+        var menu = new ContextMenu(editItem,addToPlaylist, deleteSong);
 
         Callback<TableColumn<Song, String>, TableCell<Song, String>> cellFactory
             = //
@@ -100,9 +101,13 @@ public class SongController {
                             if (empty) {
                                 setGraphic(null);
                                 setText(null);
-                            } else {
+                            } else{
                                 editItem.setOnAction(event -> {
                                     EditSong(getTableRow().getItem());
+                                    event.consume();
+                                });
+                                deleteSong.setOnAction(event -> {
+                                    DeleteSong(getTableRow().getItem());
                                     event.consume();
                                 });
                                 btn.setOnAction(event -> {
@@ -133,6 +138,64 @@ public class SongController {
         DisplayEditPopUp(null);
     }
     public void EditSong(Song song){DisplayEditPopUp(song);}
+
+    public void DeleteSong(Song song){
+        DisplayedDeleteConfirmation(song);
+    }
+
+    private void DisplayedDeleteConfirmation(Song songToDelete){
+        popUpContent = new AnchorPane();
+        popUpContent.setMinSize(200, 250);
+        Window.getChildren().add(popUpContent);
+
+        var FormHolder = new AnchorPane();
+        FormHolder.setLayoutX(36);
+        FormHolder.setLayoutY(100);
+        FormHolder.setMinSize(200,250);
+        FormHolder.getStyleClass().add("form");
+        popUpContent.getChildren().add(FormHolder);
+
+
+
+        var vBoxHolder = new VBox();
+        vBoxHolder.setPadding(new Insets(20));
+        FormHolder.getChildren().add(vBoxHolder);
+
+        var lblConfirmation = new Label("Are you sure you want to delete this song?");
+        lblConfirmation.setAlignment(Pos.CENTER);
+        vBoxHolder.getChildren().add(lblConfirmation);
+
+        var btnYes = new Button("Yes");
+        btnYes.setAlignment(Pos.CENTER_LEFT);
+        var btnNo = new Button("No");
+        btnNo.setAlignment(Pos.CENTER_RIGHT);
+        var yesOrNo = new HBox();
+        yesOrNo.setPadding(new Insets(10));
+        yesOrNo.getChildren().add(btnYes);
+        yesOrNo.getChildren().add(btnNo);
+
+        vBoxHolder.getChildren().add(yesOrNo);
+
+
+        btnYes.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    songModel.deleteSong(songToDelete);
+                } catch (ApplicationException e) {
+                    throw new RuntimeException(e);
+                }
+                Window.getChildren().remove(popUpContent);
+            }
+        });
+
+        btnNo.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Window.getChildren().remove(popUpContent);
+            }
+        });
+    }
 
     private void DisplayEditPopUp(Song content){
         popUpContent = new AnchorPane();
