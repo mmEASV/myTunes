@@ -24,6 +24,11 @@ public class SongOnPlaylistManager implements ILogicFacade<SongOnPlaylist> {
     }
 
     @Override
+    public SongOnPlaylist getObjectById(SongOnPlaylist object) throws ApplicationException {
+        return null;
+    }
+
+    @Override
     public void createObject(SongOnPlaylist object) throws ApplicationException {
         this.songOnPlaylistDAO.addSongToPlaylist((((SongOnPlaylist) object).getSong()),((SongOnPlaylist) object).getPlaylist());
     }

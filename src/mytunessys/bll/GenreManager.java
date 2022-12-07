@@ -22,6 +22,11 @@ public class GenreManager implements ILogicFacade<Genre> {
     }
 
     @Override
+    public Genre getObjectById(Genre object) throws ApplicationException {
+        return null;
+    }
+
+    @Override
     public void createObject(Genre object) throws ApplicationException {
             // does nothing for now
     }

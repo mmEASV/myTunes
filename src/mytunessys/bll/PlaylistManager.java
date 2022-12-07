@@ -29,6 +29,11 @@ public class PlaylistManager implements ILogicFacade<Playlist> {
     }
 
     @Override
+    public Playlist getObjectById(Playlist object) throws ApplicationException {
+        return this.playlistDAO.getPlaylistById(object);
+    }
+
+    @Override
     public void createObject(Playlist object)  throws ApplicationException {
         this.playlistDAO.createPlaylist(object);
     }

@@ -46,7 +46,6 @@ public class SongController {
     private SongModel songModel;
 
 
-
     public SongController(AnchorPane contentWindow,SongModel model){
         Window = contentWindow;
         this.songModel = model;

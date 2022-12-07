@@ -26,7 +26,7 @@ public class SongOnPlaylistMapper {
         int genreId = rs.getInt("genre_id");
         int playListId = rs.getInt("playlist_id");
         String playlistName = rs.getString("playlist_name");
-        songOnPlaylist = new SongOnPlaylist(new Song(id, title, duration, artist, absolutePath, new Genre(genreId, "Pop")), new Playlist(playListId, playlistName));
+      //  songOnPlaylist = new SongOnPlaylist(new Song(id, title, duration, artist, absolutePath, new Genre(genreId, "Pop")), new Playlist(playListId, playlistName));
         return songOnPlaylist;
     }
     public SongOnPlaylist getSongOnPlaylist(){

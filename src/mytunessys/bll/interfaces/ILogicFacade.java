@@ -27,6 +27,12 @@ public interface ILogicFacade<T>
      * Creates object that will be cast
      * @throws ApplicationException if fails to establish connection due to some unexpected reasons
      */
+    T getObjectById(T object) throws ApplicationException;
+
+    /**
+     * Creates object that will be cast
+     * @throws ApplicationException if fails to establish connection due to some unexpected reasons
+     */
     void createObject(T object) throws ApplicationException;
 
     /**

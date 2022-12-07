@@ -28,6 +28,11 @@ public class LogicManager implements ILogicFacade<Song> {
     }
 
     @Override
+    public Song getObjectById(Song object) throws ApplicationException {
+        return null;
+    }
+
+    @Override
     public void createObject(Song object) throws ApplicationException {
         this.songDAO.createSong(object);
     }

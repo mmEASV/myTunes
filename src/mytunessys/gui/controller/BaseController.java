@@ -31,10 +31,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
+import mytunessys.be.SongOnPlaylist;
 import mytunessys.bll.LogicManager;
 import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.gui.models.PlaylistModel;
 import mytunessys.gui.models.SongModel;
+import mytunessys.gui.models.SongOnPlaylistModel;
 
 /**
  * @author Bálint, Matej & Tomas
@@ -42,9 +44,16 @@ import mytunessys.gui.models.SongModel;
 
 public class BaseController implements Initializable {
 
+    //region FXML
+    //TODO QUESTION: SHOULD BE ANNOTATED AS FXML ?
 
     public AnchorPane top;
     public AnchorPane contentWindow;
+    @FXML
+    public Button btnUp;
+    @FXML
+    public Button btnDown;
+    // ----
     @FXML
     private TableView<Song> tbvContentTable;
     @FXML
@@ -76,12 +85,14 @@ public class BaseController implements Initializable {
     private TextField txfSearchBar;
     @FXML
     private AnchorPane centerContent;
-
+    //endregion
 
     private SongModel songModel = new SongModel();
     private PlaylistModel playlistModel = new PlaylistModel();
+    private SongOnPlaylistModel songOnPlaylist = new SongOnPlaylistModel();
     private SongController songCont;
     private PlaylistController playlistCont;
+    private SongOnPlaylistController songOnPlaylistCont;
 
 
 
@@ -100,23 +111,25 @@ public class BaseController implements Initializable {
     @FXML
     private void switchToSongInterface(ActionEvent actionEvent) throws ApplicationException {
         ShowInterface(actionEvent,"Songs");
+        showSearchBar();
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
         songCont.Show(centerContent);
-        //change list to display songs
-        MenuItem menuItem = new MenuItem("here goes nothing");
 
     }
     @FXML
     private void switchToPlaylistInterface(ActionEvent actionEvent) throws ApplicationException {
         ShowInterface(actionEvent,"Playlists");
-        //btnSongs.setBackground(new Background(new BackgroundImage("mytunessys/gui/icons/Songs2.png")));
+        showSearchBar();
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists2.png")));
         playlistCont.Show(centerContent);
-        //TODO switch the ui to playlist with btnPlaylists
+    }
 
-
+    public void switchToSongOnPlaylistInterface(ActionEvent actionEvent,Playlist playlist) throws ApplicationException {
+        ShowInterface(actionEvent,"Songs in Playlist");//implement playlist.getName() smart display
+        hideSearchBar();
+        songOnPlaylistCont.Show(centerContent,playlist);
     }
 
     public void CleanCenterContent(){
@@ -128,10 +141,25 @@ public class BaseController implements Initializable {
         lblCurrentLocation.setText(name);
     }
 
+    public void showSearchBar(){
+        txfSearchBar.setVisible(true);
+        btnDown.setVisible(false);
+        btnUp.setVisible(false);
+        btnAdd.setVisible(true);
+    }
+
+    public void hideSearchBar(){
+        txfSearchBar.setVisible(false);
+        btnDown.setVisible(true);
+        btnUp.setVisible(true);
+        btnAdd.setVisible(false);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         songCont = new SongController(contentWindow,songModel);
-        playlistCont = new PlaylistController(contentWindow,playlistModel);
+        playlistCont = new PlaylistController(contentWindow,playlistModel,this);
+        songOnPlaylistCont = new SongOnPlaylistController(contentWindow,songOnPlaylist,playlistModel);
         setSearch();
         btnGoBack.setVisible(false);
         try {
@@ -160,5 +188,13 @@ public class BaseController implements Initializable {
             songCont.NewSong();
         else
             playlistCont.NewPlaylist();
+    }
+
+    public void btnUpAction(ActionEvent actionEvent) {
+        songOnPlaylistCont.moveUp();
+    }
+
+    public void btnDownAction(ActionEvent actionEvent) {
+        songOnPlaylistCont.moveDown();
     }
 }

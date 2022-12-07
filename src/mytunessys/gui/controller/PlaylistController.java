@@ -4,18 +4,18 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+
 import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
@@ -30,9 +30,11 @@ public class PlaylistController {
     // TODO: do not write inst var with upper case letter first please
     private AnchorPane Window;
     private final PlaylistModel playlistModel;
-    public PlaylistController(AnchorPane contentWindow,PlaylistModel playlistModel){
-        Window = contentWindow; // refer to this. instead of just the name  :)
+    BaseController baseController;
+    public PlaylistController(AnchorPane contentWindow,PlaylistModel playlistModel,BaseController baseController){
+        this.Window = contentWindow; // refer to this. instead of just the name  :)
         this.playlistModel = playlistModel;
+        this.baseController = baseController;
     }
 
     public void Show(AnchorPane centerContent) throws ApplicationException {
@@ -47,7 +49,6 @@ public class PlaylistController {
         NumberOfSongsColumn.setText("Number of Songs");
         NumberOfSongsColumn.prefWidthProperty().set(64);
         NumberOfSongsColumn.setCellValueFactory(new PropertyValueFactory<>("songAmount"));
-
 
         TableColumn<Playlist, String> OptionsColumn = new TableColumn<>();
         OptionsColumn.setText("Options");
@@ -90,7 +91,28 @@ public class PlaylistController {
 
         OptionsColumn.setCellFactory(cellFactory);
 
+        // this is sketchy but works for now
+        table.setRowFactory(new Callback<TableView<Playlist>, TableRow<Playlist>>() {
+            @Override
+            public TableRow<Playlist> call(TableView<Playlist> param) {
+                TableRow<Playlist> row = new TableRow<>();
+                row.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if(event.getClickCount() == 2 && (!row.isEmpty())){
+                            Playlist serialData = row.getItem();
+                            try {
+                                baseController.switchToSongOnPlaylistInterface(new ActionEvent(),serialData);
+                            } catch (ApplicationException e) {
+                                throw new RuntimeException(e);
+                            }
 
+                        }
+                    }
+                });
+                return row;
+            }
+        });
 
         table.editableProperty().set(false);
 

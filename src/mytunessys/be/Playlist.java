@@ -1,5 +1,8 @@
 package mytunessys.be;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class Playlist {
 
     private int id;
@@ -8,14 +11,18 @@ public class Playlist {
 
     private int songAmount;
 
-    public Playlist(int id, String playlistName, int songAmount) {
+    private HashMap<Integer,Song> songList;
+
+    public Playlist(int id, String playlistName, int songAmount,HashMap<Integer,Song> songz) {
         this.id = id;
         this.playlistName = playlistName;
         this.songAmount = songAmount;
+        this.songList = songz;
     }
-    public Playlist(int id,String playlistName){
+    public Playlist(int id,String playlistName,HashMap<Integer,Song> songz){
         this.id = id;
         this.playlistName = playlistName;
+        this.songList = songz;
     }
 
     public int getId() {
@@ -40,5 +47,9 @@ public class Playlist {
 
     public void setSongAmount(int songAmount) {
         this.songAmount = songAmount;
+    }
+
+    public HashMap<Integer,Song> getSongList() {
+        return songList;
     }
 }

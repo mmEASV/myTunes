@@ -24,6 +24,10 @@ public interface IPlaylistDAO {
     void createPlaylist(Playlist playlist) throws ApplicationException;
 
     /**
+     *
+     */
+    Playlist getPlaylistById(Playlist playlist) throws ApplicationException;
+    /**
      * Updates playlist from object playlist
      *
      * @param playlist object
