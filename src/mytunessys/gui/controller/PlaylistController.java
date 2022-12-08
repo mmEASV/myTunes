@@ -55,7 +55,7 @@ public class PlaylistController {
 
         OptionsColumn.prefWidthProperty().set(47);
 
-        MenuItem editItem = new MenuItem("edit song");
+        MenuItem editItem = new MenuItem("edit playlist");
         var menu = new ContextMenu(editItem);
 
         Callback<TableColumn<Playlist, String>, TableCell<Playlist, String>> cellFactory

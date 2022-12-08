@@ -3,10 +3,12 @@ package mytunessys.gui.controller;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.value.ObservableValue; //remove later with other data
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Side;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
@@ -41,6 +43,7 @@ public class SongOnPlaylistController {
 
     public void Show(AnchorPane centerContent,Playlist playlist) throws ApplicationException {
 
+        temp = playlist;
         table = new TableView<>();
         table.setFocusTraversable(false);
 
@@ -135,13 +138,27 @@ public class SongOnPlaylistController {
         } catch (ApplicationException e) {
             throw new RuntimeException(e);
         }
+
         if(finalResult){
-            AlertNotification.showAlertWindow("Successfully added song with id ", Alert.AlertType.INFORMATION);
+            AlertNotification.showAlertWindow("Successfully removed song with id " + item.getId(), Alert.AlertType.INFORMATION);
         }else {
-            AlertNotification.showAlertWindow("Could not add song ", Alert.AlertType.WARNING);
+            AlertNotification.showAlertWindow("Could not remove song " + item.getId(), Alert.AlertType.WARNING);
         }
     }
 
+    private void removeSongWithoutPopup(Song item) {
+        boolean finalResult = false;
+        try {
+            HashMap<Integer,Song> listToBest = new HashMap<>();
+            listToBest.put(item.getId(),item);
+            currentPlaylist.setSongList(listToBest);
+            finalResult = playlistModel.removeSongFromPlaylist(currentPlaylist);
+        } catch (ApplicationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Playlist temp;
 
 
     private <S, T> TableColumn<S, T> createColumn(String title,
@@ -155,43 +172,68 @@ public class SongOnPlaylistController {
     public void moveUp(){
         if(table.getSelectionModel().getSelectedIndex() > 0){
             int index = table.getSelectionModel().getSelectedIndex();
+
             table.getItems().add(index-1, table.getItems().remove(index));
             table.getSelectionModel().clearAndSelect(index-1);
+
+            savePlaylistState();//move the save state to any buttons pressed that leaves the interface
         }
 
 
     }
 
     public void moveDown(){
+
         if(table.getSelectionModel().getSelectedIndex() < table.getItems().size() - 1 &&
             table.getSelectionModel().getSelectedIndex() != -1){
+
             int index = table.getSelectionModel().getSelectedIndex();
+
             table.getItems().add(index+1, table.getItems().remove(index));
             table.getSelectionModel().clearAndSelect(index+1);
-        }
-    }
-    //TODO need to save the positions in the database (idea: maybe with a save song order button?)
 
-    public void shuffleSongs(){         //need to test
+            savePlaylistState();//move the save state to any buttons pressed that leaves the interface
+        }
+
+
+    }
+
+    public void shuffleSongs(){
         Random rnd = new Random();
         //moveUp the 2nd half of the songs by a random value
-
-        int middle;
+        int middle = table.getItems().size() % 2 == 0 ? table.getItems().size() / 2 : table.getItems().size() / 2 + 1;
         int moveSongAmount;
 
-        if(table.getItems().size() % 2 == 0)
-            middle = table.getItems().size() / 2;
-        else
-            middle = (table.getItems().size() / 2) + 1;
+        for (int i = 0; i <= middle; i++) {//for every row after the middle point
 
-        for (int i = middle; i < table.getItems().size(); i++) {    //for every row after the middle point
-            moveSongAmount = rnd.nextInt(table.getSelectionModel().getSelectedIndex());
-            //move up by the random amount
-            table.getItems().add(i-moveSongAmount, table.getItems().remove(i));
-            table.getSelectionModel().clearAndSelect(i-moveSongAmount);
+            moveSongAmount = rnd.nextInt(0, middle + i); //move up by the random amount between 0 and the location of the moving song
+            table.getSelectionModel().select(middle + i);
+
+            for (int j = 0; j < moveSongAmount; j++) {
+                moveUp();
+            }
+
         }
 
-
     }
+
+    private void savePlaylistState(){
+
+        for (Song s : table.getItems()) {
+            removeSongWithoutPopup(s);
+        }
+
+        for (Song s : table.getItems()) {
+            try {
+                playlistModel.addSongToPlaylist(s,currentPlaylist);
+            } catch (ApplicationException e) {
+                e.printStackTrace();
+            }
+        }
+        //maybe have a "saving..." graphical layout while it's saving the songs state to the DB
+    }
+
+
+
 
 }
