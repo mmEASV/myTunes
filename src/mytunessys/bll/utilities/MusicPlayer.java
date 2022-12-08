@@ -4,31 +4,40 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 public class MusicPlayer {
-    private static MusicPlayer _singleInstance = null;
-    private MediaPlayer _mediaPlayer;
-    private Media _media;
+    private static MusicPlayer instance = null;
+    private MediaPlayer mediaPlayer;
+    private Media media;
+
+    private double volume;
 
     private MusicPlayer(){
-        this._mediaPlayer = null;
-        this._media = null;
+        this.mediaPlayer = null;
+        this.media = null;
+        this.volume = 30;
     }
 
     public static MusicPlayer getInstance(){
-        if(_singleInstance == null){
-            _singleInstance = new MusicPlayer();
+        MusicPlayer result = instance;
+        if(instance == null){
+            synchronized (MusicPlayer.class){
+                result= instance;
+                if(result == null){
+                  instance = result = new MusicPlayer();
+                }
+            }
         }
-        return _singleInstance;
+        return instance;
     }
 
     public void setPath(String path){
-        this._media = new Media(path);
-        this._mediaPlayer = new MediaPlayer(_media);
+        this.media = new Media(path);
+        this.mediaPlayer = new MediaPlayer(media);
     }
 
     public void play(){
-        this._mediaPlayer.play();
+        this.mediaPlayer.play();
     }
     public void pause(){
-        this._mediaPlayer.pause();
+        this.mediaPlayer.pause();
     }
 }
