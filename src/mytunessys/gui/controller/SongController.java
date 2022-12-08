@@ -21,12 +21,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import mytunessys.be.Genre;
+import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.GenreManager;
 import mytunessys.bll.exceptions.ApplicationException;
@@ -53,10 +55,12 @@ public class SongController {
     private Button SubmitButton;
     private File selectedFile;
     private int SongId;
+    private BaseController baseController;
 
-    public SongController(AnchorPane contentWindow,SongModel model){
+    public SongController(AnchorPane contentWindow,SongModel model,BaseController baseController){
         Window = contentWindow;
         this.songModel = model;
+        this.baseController = baseController;
     }
 
     public void Show(AnchorPane centerContent) throws ApplicationException {
@@ -82,8 +86,6 @@ public class SongController {
         DurationColumn.prefWidthProperty().set(47);
         DurationColumn.setResizable(false);
         DurationColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("duration"));
-
-
 
         TableColumn<Song, String> OptionsColumn = new TableColumn<>();
         OptionsColumn.prefWidthProperty().set(47);
@@ -128,6 +130,23 @@ public class SongController {
                     return cell;
                 }
             };
+
+        Table.setRowFactory(new Callback<TableView<Song>, TableRow<Song>>() {
+            @Override
+            public TableRow<Song> call(TableView<Song> param) {
+                TableRow<Song> row = new TableRow<>();
+                row.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if(event.getClickCount() == 1 && (!row.isEmpty())){
+                            Song serialData = row.getItem();
+                            baseController.setMediaPlayer(serialData);
+                        }
+                    }
+                });
+                return row;
+            }
+        });
 
         OptionsColumn.setCellFactory(cellFactory);
         Table.editableProperty().set(false);

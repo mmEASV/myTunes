@@ -1,5 +1,6 @@
 package mytunessys.gui.controller;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -14,9 +15,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.exceptions.ApplicationException;
+import mytunessys.bll.utilities.MusicPlayer;
 import mytunessys.gui.models.PlaylistModel;
 import mytunessys.gui.models.SongModel;
 
@@ -35,6 +40,7 @@ public class BaseController implements Initializable {
     public Button btnUp;
     @FXML
     public Button btnDown;
+
     // ----
     @FXML
     private TableView<Song> tbvContentTable;
@@ -75,8 +81,16 @@ public class BaseController implements Initializable {
     private PlaylistController playlistCont;
     private SongOnPlaylistController songOnPlaylistCont;
 
+    MusicPlayer musicPlayer = MusicPlayer.getInstance();
 
-
+    public void setMediaPlayer(Song song){
+        btnPlay.setOnAction(event -> {
+            String path2 = song.getAbsolutePath();
+            musicPlayer.setPath(path2);
+            lblNameOfSong.setText("Playing " + song.getTitle());
+            musicPlayer.play();
+        });
+    }
 
     private void updateCurrentSongNameLabel(){
         //TODO display the song that is played currently on lblNameOfSong
@@ -87,7 +101,6 @@ public class BaseController implements Initializable {
     private void updateArtistLabel(){
         //TODO display the artist for the song on lblArtist
     }
-
 
     @FXML
     private void switchToSongInterface(ActionEvent actionEvent) throws ApplicationException {
@@ -138,9 +151,9 @@ public class BaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        songCont = new SongController(contentWindow,songModel);
+        songCont = new SongController(contentWindow,songModel,this);
         playlistCont = new PlaylistController(contentWindow,playlistModel,this);
-        songOnPlaylistCont = new SongOnPlaylistController(contentWindow,playlistModel);
+        songOnPlaylistCont = new SongOnPlaylistController(contentWindow,playlistModel,this);
         setSearch();
         btnGoBack.setVisible(false);
         try {

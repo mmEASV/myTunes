@@ -3,9 +3,12 @@ package mytunessys.gui.controller;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.value.ObservableValue; //remove later with other data
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.exceptions.ApplicationException;
@@ -26,11 +29,12 @@ public class SongOnPlaylistController {
 
     private TableView<Song> table;
 
+    private BaseController baseController;
 
-
-    public SongOnPlaylistController(AnchorPane contentWindow,PlaylistModel playlist) {
+    public SongOnPlaylistController(AnchorPane contentWindow,PlaylistModel playlist,BaseController baseController) {
         this.contentWindow = contentWindow;
         this.playlistModel = playlist;
+        this.baseController = baseController;
     }
 
     public void Show(AnchorPane centerContent,Playlist playlist) throws ApplicationException {
@@ -66,6 +70,23 @@ public class SongOnPlaylistController {
                 } else {
                     setText(Integer.toString(index));
                 }
+            }
+        });
+
+        table.setRowFactory(new Callback<TableView<Song>, TableRow<Song>>() {
+            @Override
+            public TableRow<Song> call(TableView<Song> param) {
+                TableRow<Song> row = new TableRow<>();
+                row.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if(event.getClickCount() == 1 && (!row.isEmpty())){
+                            Song serialData = row.getItem();
+                            baseController.setMediaPlayer(serialData);
+                        }
+                    }
+                });
+                return row;
             }
         });
 
