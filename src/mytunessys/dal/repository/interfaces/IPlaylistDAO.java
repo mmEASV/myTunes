@@ -1,6 +1,7 @@
 package mytunessys.dal.repository.interfaces;
 
 import mytunessys.be.Playlist;
+import mytunessys.be.Song;
 import mytunessys.bll.exceptions.ApplicationException;
 
 import java.sql.SQLException;
@@ -27,6 +28,16 @@ public interface IPlaylistDAO {
      *
      */
     Playlist getPlaylistById(Playlist playlist) throws ApplicationException;
+
+    /**
+     *
+     * @param song
+     * @param playlist
+     * @return
+     * @throws ApplicationException
+     */
+    boolean addSongToPlaylist(Song song, Playlist playlist) throws ApplicationException;
+
     /**
      * Updates playlist from object playlist
      *
@@ -43,5 +54,11 @@ public interface IPlaylistDAO {
      * @throws ApplicationException when data are not able to be updated with message and cause
      */
     boolean deletePlaylist(int id) throws ApplicationException;
+
+    /**
+     *
+     * @return
+     */
+    boolean removeSongFromPlaylist(Playlist playlist) throws ApplicationException;
 }
 

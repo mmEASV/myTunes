@@ -52,6 +52,13 @@ public class LogicManager implements ILogicFacade<Song> {
         return this.searchHelper.searchSongs(list, query);
     }
 
+    @Override
+    public boolean addToObject(Object object, Object secondObject) throws ApplicationException {
+        return false;
+    }
 
-
+    @Override
+    public boolean removeObjectFrom(Object firstObject) throws ApplicationException {
+        return false;
+    }
 }

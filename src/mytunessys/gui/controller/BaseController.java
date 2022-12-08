@@ -76,8 +76,6 @@ public class BaseController implements Initializable {
     private SongOnPlaylistController songOnPlaylistCont;
 
 
-
-
     private void updateCurrentSongNameLabel(){
         //TODO display the song that is played currently on lblNameOfSong
         //update
@@ -138,7 +136,7 @@ public class BaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        songCont = new SongController(contentWindow,songModel);
+        songCont = new SongController(contentWindow,songModel,playlistModel);
         playlistCont = new PlaylistController(contentWindow,playlistModel,this);
         songOnPlaylistCont = new SongOnPlaylistController(contentWindow,playlistModel);
         setSearch();

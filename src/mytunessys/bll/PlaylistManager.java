@@ -1,6 +1,7 @@
 package mytunessys.bll;
 
 import mytunessys.be.Playlist;
+import mytunessys.be.Song;
 import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.bll.helpers.SearchHelper;
 import mytunessys.bll.interfaces.ILogicFacade;
@@ -8,7 +9,6 @@ import mytunessys.bll.types.DatabaseType;
 import mytunessys.dal.AbstractDAOFactory;
 import mytunessys.dal.repository.interfaces.IPlaylistDAO;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class PlaylistManager implements ILogicFacade<Playlist> {
@@ -51,5 +51,15 @@ public class PlaylistManager implements ILogicFacade<Playlist> {
     @Override
     public List<Playlist> searchObjects(List<Playlist> list, String query) {
         return this.searchHelper.searchPlaylists(list, query);
+    }
+
+    @Override
+    public boolean addToObject(Object object, Object secondObject) throws ApplicationException {
+        return this.playlistDAO.addSongToPlaylist((Song)object,(Playlist)secondObject);
+    }
+
+    @Override
+    public boolean removeObjectFrom(Object firstObject) throws ApplicationException {
+        return this.playlistDAO.removeSongFromPlaylist((Playlist) firstObject);
     }
 }

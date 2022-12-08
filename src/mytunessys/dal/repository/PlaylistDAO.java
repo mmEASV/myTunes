@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PlaylistDAO implements IPlaylistDAO {
 
@@ -72,7 +73,6 @@ public class PlaylistDAO implements IPlaylistDAO {
         }
         return new Playlist(playlist.getId(), name,fetchedSongs);
     }
-
     @Override
     public void createPlaylist(Playlist playlist) throws ApplicationException {
         try (Connection connection = MSSQLConnection.createConnection()) {
@@ -99,6 +99,39 @@ public class PlaylistDAO implements IPlaylistDAO {
     }
 
     @Override
+    public boolean addSongToPlaylist(Song song,Playlist playlist) throws ApplicationException {
+        try(Connection connection = MSSQLConnection.createConnection()){
+            String sql = "INSERT INTO playlist_song(song_id,playlist_id,song_order) VALUES(?,?,?)";
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, song.getId());
+            preparedStatement.setInt(2, playlist.getId());
+
+            String latestNumber = "SELECT Max(ps.song_order) as latest\n" +
+                   "FROM song s\n" +
+                   "         INNER JOIN playlist_song ps on s.id = ps.song_id\n" +
+                   "         RIGHT JOIN playlist p on p.id = ps.playlist_id\n" +
+                   "WHERE playlist_id = ?";
+
+           PreparedStatement secondPreparedStatement = connection.prepareStatement(latestNumber);
+           secondPreparedStatement.setInt(1,playlist.getId());
+           ResultSet resultSet = secondPreparedStatement.executeQuery();
+           int latestOrder = 0;
+           while (resultSet.next()){
+               latestOrder = resultSet.getInt("latest") + 1;
+           }
+
+            preparedStatement.setInt(3, latestOrder);
+            int result = preparedStatement.executeUpdate();
+            if(result > 0){
+                return true;
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationException(ex.getMessage(),ex.getCause());
+        }
+        return false;
+    }
+
+    @Override
     public boolean deletePlaylist(int id) throws ApplicationException {
         try (Connection connection = MSSQLConnection.createConnection()) {
             String sql = "DELETE FROM playlist WHERE(id=?)";
@@ -108,6 +141,29 @@ public class PlaylistDAO implements IPlaylistDAO {
             if (result > 0) {
                 return true;
             }
+        } catch (SQLException ex) {
+            throw new ApplicationException(ex.getMessage(), ex.getCause());
+        }
+        return false;
+    }
+
+
+    @Override
+    public boolean removeSongFromPlaylist(Playlist playlist) throws ApplicationException{
+        try (Connection connection = MSSQLConnection.createConnection()) {
+            String sql = "DELETE FROM playlist_song WHERE song_id = ? AND playlist_id = ? ";
+            preparedStatement = connection.prepareStatement(sql);
+            Song flagSong = null;
+            for (Map.Entry<Integer, Song> entry : playlist.getSongList().entrySet()) {
+                flagSong = entry.getValue();
+                // Do things with the list
+            }
+            preparedStatement.setInt(1,flagSong.getId());
+            preparedStatement.setInt(2, playlist.getId());
+            // TODO: updates all other song_order;
+            int result = preparedStatement.executeUpdate();
+            if(result > 0)
+                return true;
         } catch (SQLException ex) {
             throw new ApplicationException(ex.getMessage(), ex.getCause());
         }
