@@ -141,8 +141,7 @@ public class PlaylistController {
         displayedDeleteConfirmation(playlist);
     }
     public void displayedDeleteConfirmation(Playlist playlistToDelete){
-        var confirm = AlertNotification.showAlertWindow("Delete Song", "You are about to delete this playlist.",
-                Alert.AlertType.CONFIRMATION);
+        var confirm = AlertNotification.showAlertWindow("You are about to delete this playlist.", Alert.AlertType.CONFIRMATION);
         if(confirm.get().equals(ButtonType.OK)){
             try {
                 playlistModel.deletePlaylist(playlistToDelete);
@@ -206,7 +205,7 @@ public class PlaylistController {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    playlistModel.createPlaylist(new Playlist(1, playlistName.getText(0,playlistName.getLength()), 0, new HashMap<>()));
+                    playlistModel.createPlaylist(new Playlist(1, playlistName.getText(0,playlistName.getLength()),0));
                     fillTable();
                 } catch (ApplicationException e) {
                     throw new RuntimeException(e);

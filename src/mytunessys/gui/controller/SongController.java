@@ -198,8 +198,7 @@ public class SongController {
 
     private void displayedDeleteConfirmation(Song songToDelete){
 
-        var confirm = AlertNotification.showAlertWindow("Delete Song", "You are about to delete this song.",
-                Alert.AlertType.CONFIRMATION);
+        var confirm = AlertNotification.showAlertWindow("You are about to delete this song.", Alert.AlertType.CONFIRMATION);
         if(confirm.get().equals(ButtonType.OK)){
             try {
                 songModel.deleteSong(songToDelete);
