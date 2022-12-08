@@ -21,6 +21,7 @@ import javafx.scene.media.MediaPlayer;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.exceptions.ApplicationException;
+import mytunessys.bll.types.MediaState;
 import mytunessys.bll.utilities.MusicPlayer;
 import mytunessys.gui.models.PlaylistModel;
 import mytunessys.gui.models.SongModel;
@@ -82,24 +83,16 @@ public class BaseController implements Initializable {
     private SongOnPlaylistController songOnPlaylistCont;
 
     MusicPlayer musicPlayer = MusicPlayer.getInstance();
+    MediaPlayer player;
 
-    public void setMediaPlayer(Song song){
-        btnPlay.setOnAction(event -> {
-            String path2 = song.getAbsolutePath();
-            musicPlayer.setPath(path2);
-            lblNameOfSong.setText("Playing " + song.getTitle());
-            musicPlayer.play();
-        });
-    }
+    public void updatePlayerUI(String title,String artist,String path,TableView<Song> songTableView){
+        lblNameOfSong.setText("Playing " + title);
+        lblArtist.setText(artist);
 
-    private void updateCurrentSongNameLabel(){
-        //TODO display the song that is played currently on lblNameOfSong
-        //update
-
-    }
-
-    private void updateArtistLabel(){
-        //TODO display the artist for the song on lblArtist
+        // after song is finished if there are some song to be played
+        musicPlayer.setSongs(songTableView);
+        musicPlayer.setPath(path);
+        musicPlayer.play();
     }
 
     @FXML
@@ -154,13 +147,39 @@ public class BaseController implements Initializable {
         songCont = new SongController(contentWindow,songModel,this);
         playlistCont = new PlaylistController(contentWindow,playlistModel,this);
         songOnPlaylistCont = new SongOnPlaylistController(contentWindow,playlistModel,this);
-        setSearch();
+        btnPlay.setOnAction(this::listener);
+        btnNext.setOnAction(this::nextSong);
+        btnPrevious.setOnAction(this::previousSong);
         btnGoBack.setVisible(false);
+        setSearch();
         try {
             switchToSongInterface(new ActionEvent());
         } catch (ApplicationException e) {
             e.printStackTrace();
         }
+    }
+
+    private void previousSong(ActionEvent actionEvent) {
+        // do previous song
+    }
+
+    private void nextSong(ActionEvent actionEvent) {
+        // do next song
+    }
+
+    public void listener(ActionEvent actionEvent){
+        player = musicPlayer.getMediaPlayer();
+        if(player.getStatus().equals(MediaPlayer.Status.PLAYING)){
+            player.pause();
+            // we pause and change the button
+            btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Close.png")));
+        }
+        if(player.getStatus().equals(MediaPlayer.Status.PAUSED)) {
+            // if pause we play again and return the button
+            player.play();
+            btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
+        }
+
     }
 
     private void setSearch() {

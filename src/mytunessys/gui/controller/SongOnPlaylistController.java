@@ -12,6 +12,7 @@ import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.exceptions.ApplicationException;
+import mytunessys.bll.utilities.MusicPlayer;
 import mytunessys.gui.models.PlaylistModel;
 
 import java.util.Random;
@@ -80,16 +81,15 @@ public class SongOnPlaylistController {
                 row.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        if(event.getClickCount() == 1 && (!row.isEmpty())){
+                        if(event.getClickCount() == 2 && (!row.isEmpty())){
                             Song serialData = row.getItem();
-                            baseController.setMediaPlayer(serialData);
+                            baseController.updatePlayerUI(serialData.getTitle(),serialData.getArtist(),serialData.getAbsolutePath(),param);
                         }
                     }
                 });
                 return row;
             }
         });
-
 
         table.editableProperty().set(false);
         table.getColumns().addAll(TitleColumn,GenreColumn,DurationColumn);
@@ -113,8 +113,6 @@ public class SongOnPlaylistController {
             table.getItems().add(index-1, table.getItems().remove(index));
             table.getSelectionModel().clearAndSelect(index-1);
         }
-
-
     }
 
     public void moveDown(){

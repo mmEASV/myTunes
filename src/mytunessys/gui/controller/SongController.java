@@ -32,6 +32,7 @@ import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.GenreManager;
 import mytunessys.bll.exceptions.ApplicationException;
+import mytunessys.bll.utilities.MusicPlayer;
 import mytunessys.gui.models.SongModel;
 
 import java.io.Console;
@@ -134,13 +135,14 @@ public class SongController {
         Table.setRowFactory(new Callback<TableView<Song>, TableRow<Song>>() {
             @Override
             public TableRow<Song> call(TableView<Song> param) {
+
                 TableRow<Song> row = new TableRow<>();
                 row.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        if(event.getClickCount() == 1 && (!row.isEmpty())){
-                            Song serialData = row.getItem();
-                            baseController.setMediaPlayer(serialData);
+                        if(event.getClickCount() == 2 && (!row.isEmpty())){
+                            Song serialData = row.getItem(); // SONG AT THAT ROW WITH ITS ID AND POSITION
+                            baseController.updatePlayerUI(serialData.getTitle(),serialData.getArtist(),serialData.getAbsolutePath(),param);
                         }
                     }
                 });
@@ -154,10 +156,7 @@ public class SongController {
         Table.setFocusTraversable(false);
 
         centerContent.getChildren().add(Table);
-
         Table.setItems(songModel.getAllSongs());
-
-
     }
 
     public void NewSong() {
