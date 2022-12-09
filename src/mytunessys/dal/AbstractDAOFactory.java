@@ -6,25 +6,40 @@ import mytunessys.dal.repository.interfaces.IPlaylistDAO;
 import mytunessys.dal.repository.interfaces.ISongDAO;
 
 public abstract class AbstractDAOFactory {
-    public abstract ISongDAO getSongDAO();
-
-    public abstract IPlaylistDAO playlistDAO();
-
-    public abstract IGenreDAO genreDAO();
+    /**
+     * abstract instantiation of ISongDAO
+     * @return ISongDAO
+     * @throws Exception if not able to instantiate new playlist DAO
+     */
+    public abstract ISongDAO getSongDAO() throws Exception;
 
     /**
-     * getDao method that generates DAO factory with predefined db connection
+     * abstract instantiation of IPlaylistDAO
+     * @return IPlaylistDAO
+     * @throws Exception if not able to instantiate new playlist DAO
+     */
+    public abstract IPlaylistDAO playlistDAO() throws Exception;
+
+    /**
+     * abstract instantiation of IGenreDAO
+     * @return IGenreDAO
+     * @throws Exception if not able to instantiate new playlist DAO
+     */
+
+    public abstract IGenreDAO genreDAO() throws Exception;
+
+    /**
+     * instantiate new dao factory with predefined chosen db connection
      *
      * @param databaseType takes enum parameter for predefined db type
      *                     Options : MSSQL -> connection currently available for use
-     *                     (future) : AZURE -> connection to different database
      * @return DAO factory for chosen db connection
      */
 
-    public static AbstractDAOFactory getDAO(DatabaseType databaseType) {
+    public static AbstractDAOFactory getDAOFactory(DatabaseType databaseType) {
         return switch (databaseType) {
             case MSSQL -> new DAOFactory();
-            case TEXT_FILE -> throw new RuntimeException("Could not retrieve factory to this type of database ");
+            case TEXT_FILE -> throw new UnsupportedOperationException();
         };
     }
 }

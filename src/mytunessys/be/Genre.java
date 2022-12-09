@@ -24,8 +24,6 @@ public class Genre {
     public void setId(int id) {
         this.id = id;
     }
-
-    //TODO delete and add this code into backend branch
     @Override
     public String toString(){
         return name;

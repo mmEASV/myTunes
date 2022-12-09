@@ -3,27 +3,21 @@ package mytunessys.gui.controller;
 
 import java.io.File;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.ResourceBundle;
+
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
@@ -34,7 +28,6 @@ import mytunessys.be.Genre;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.GenreManager;
-import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.bll.utilities.AlertNotification;
 import mytunessys.gui.models.PlaylistModel;
 import mytunessys.gui.models.SongModel;
@@ -63,10 +56,10 @@ public class SongController {
         this.playlistModel = playlistModel;
         this.songModel = model;
     }
-    public void fillTable() throws ApplicationException {
+    public void fillTable() throws Exception {
         table.setItems(songModel.getAllSongs());
     }
-    public void show(AnchorPane centerContent) throws ApplicationException {
+    public void show(AnchorPane centerContent) throws Exception {
 
         table = new TableView<>();
         table.setFocusTraversable(false);
@@ -168,8 +161,8 @@ public class SongController {
             try {
                 songModel.createSong(_song);
                 fillTable();
-            } catch (ApplicationException e) {
-                throw new RuntimeException(e);
+            } catch (Exception e) {
+                AlertNotification.showAlertWindow(e.getMessage(), Alert.AlertType.ERROR);
             }
             window.getChildren().remove(popUpContent);
             event.consume();
@@ -183,8 +176,8 @@ public class SongController {
             try {
                 songModel.updateSong(_song);
                 fillTable();
-            } catch (ApplicationException e) {
-                throw new RuntimeException(e);
+            } catch (Exception e) {
+                AlertNotification.showAlertWindow(e.getMessage(), Alert.AlertType.ERROR);
             }
             window.getChildren().remove(popUpContent);
             event.consume();
@@ -197,15 +190,19 @@ public class SongController {
 
 
     private void displayedDeleteConfirmation(Song songToDelete){
-
         var confirm = AlertNotification.showAlertWindow("You are about to delete this song.", Alert.AlertType.CONFIRMATION);
+        var result = false;
         if(confirm.get().equals(ButtonType.OK)){
             try {
-                songModel.deleteSong(songToDelete);
-                fillTable();
-            } catch (ApplicationException e) {
-                throw new RuntimeException(e);
-
+                result = songModel.deleteSong(songToDelete);
+                if(result){
+                    fillTable();
+                    AlertNotification.showAlertWindow("Song with id: " + songToDelete.getId() + " successfully deleted ", Alert.AlertType.INFORMATION);
+                } else {
+                    AlertNotification.showAlertWindow("Could not delete song with id: " + songToDelete.getId(), Alert.AlertType.ERROR);
+                }
+            } catch (Exception e) {
+                AlertNotification.showAlertWindow(e.getMessage(), Alert.AlertType.ERROR);
             }
         }
     }
@@ -276,8 +273,8 @@ public class SongController {
         ObservableList<Genre> Items =
                 null;
         try {
-            Items = FXCollections.observableArrayList(new GenreManager().getAllObject());
-        } catch (ApplicationException e) {
+            Items = FXCollections.observableArrayList(new GenreManager().getAllObject()); // TODO: why are we creating new Manager herE ?
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         genreOptions = new ComboBox(Items);
@@ -336,8 +333,10 @@ public class SongController {
             } else {
                 finalResult = playlistModel.addSongToPlaylist(songToBeAdded,playlistToBeFilled);
             }
-        } catch (ApplicationException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e ) {
+            //throw new RuntimeException(e);
+            AlertNotification.showAlertWindow(e.getMessage(), Alert.AlertType.ERROR);
+            throw new RuntimeException();
         }
         if(finalResult){
             AlertNotification.showAlertWindow("Successfully added song with id " + playlistToBeFilled.getId() + " to playlist " + playlistToBeFilled.getPlaylistName(), Alert.AlertType.INFORMATION);

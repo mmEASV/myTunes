@@ -18,11 +18,8 @@ import javafx.scene.layout.*;
 
 import javafx.util.Callback;
 import mytunessys.be.Playlist;
-import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.bll.utilities.AlertNotification;
 import mytunessys.gui.models.PlaylistModel;
-
-import java.util.HashMap;
 
 /**
  * @author Bálint, Matej & Tomas
@@ -40,10 +37,10 @@ public class PlaylistController {
         this.playlistModel = playlistModel;
         this.baseController = baseController;
     }
-    public void fillTable() throws ApplicationException{
+    public void fillTable() throws Exception {
         table.setItems(playlistModel.getAllPlaylists());
     }
-    public void show(AnchorPane centerContent) throws ApplicationException {
+    public void show(AnchorPane centerContent) throws Exception {
         table = new TableView<>();
 
         TableColumn<Playlist, String> nameColumn = new TableColumn<>();
@@ -113,7 +110,7 @@ public class PlaylistController {
                             Playlist serialData = row.getItem();
                             try {
                                 baseController.switchToSongOnPlaylistInterface(new ActionEvent(),serialData);
-                            } catch (ApplicationException e) {
+                            } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
 
@@ -146,8 +143,8 @@ public class PlaylistController {
             try {
                 playlistModel.deletePlaylist(playlistToDelete);
                 fillTable();
-            } catch (ApplicationException e) {
-                throw new RuntimeException(e);
+            } catch (Exception e) {
+                AlertNotification.showAlertWindow(e.getMessage(), Alert.AlertType.ERROR);
             }
         }
     }
@@ -207,8 +204,8 @@ public class PlaylistController {
                 try {
                     playlistModel.createPlaylist(new Playlist(1, playlistName.getText(0,playlistName.getLength()),0));
                     fillTable();
-                } catch (ApplicationException e) {
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    AlertNotification.showAlertWindow(e.getMessage(), Alert.AlertType.ERROR);
                 }
                 popUpContent.visibleProperty().set(false);
             }
@@ -219,7 +216,4 @@ public class PlaylistController {
             playlistName.setText(content.getPlaylistName());
         }
     }
-
-
-
 }

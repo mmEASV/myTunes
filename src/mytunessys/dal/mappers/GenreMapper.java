@@ -1,8 +1,15 @@
 package mytunessys.dal.mappers;
 
 import mytunessys.be.Genre;
+
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+
+/**
+ * @author Tomas Simko
+ */
 
 public class GenreMapper {
     private Genre genre;
@@ -10,12 +17,17 @@ public class GenreMapper {
         this.genre = null;
     }
 
-    public Genre mapGenre(ResultSet rs) throws SQLException {
+    /**
+     * maps result set into object for genre
+     * @param rs that will be mapped to object
+     * @throws SQLException happens cannot get right values from table
+     **/
+    public void mapGenre(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         String genreName = rs.getString("genre_name");
-        return new Genre(id, genreName);
+        this.genre = new Genre(id, genreName);
     }
     public Genre getGenre(){
-        return genre;
+        return this.genre;
     }
 }

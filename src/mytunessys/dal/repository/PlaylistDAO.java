@@ -17,14 +17,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Tomas,Julian
+ */
+
+
 public class PlaylistDAO implements IPlaylistDAO {
 
     private PreparedStatement preparedStatement;
+    private final MSSQLConnection mssqlConnection;
 
-    public List<Playlist> getAllPlaylists() throws ApplicationException {
+    public PlaylistDAO() throws Exception {
+        this.mssqlConnection = new MSSQLConnection();
+    }
+
+    public List<Playlist> getAllPlaylists() throws Exception {
         PlaylistMapper playlistMapper = new PlaylistMapper();
         List<Playlist> retrievedPlaylists = new ArrayList<>();
-        try (Connection connection = MSSQLConnection.createConnection()) {
+        try (Connection connection = mssqlConnection.createConnection()) {
             String sql = """
                     SELECT COALESCE(count(ps.song_id), 0) as amount,
                      p.id,
@@ -36,20 +46,18 @@ public class PlaylistDAO implements IPlaylistDAO {
             preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                Playlist playlistMapped = playlistMapper.mapPlaylist(rs);
-                retrievedPlaylists.add(playlistMapped);
+                playlistMapper.mapPlaylist(rs);
+                retrievedPlaylists.add(playlistMapper.getPlaylist());
             }
-        } catch (SQLException ex) {
-            throw new ApplicationException(ex.getMessage(), ex.getCause());
-        }
+       }
         return retrievedPlaylists;
     }
 
-    public Playlist getPlaylistById(Playlist playlist) throws ApplicationException{
+    public Playlist getPlaylistById(Playlist playlist) throws Exception{
         HashMap<Integer, Song> fetchedSongs = new HashMap<>();
         SongMapper songMapper = new SongMapper();
         String name = "";
-        try (Connection connection = MSSQLConnection.createConnection()) {
+        try (Connection connection = mssqlConnection.createConnection()) {
 
             String sql = """
                     SELECT p.id as playlist_id,s.id,s.title,s.duration,s.artist,s.absolute_path,g.id as genre_id,g.genre_name as genre_name,ps.song_order as song_order,p.playlist_name
@@ -65,17 +73,16 @@ public class PlaylistDAO implements IPlaylistDAO {
             preparedStatement.setInt(1,playlist.getId());
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                fetchedSongs.put(rs.getInt("song_order"),songMapper.mapSong(rs));
+                songMapper.mapSong(rs);
+                fetchedSongs.put(rs.getInt("song_order"),songMapper.getSong());
                 name = rs.getString("playlist_name");
             }
-        } catch (SQLException ex) {
-            throw new ApplicationException(ex.getMessage(), ex.getCause());
-        }
+       }
         return new Playlist(playlist.getId(), name,fetchedSongs);
     }
     @Override
-    public void createPlaylist(Playlist playlist) throws ApplicationException {
-        try (Connection connection = MSSQLConnection.createConnection()) {
+    public void createPlaylist(Playlist playlist) throws Exception {
+        try (Connection connection = mssqlConnection.createConnection()) {
             String sql = "INSERT INTO playlist(playlist_name) VALUES(?)";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, playlist.getPlaylistName());
@@ -86,21 +93,19 @@ public class PlaylistDAO implements IPlaylistDAO {
     }
 
     @Override
-    public void updatePlaylist(Playlist playlist) throws ApplicationException {
-        try (Connection connection = MSSQLConnection.createConnection()) {
+    public void updatePlaylist(Playlist playlist) throws Exception {
+        try (Connection connection = mssqlConnection.createConnection()) {
             String sql = "UPDATE playlist SET playlist_name = ? WHERE id = ?";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, playlist.getPlaylistName());
             preparedStatement.setInt(2, playlist.getId());
             preparedStatement.executeUpdate();
-        } catch (SQLException ex) {
-            throw new ApplicationException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public boolean addSongToPlaylist(Song song,Playlist playlist) throws ApplicationException {
-        try(Connection connection = MSSQLConnection.createConnection()){
+    public boolean addSongToPlaylist(Song song,Playlist playlist) throws Exception {
+        try(Connection connection = mssqlConnection.createConnection()){
             String sql = "INSERT INTO playlist_song(song_id,playlist_id,song_order) VALUES(?,?,?)";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, song.getId());
@@ -125,15 +130,13 @@ public class PlaylistDAO implements IPlaylistDAO {
             if(result > 0){
                 return true;
             }
-        } catch (SQLException ex) {
-            throw new ApplicationException(ex.getMessage(),ex.getCause());
         }
         return false;
     }
 
     @Override
-    public boolean deletePlaylist(int id) throws ApplicationException {
-        try (Connection connection = MSSQLConnection.createConnection()) {
+    public boolean deletePlaylist(int id) throws Exception {
+        try (Connection connection = mssqlConnection.createConnection()) {
             String sql = "DELETE FROM playlist WHERE(id=?)";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
@@ -141,16 +144,14 @@ public class PlaylistDAO implements IPlaylistDAO {
             if (result > 0) {
                 return true;
             }
-        } catch (SQLException ex) {
-            throw new ApplicationException(ex.getMessage(), ex.getCause());
         }
         return false;
     }
 
 
     @Override
-    public boolean removeSongFromPlaylist(Playlist playlist) throws ApplicationException{
-        try (Connection connection = MSSQLConnection.createConnection()) {
+    public boolean removeSongFromPlaylist(Playlist playlist) throws Exception{
+        try (Connection connection = mssqlConnection.createConnection()) {
             String sql = "DELETE FROM playlist_song WHERE song_id = ? AND playlist_id = ? ";
             preparedStatement = connection.prepareStatement(sql);
             Song flagSong = null;
@@ -164,9 +165,7 @@ public class PlaylistDAO implements IPlaylistDAO {
             int result = preparedStatement.executeUpdate();
             if(result > 0)
                 return true;
-        } catch (SQLException ex) {
-            throw new ApplicationException(ex.getMessage(), ex.getCause());
-        }
+       }
         return false;
     }
 

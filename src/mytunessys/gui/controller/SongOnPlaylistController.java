@@ -41,7 +41,7 @@ public class SongOnPlaylistController {
         this.playlistModel = playlist;
     }
 
-    public void Show(AnchorPane centerContent,Playlist playlist) throws ApplicationException {
+    public void Show(AnchorPane centerContent,Playlist playlist) throws Exception {
 
         temp = playlist;
         table = new TableView<>();
@@ -135,7 +135,7 @@ public class SongOnPlaylistController {
             listToBest.put(item.getId(),item);
             currentPlaylist.setSongList(listToBest);
            finalResult = playlistModel.removeSongFromPlaylist(currentPlaylist);
-        } catch (ApplicationException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
@@ -153,7 +153,7 @@ public class SongOnPlaylistController {
             listToBest.put(item.getId(),item);
             currentPlaylist.setSongList(listToBest);
             finalResult = playlistModel.removeSongFromPlaylist(currentPlaylist);
-        } catch (ApplicationException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -226,7 +226,7 @@ public class SongOnPlaylistController {
         for (Song s : table.getItems()) {
             try {
                 playlistModel.addSongToPlaylist(s,currentPlaylist);
-            } catch (ApplicationException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

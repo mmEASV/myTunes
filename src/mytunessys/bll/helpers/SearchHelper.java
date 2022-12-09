@@ -6,7 +6,10 @@ import mytunessys.be.Song;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchHelper {
+/**
+ * @author Julian,Tomas
+ */
+public class SearchHelper implements ISearchHelper{
 
     public List<Song> searchSongs(List<Song> listToSearch, String query){
         List<Song> filtered = new ArrayList<>();

@@ -6,17 +6,13 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
-import mytunessys.bll.exceptions.ApplicationException;
+import mytunessys.bll.utilities.AlertNotification;
 import mytunessys.gui.models.PlaylistModel;
 import mytunessys.gui.models.SongModel;
 
@@ -69,8 +65,8 @@ public class BaseController implements Initializable {
     private AnchorPane centerContent;
     //endregion
 
-    private SongModel songModel = new SongModel();
-    private PlaylistModel playlistModel = new PlaylistModel();
+    private SongModel songModel;
+    private PlaylistModel playlistModel;
     private SongController songCont;
     private PlaylistController playlistCont;
     private SongOnPlaylistController songOnPlaylistCont;
@@ -88,7 +84,7 @@ public class BaseController implements Initializable {
 
 
     @FXML
-    private void switchToSongInterface(ActionEvent actionEvent) throws ApplicationException {
+    private void switchToSongInterface(ActionEvent actionEvent) throws Exception {
         ShowInterface(actionEvent,"Songs");
         showSearchBar();
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
@@ -97,7 +93,7 @@ public class BaseController implements Initializable {
 
     }
     @FXML
-    private void switchToPlaylistInterface(ActionEvent actionEvent) throws ApplicationException {
+    private void switchToPlaylistInterface(ActionEvent actionEvent) throws Exception{
         ShowInterface(actionEvent,"Playlists");
         showSearchBar();
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
@@ -105,7 +101,7 @@ public class BaseController implements Initializable {
         playlistCont.show(centerContent);
     }
 
-    public void switchToSongOnPlaylistInterface(ActionEvent actionEvent,Playlist playlist) throws ApplicationException {
+    public void switchToSongOnPlaylistInterface(ActionEvent actionEvent,Playlist playlist) throws Exception {
         ShowInterface(actionEvent,"Songs in Playlist");//implement playlist.getName() smart display
         hideSearchBar();
         songOnPlaylistCont.Show(centerContent,playlist);
@@ -136,16 +132,18 @@ public class BaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        songCont = new SongController(contentWindow,songModel,playlistModel);
-        playlistCont = new PlaylistController(contentWindow,playlistModel,this);
-        songOnPlaylistCont = new SongOnPlaylistController(contentWindow,playlistModel);
-        setSearch();
-        btnGoBack.setVisible(false);
         try {
+            this.songModel = new SongModel();
+            this.playlistModel = new PlaylistModel();
+            songCont = new SongController(contentWindow,songModel,playlistModel);
+            playlistCont = new PlaylistController(contentWindow,playlistModel,this);
+            songOnPlaylistCont = new SongOnPlaylistController(contentWindow,playlistModel);
             switchToSongInterface(new ActionEvent());
-        } catch (ApplicationException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            AlertNotification.showAlertWindow(e.getMessage(), Alert.AlertType.ERROR);
         }
+        btnGoBack.setVisible(false);
+
     }
 
     private void setSearch() {

@@ -9,36 +9,42 @@ import mytunessys.dal.repository.interfaces.IGenreDAO;
 
 import java.util.List;
 
+/**
+ * @author Bálint, Matej & Tomas,Julian
+ */
+
 public class GenreManager implements ILogicFacade<Genre> {
-    AbstractDAOFactory abstractDAOFactory = AbstractDAOFactory.getDAO(DatabaseType.MSSQL);
+    AbstractDAOFactory abstractDAOFactory = AbstractDAOFactory.getDAOFactory(DatabaseType.MSSQL);
     IGenreDAO genreDAO;
 
-    public GenreManager(){
-        this.genreDAO = abstractDAOFactory.genreDAO();
+    public GenreManager() throws ApplicationException {
+        try {
+            this.genreDAO = abstractDAOFactory.genreDAO();
+        } catch (Exception e) {
+            throw new ApplicationException(e.getMessage(),e.getCause());
+        }
     }
     @Override
-    public List<Genre> getAllObject() throws ApplicationException {
+    public List<Genre> getAllObject() throws Exception {
         return this.genreDAO.getAllGenre();
     }
 
+    /** NOT IMPLEMENTED **/
     @Override
-    public Genre getObjectById(Genre object) throws ApplicationException {
+    public Genre getObjectById(Genre object) throws Exception {
         return null;
     }
 
     @Override
-    public void createObject(Genre object) throws ApplicationException {
-            // does nothing for now
+    public void createObject(Genre object) throws Exception {
     }
 
     @Override
-    public void updateObject(Genre object) throws ApplicationException {
-        // does nothing for now
+    public void updateObject(Genre object) throws Exception {
     }
 
     @Override
-    public boolean deleteObject(Genre object) throws ApplicationException {
-        // does nothing for now
+    public boolean deleteObject(Genre object) throws Exception {
         return false;
     }
 
@@ -48,14 +54,12 @@ public class GenreManager implements ILogicFacade<Genre> {
     }
 
     @Override
-    public boolean addToObject(Object object, Object secondObject) throws ApplicationException {
+    public boolean addToObject(Object object, Object secondObject) throws Exception {
         return false;
     }
 
     @Override
-    public boolean removeObjectFrom(Object firstObject) throws ApplicationException {
+    public boolean removeObjectFrom(Object firstObject) throws Exception {
         return false;
     }
-
-
 }

@@ -26,7 +26,7 @@ class PlaylistDAOTest {
     private IPlaylistDAO playlistDAO;
 
     @BeforeEach
-    void initTest() {
+    void initTest() throws Exception {
         this.playlistDAO = new PlaylistDAO();
     }
 
@@ -36,8 +36,8 @@ class PlaylistDAOTest {
     }
 
     @Test
-    void shouldGetAllPlaylists() throws ApplicationException {
-        List<Playlist> expectedPlaylists = List.of(new Playlist(4,"How much is the fish"),new Playlist(1,"jb rules"));
+    void shouldGetAllPlaylists() throws Exception {
+        List<Playlist> expectedPlaylists = List.of(new Playlist(4,"How much is the fish",0),new Playlist(1,"jb rules",0));
 
         LOGGER.info("Getting all the song on playlist from database");
         List<Playlist> playlistList = (List<Playlist>) (Object) playlistDAO.getAllPlaylists();
