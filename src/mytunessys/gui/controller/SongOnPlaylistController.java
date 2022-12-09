@@ -83,7 +83,7 @@ public class SongOnPlaylistController {
                     public void handle(MouseEvent event) {
                         if(event.getClickCount() == 2 && (!row.isEmpty())){
                             Song serialData = row.getItem();
-                            baseController.updatePlayerUI(serialData.getTitle(),serialData.getArtist(),serialData.getAbsolutePath(),param);
+                            baseController.updatePlayerUI(param);
                         }
                     }
                 });

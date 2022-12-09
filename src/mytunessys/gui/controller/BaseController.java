@@ -1,8 +1,9 @@
 package mytunessys.gui.controller;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javax.swing.JLabel;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,13 +16,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.exceptions.ApplicationException;
-import mytunessys.bll.types.MediaState;
 import mytunessys.bll.utilities.MusicPlayer;
 import mytunessys.gui.models.PlaylistModel;
 import mytunessys.gui.models.SongModel;
@@ -81,61 +79,95 @@ public class BaseController implements Initializable {
     private SongController songCont;
     private PlaylistController playlistCont;
     private SongOnPlaylistController songOnPlaylistCont;
+    private boolean songIsPlaying = false;
 
     MusicPlayer musicPlayer = MusicPlayer.getInstance();
     MediaPlayer player;
 
-    public void updatePlayerUI(String title,String artist,String path,TableView<Song> songTableView){
-        lblNameOfSong.setText("Playing " + title);
-        lblArtist.setText(artist);
+    public void updatePlayerUI(TableView<Song> songTableView) {
+        lblNameOfSong.setText(songTableView.getItems().get(songTableView.getSelectionModel().getSelectedIndex()).getTitle());
+        lblArtist.setText(songTableView.getItems().get(songTableView.getSelectionModel().getSelectedIndex()).getArtist());
 
-        // after song is finished if there are some song to be played
+        playSong(songTableView);
+
+    }
+
+    public void playSong(TableView<Song> songTableView) {
+
         musicPlayer.setSongs(songTableView);
-        musicPlayer.setPath(path);
-        musicPlayer.play();
+        musicPlayer.setPath();
+
+        if(!songIsPlaying){
+            songIsPlaying = true;
+            btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));//make pause button
+            musicPlayer.play();
+            musicPlayer.setRepeat(true);
+
+            musicPlayer.getMediaPlayer().setOnEndOfMedia(() -> {
+                if (songTableView.getSelectionModel().getSelectedIndex() < songTableView.getItems().size() - 1) {
+                    songTableView.getSelectionModel().clearAndSelect(songTableView.getSelectionModel().getSelectedIndex() + 1);
+
+                    lblNameOfSong.setText(songTableView.getSelectionModel().getSelectedItem().getTitle());
+                    lblArtist.setText(songTableView.getSelectionModel().getSelectedItem().getArtist());
+                    musicPlayer.play();
+                } else {
+                    musicPlayer.stop();
+                    songIsPlaying = false;
+                }
+            });
+        }
+        else
+        {
+            musicPlayer.stop();
+            songIsPlaying = false;
+            playSong(songTableView);
+        }
+
+
     }
 
     @FXML
     private void switchToSongInterface(ActionEvent actionEvent) throws ApplicationException {
-        ShowInterface(actionEvent,"Songs");
+        ShowInterface(actionEvent, "Songs");
         showSearchBar();
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
         songCont.Show(centerContent);
 
     }
+
     @FXML
     private void switchToPlaylistInterface(ActionEvent actionEvent) throws ApplicationException {
-        ShowInterface(actionEvent,"Playlists");
+        ShowInterface(actionEvent, "Playlists");
         showSearchBar();
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists2.png")));
         playlistCont.Show(centerContent);
     }
 
-    public void switchToSongOnPlaylistInterface(ActionEvent actionEvent,Playlist playlist) throws ApplicationException {
-        ShowInterface(actionEvent,"Songs in Playlist");//implement playlist.getName() smart display
+    public void switchToSongOnPlaylistInterface(ActionEvent actionEvent, Playlist playlist) throws ApplicationException {
+        ShowInterface(actionEvent, playlist.getPlaylistName());//implement playlist.getName() edited CSS, mention word-break and overflow-wrap
         hideSearchBar();
-        songOnPlaylistCont.Show(centerContent,playlist);
+        songOnPlaylistCont.Show(centerContent, playlist);
     }
 
-    public void CleanCenterContent(){
+    public void CleanCenterContent() {
         centerContent.getChildren().removeAll(centerContent.getChildren());
     }
 
-    public void ShowInterface(ActionEvent actionEvent,String name) {
+    public void ShowInterface(ActionEvent actionEvent, String name) {
         CleanCenterContent();
         lblCurrentLocation.setText(name);
     }
 
-    public void showSearchBar(){
+    public void showSearchBar() {
         txfSearchBar.setVisible(true);
         btnDown.setVisible(false);
         btnUp.setVisible(false);
         btnAdd.setVisible(true);
     }
 
-    public void hideSearchBar(){
+    public void hideSearchBar() {
         txfSearchBar.setVisible(false);
         btnDown.setVisible(true);
         btnUp.setVisible(true);
@@ -144,9 +176,9 @@ public class BaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        songCont = new SongController(contentWindow,songModel,this);
-        playlistCont = new PlaylistController(contentWindow,playlistModel,this);
-        songOnPlaylistCont = new SongOnPlaylistController(contentWindow,playlistModel,this);
+        songCont = new SongController(contentWindow, songModel, this);
+        playlistCont = new PlaylistController(contentWindow, playlistModel, this);
+        songOnPlaylistCont = new SongOnPlaylistController(contentWindow, playlistModel, this);
         btnPlay.setOnAction(this::listener);
         btnNext.setOnAction(this::nextSong);
         btnPrevious.setOnAction(this::previousSong);
@@ -167,37 +199,43 @@ public class BaseController implements Initializable {
         // do next song
     }
 
-    public void listener(ActionEvent actionEvent){
+    public void listener(ActionEvent actionEvent) {
         player = musicPlayer.getMediaPlayer();
-        if(player.getStatus().equals(MediaPlayer.Status.PLAYING)){
-            player.pause();
-            // we pause and change the button
-            btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Close.png")));
+        if (player != null){
+            if (player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
+                player.pause();
+                // we pause and change the button
+                btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Close.png")));
+            }
+            if (player.getStatus().equals(MediaPlayer.Status.PAUSED)) {
+                // if pause we play again and return the button
+                player.play();
+                btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
+            }
         }
-        if(player.getStatus().equals(MediaPlayer.Status.PAUSED)) {
-            // if pause we play again and return the button
-            player.play();
-            btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
+        else
+        {
+            //TODO add play selected row from the tableView
         }
 
     }
 
     private void setSearch() {
-        txfSearchBar.textProperty().addListener((obs,oldValue,newValue)-> {
-            try{
+        txfSearchBar.textProperty().addListener((obs, oldValue, newValue) -> {
+            try {
                 if (lblCurrentLocation.getText().equals("Playlists")) { // not so type safe but works for now
                     playlistModel.searchPlaylist(newValue);
                 } else {
                     songModel.searchSongs(newValue);
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 throw new RuntimeException();
             }
-        } );
+        });
     }
 
     public void NewItem(ActionEvent actionEvent) {
-        if(lblCurrentLocation.getText().equals("Songs"))
+        if (lblCurrentLocation.getText().equals("Songs"))
             songCont.NewSong();
         else
             playlistCont.NewPlaylist();

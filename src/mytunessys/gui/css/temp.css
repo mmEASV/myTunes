@@ -59,6 +59,7 @@
 }
 .currentSiteLabel{
     -fx-font-size: 20;
+    -fx-max-width: 170;
 }
 
 .bottomPanel{

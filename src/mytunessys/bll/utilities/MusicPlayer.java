@@ -1,10 +1,15 @@
 package mytunessys.bll.utilities;
 
+import java.io.IOException;
+
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import mytunessys.be.Song;
+import mytunessys.gui.controller.BaseController;
 
 public class MusicPlayer {
     private static MusicPlayer instance = null;
@@ -15,17 +20,18 @@ public class MusicPlayer {
     private TableView<Song> songTable;
 
     private int row;
+    private boolean repeat = false;
 
-
-//    private final int PREVIOUS_SONG = -1;
-//    private final int CURRENT_SONG = 0;
-//    private final int NEXT_SONG = 1;
-//    public final int NORMAL_MODE = 0;
+    //    private final int PREVIOUS_SONG = -1;
+    //    private final int CURRENT_SONG = 0;
+    //    private final int NEXT_SONG = 1;
+    //    public final int NORMAL_MODE = 0;
 
     private MusicPlayer() {
         this.volume = 20;
         this.path = "";
         this.songTable = new TableView<>();
+
     }
 
     public static MusicPlayer getInstance() {
@@ -41,6 +47,14 @@ public class MusicPlayer {
         return instance;
     }
 
+    public boolean getRepeat(){
+        return repeat;
+    }
+
+    public void setRepeat(boolean repeat){
+        this.repeat = repeat;
+    }
+
     public MediaPlayer getMediaPlayer() {
         return this.mediaPlayer;
     }
@@ -52,34 +66,21 @@ public class MusicPlayer {
         }
         try {
             Song song = null;
-            if(songTable != null){
 
-                row = songTable.getSelectionModel().getSelectedIndex(); // 3
-                song = songTable.getItems().get(row);
-                this.mediaPlayer = new MediaPlayer(new Media(song.getAbsolutePath()));
-                mediaPlayer.play();
-                mediaPlayer.setVolume(volume);
+            row = songTable.getSelectionModel().getSelectedIndex();
+            song = songTable.getItems().get(row);
+            this.mediaPlayer = new MediaPlayer(new Media(song.getAbsolutePath()));
+            mediaPlayer.play();
+            mediaPlayer.setVolume(volume);
 
 
-                // needs to be tested
-                mediaPlayer.setOnEndOfMedia(() -> {
-                    if(songTable.getItems().size() >= row){
-                        songTable.getSelectionModel().clearAndSelect(row + 1);
-                        mediaPlayer.play();
-                    } else {
-                        mediaPlayer.stop();
-                    }
-                });
-                // once song is done playing check if size is not out of bound and stop playing
-
-            }
         } catch (UnsupportedOperationException exception) {
             AlertNotification.showAlertWindow(exception.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
-    public void setPath(String absolutePath) {
-        this.path = absolutePath;
+    public void setPath() {
+        this.path = songTable.getSelectionModel().getSelectedItem().getAbsolutePath();
     }
 
     public void pause() {
@@ -91,6 +92,7 @@ public class MusicPlayer {
         if (mediaPlayer.getMedia() != null)
             this.mediaPlayer.stop();
     }
+
     public MediaPlayer.Status getState() {
         if (mediaPlayer.getMedia() != null) {
             return this.mediaPlayer.getStatus();
