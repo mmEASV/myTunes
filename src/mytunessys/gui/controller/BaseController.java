@@ -33,12 +33,12 @@ public class BaseController implements Initializable {
     //region FXML
     //TODO QUESTION: SHOULD BE ANNOTATED AS FXML ?
 
-    public AnchorPane top;
-    public AnchorPane contentWindow;
+    private AnchorPane top;
+    private AnchorPane contentWindow;
     @FXML
-    public Button btnUp;
+    private Button btnUp;
     @FXML
-    public Button btnDown;
+    private Button btnDown;
 
     // ----
     @FXML
