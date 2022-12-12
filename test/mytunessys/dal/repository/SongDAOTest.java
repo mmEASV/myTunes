@@ -26,7 +26,7 @@ class SongDAOTest {
     private ISongDAO songDAO;
 
     @BeforeEach
-    void initTest() {
+    void initTest() throws Exception {
         this.songDAO = new SongDAO();
     }
 
@@ -36,7 +36,7 @@ class SongDAOTest {
     }
 
     @Test
-    void shouldBeListOfSongS() throws ApplicationException {
+    void shouldBeListOfSongS() throws Exception {
         Genre genre = new Genre(1, "Pop");
         Song prepSong = new Song(1, "Baby", "3033", "Maclemore", "User/folder", genre);
 
@@ -49,7 +49,7 @@ class SongDAOTest {
     }
 
     @Test
-    void shouldAddSongToTableCheckedByTitle() throws ApplicationException {
+    void shouldAddSongToTableCheckedByTitle() throws Exception {
         Song expectedSong = new Song(12, "Get shaky", "30032", "KXXMA", "/user/root/path", new Genre(1, "Pop"));
         songDAO.createSong(expectedSong);
         List<Song> songsList = (List<Song>) (Object) songDAO.getAllSongs();
@@ -58,7 +58,7 @@ class SongDAOTest {
     }
 
     @Test
-    void shouldCreateSongIntoList() throws ApplicationException {
+    void shouldCreateSongIntoList() throws Exception {
         Song expectedSong = new Song(9, "Get shaky", "30032", "KXXMA", "/user/root/path", new Genre(1, "Pop"));
         songDAO.createSong(expectedSong);
         List<Song> fetchedSongs = (List<Song>) (Object) songDAO.getAllSongs();
@@ -67,7 +67,7 @@ class SongDAOTest {
     }
 
     @Test
-    void deletionOfSong() throws ApplicationException {
+    void deletionOfSong() throws Exception {
         int songId = 10;
         LOGGER.info("Testing deletion of song with id " + songId);
         var result = songDAO.deleteSong(songId);
@@ -75,7 +75,7 @@ class SongDAOTest {
     }
 
     @Test
-    void shouldUpdateSongWithNewTitle() throws ApplicationException {
+    void shouldUpdateSongWithNewTitle() throws Exception {
         String newTitle = "She can't love you that much neh ?";
         Song songToUpdate = new Song(10, newTitle, "30032", "KXXMA", "/user/root/path", new Genre(1, "Pop"));
         LOGGER.info("Testing update of song with title " + songToUpdate.getTitle());
