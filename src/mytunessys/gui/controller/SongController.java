@@ -208,7 +208,13 @@ public class SongController {
         displayEditPopUp(null);
         submitButton.setOnAction(event -> {
             if(validation()){
-            var _song = new Song(songName.getText().trim(), songDuration.getText().trim(), artistName.getText().trim(), filePath.getText().trim(),(Genre) genreOptions.getSelectionModel().getSelectedItem());
+            var _song = new Song(
+                    songName.getText().trim(),
+                    songDuration.getText().trim(),
+                    artistName.getText().trim(),
+                    filePath.getText().trim(),(Genre)
+                    genreOptions.getSelectionModel().getSelectedItem()
+            );
                 try {
                     songModel.createSong(_song);
                     fillTable();
@@ -262,7 +268,14 @@ public class SongController {
         displayEditPopUp(song);
         submitButton.setOnAction(event -> {
             if(validation()){
-                var _song = new Song(song.getId(), songName.getText(), songDuration.getText(), artistName.getText(), filePath.getText(),(Genre) genreOptions.getSelectionModel().getSelectedItem());
+                var _song = new Song(
+                        song.getId(),
+                        songName.getText().trim(),
+                        songDuration.getText().trim(),
+                        artistName.getText().trim(),
+                        filePath.getText().trim(),
+                        (Genre) genreOptions.getSelectionModel().getSelectedItem()
+                );
                 try {
                     songModel.updateSong(_song);
                     fillTable();
