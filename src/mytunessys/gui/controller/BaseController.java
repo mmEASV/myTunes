@@ -146,9 +146,12 @@ public class BaseController implements Initializable {
     //endregion
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        songCont = new SongController(contentWindow, songModel, this);
+        songCont = new SongController(contentWindow, songModel, this, playlistModel);
         playlistCont = new PlaylistController(contentWindow, playlistModel, this);
         songOnPlaylistCont = new SongOnPlaylistController(contentWindow, playlistModel, this);
+
+
+
         btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
         btnPlay.setOnAction(this::listener);
         btnNext.setOnAction(this::nextSong);
@@ -281,7 +284,7 @@ public class BaseController implements Initializable {
                 }
 
                 try {
-                    playlistCont.Show(centerContent);
+                    playlistCont.show(centerContent);
                 } catch (ApplicationException e) {
                     e.printStackTrace();
                 }
@@ -313,7 +316,7 @@ public class BaseController implements Initializable {
 
     public void NewItem(ActionEvent actionEvent) {
         if (lblCurrentLocation.getText().equals("Songs"))
-            songCont.NewSong();
+            songCont.newSong();
 
         else
             playlistCont.newPlaylist();

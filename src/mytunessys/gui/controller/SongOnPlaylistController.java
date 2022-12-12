@@ -47,6 +47,7 @@ public class SongOnPlaylistController {
 
 
     private BaseController baseController;
+    private Playlist currentPlaylist;
 
     public SongOnPlaylistController(AnchorPane contentWindow,PlaylistModel playlist,BaseController baseController) {
 
@@ -82,6 +83,7 @@ public class SongOnPlaylistController {
         DurationColumn.setText("Duration");
         DurationColumn.prefWidthProperty().set(70);
         DurationColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("duration"));
+
 
         TableColumn<Song, Void> indexCol = createColumn("Index", Song -> null, 0);
         indexCol.setCellFactory(col -> new TableCell<Song, Void>() {

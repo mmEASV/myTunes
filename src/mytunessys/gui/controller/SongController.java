@@ -64,20 +64,20 @@ public class SongController {
     private Button submitButton;
     private File selectedFile;
 
-    private int SongId;
+    private int songId;
     private BaseController baseController;
-    private TableView<Song> Table;
 
 
-    public SongController(AnchorPane contentWindow,SongModel model,BaseController baseController){
-        Window = contentWindow;
 
+    public SongController(AnchorPane contentWindow,SongModel model,BaseController baseController, PlaylistModel playlistModel){
+        window = contentWindow;
+        this.playlistModel = playlistModel;
         this.songModel = model;
         this.baseController = baseController;
     }
 
     public TableView<Song> getTable(){
-        return Table;
+        return table;
     }
     public void fillTable() throws ApplicationException {
         table.setItems(songModel.getAllSongs());
@@ -85,10 +85,10 @@ public class SongController {
     public void show(AnchorPane centerContent) throws ApplicationException {
 
 
-    public void Show(AnchorPane centerContent) throws ApplicationException {
 
-        Table = new TableView<>();
-        Table.setFocusTraversable(false);
+
+        table = new TableView<>();
+        table.setFocusTraversable(false);
 
 
         TableColumn<Song, String> TitleColumn = new TableColumn<>();
@@ -171,7 +171,7 @@ public class SongController {
                 }
             };
 
-        Table.setRowFactory(new Callback<TableView<Song>, TableRow<Song>>() {
+        table.setRowFactory(new Callback<TableView<Song>, TableRow<Song>>() {
             @Override
             public TableRow<Song> call(TableView<Song> param) {
 
@@ -217,7 +217,7 @@ public class SongController {
     public void editSong(Song song){
         displayEditPopUp(song);
         submitButton.setOnAction(event -> {
-            var _song = new Song(songId, songName.getText(), songDuration.getText(), artistName.getText(), filePath.getText(),(Genre) genreOptions.getSelectionModel().getSelectedItem());
+            var _song = new Song(song.getId(), songName.getText(), songDuration.getText(), artistName.getText(), filePath.getText(),(Genre) genreOptions.getSelectionModel().getSelectedItem());
 
             try {
                 songModel.updateSong(_song);
@@ -393,3 +393,5 @@ public class SongController {
 
 
 }
+
+
