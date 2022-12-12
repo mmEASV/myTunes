@@ -46,4 +46,16 @@ public class GenreManager implements ILogicFacade<Genre> {
     public List<Genre> searchObjects(List<Genre> list, String query) {
         return null;
     }
+
+    @Override
+    public boolean addToObject(Object object, Object secondObject) throws ApplicationException {
+        return false;
+    }
+
+    @Override
+    public boolean removeObjectFrom(Object firstObject) throws ApplicationException {
+        return false;
+    }
+
+
 }

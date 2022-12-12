@@ -8,7 +8,6 @@ public class Song {
     private String absolutePath;
     private Genre genre;
 
-
     public Song(int id, String title, String duration, String artist, String absolutePath, Genre genre) {
         this.id = id;
         this.title = title;

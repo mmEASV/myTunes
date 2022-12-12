@@ -6,9 +6,11 @@
 package mytunessys.bll.interfaces;
 
 
+import mytunessys.be.Song;
 import mytunessys.bll.exceptions.ApplicationException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -56,5 +58,22 @@ public interface ILogicFacade<T>
      * @return
      */
     List<T> searchObjects(List<T> list,String query);
+
+    /**
+     *
+     * @param object
+     * @param secondObject
+     * @return
+     * @throws ApplicationException
+     */
+    boolean addToObject(Object object, Object secondObject) throws ApplicationException;
+
+    /**
+     *
+     * @return
+     * @throws ApplicationException
+     */
+    boolean removeObjectFrom(Object object) throws ApplicationException;
+
 
 }

@@ -18,9 +18,11 @@ import javafx.scene.layout.*;
 
 import javafx.util.Callback;
 import mytunessys.be.Playlist;
-import mytunessys.be.Song;
 import mytunessys.bll.exceptions.ApplicationException;
+import mytunessys.bll.utilities.AlertNotification;
 import mytunessys.gui.models.PlaylistModel;
+
+import java.util.HashMap;
 
 /**
  * @author Bálint, Matej & Tomas
@@ -28,17 +30,24 @@ import mytunessys.gui.models.PlaylistModel;
 
 public class PlaylistController {
     // TODO: do not write inst var with upper case letter first please
-    private AnchorPane Window;
+    private AnchorPane popUpContent;
+    private AnchorPane window;
     private final PlaylistModel playlistModel;
+
     private BaseController baseController;
     private TableView<Playlist> table;
 
-
     public PlaylistController(AnchorPane contentWindow,PlaylistModel playlistModel,BaseController baseController){
-        this.Window = contentWindow; // refer to this. instead of just the name  :)
+        this.window = contentWindow; // refer to this. instead of just the name  :)
         this.playlistModel = playlistModel;
         this.baseController = baseController;
     }
+    public void fillTable() throws ApplicationException{
+        table.setItems(playlistModel.getAllPlaylists());
+    }
+    public void show(AnchorPane centerContent) throws ApplicationException {
+        table = new TableView<>();
+
 
     public TableView<Playlist> getTable(){
         return table;
@@ -52,13 +61,14 @@ public class PlaylistController {
         NameColumn.prefWidthProperty().set(233);
         NameColumn.setCellValueFactory(new PropertyValueFactory<>("playlistName"));
 
+
         TableColumn<Playlist, Integer> NumberOfSongsColumn = new TableColumn<>();
         NumberOfSongsColumn.setText("Number of Songs");
         NumberOfSongsColumn.prefWidthProperty().set(64);
         NumberOfSongsColumn.setCellValueFactory(new PropertyValueFactory<>("songAmount"));
 
-        TableColumn<Playlist, String> OptionsColumn = new TableColumn<>();
-        OptionsColumn.setText("Options");
+        TableColumn<Playlist, String> optionsColumn = new TableColumn<>();
+        optionsColumn.setText("Options");
 
         OptionsColumn.prefWidthProperty().set(47);
 
@@ -80,8 +90,15 @@ public class PlaylistController {
                                 setGraphic(null);
                                 setText(null);
                             } else {
+                                MenuItem editItem = new MenuItem("edit playlist");
+                                MenuItem deletePlaylist = new MenuItem("delete playlist");
+                                var menu = new ContextMenu(editItem,deletePlaylist);
                                 editItem.setOnAction(event -> {
-                                    EditPlaylist(getTableRow().getItem());
+                                    editPlaylist(getTableRow().getItem());
+                                    event.consume();
+                                });
+                                deletePlaylist.setOnAction(event -> {
+                                    deletePlaylist(getTableRow().getItem());
                                     event.consume();
                                 });
                                 btn.setOnAction(event -> {
@@ -96,7 +113,7 @@ public class PlaylistController {
                 }
             };
 
-        OptionsColumn.setCellFactory(cellFactory);
+        optionsColumn.setCellFactory(cellFactory);
 
         // this is sketchy but works for now
         table.setRowFactory(new Callback<TableView<Playlist>, TableRow<Playlist>>() {
@@ -123,53 +140,67 @@ public class PlaylistController {
 
         table.editableProperty().set(false);
 
-        table.getColumns().addAll(NameColumn,NumberOfSongsColumn,OptionsColumn);
+        table.getColumns().addAll(nameColumn,NumberOfSongsColumn,optionsColumn);
         table.setFocusTraversable(false);
         centerContent.getChildren().add(table);
-        table.setItems(playlistModel.getAllPlaylists());
+        fillTable();
     }
-    public void NewPlaylist(){
-        DisplayPlaylistPopUp(null);
+    public void newPlaylist(){
+        displayPlaylistPopUp(null);
     }
-    public void EditPlaylist(Playlist playlist) {
-        DisplayPlaylistPopUp(playlist);
+    public void editPlaylist(Playlist playlist) {
+        displayPlaylistPopUp(playlist);
     }
-    public void DisplayPlaylistPopUp(Playlist content){
-        var anchorPane = new AnchorPane();
-        anchorPane.setMinWidth(400);
-        anchorPane.setMinHeight(470);
-        anchorPane.getStyleClass().add("new");
-        Window.getChildren().add(anchorPane);
+    public void deletePlaylist(Playlist playlist){
+        displayedDeleteConfirmation(playlist);
+    }
+    public void displayedDeleteConfirmation(Playlist playlistToDelete){
+        var confirm = AlertNotification.showAlertWindow("You are about to delete this playlist.", Alert.AlertType.CONFIRMATION);
+        if(confirm.get().equals(ButtonType.OK)){
+            try {
+                playlistModel.deletePlaylist(playlistToDelete);
+                fillTable();
+            } catch (ApplicationException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    public void displayPlaylistPopUp(Playlist content){
+        popUpContent = new AnchorPane();
+        popUpContent.setMinWidth(400);
+        popUpContent.setMinHeight(470);
+        popUpContent.getStyleClass().add("new");
+        window.getChildren().add(popUpContent);
 
-        var FormHolder = new AnchorPane();
-        FormHolder.setLayoutX(36);
-        FormHolder.setLayoutY(100);
-        FormHolder.setMinWidth(300);
-        FormHolder.setMinHeight(75);
-        FormHolder.getStyleClass().add("form");
-        anchorPane.getChildren().add(FormHolder);
+        var formHolder = new AnchorPane();
+        formHolder.setLayoutX(36);
+        formHolder.setLayoutY(100);
+        formHolder.setMinWidth(300);
+        formHolder.setMinHeight(75);
+        formHolder.getStyleClass().add("form");
+        popUpContent.getChildren().add(formHolder);
 
         var vBoxHolder = new VBox();
         vBoxHolder.setPadding(new Insets(10));
-        FormHolder.getChildren().add(vBoxHolder);
+        formHolder.getChildren().add(vBoxHolder);
 
-        var TopRow = new HBox();
-        vBoxHolder.getChildren().add(TopRow);
+        var topRow = new HBox();
+        vBoxHolder.getChildren().add(topRow);
 
 
-        var CloseButton = new Button();
-        CloseButton.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Close.png")));
+        var closeButton = new Button();
+        closeButton.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Close.png")));
         var playlistLabel = new Label("Add new Playlist");
-        var Space = new Region();
-        HBox.setHgrow(Space, Priority.ALWAYS);
-        CloseButton.setOnAction(new EventHandler<ActionEvent>() {
+        var space = new Region();
+        HBox.setHgrow(space, Priority.ALWAYS);
+        closeButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                anchorPane.visibleProperty().set(false);
+                window.getChildren().remove(popUpContent);
 
             }
         });
-        TopRow.getChildren().addAll(playlistLabel, Space, CloseButton);
+        topRow.getChildren().addAll(playlistLabel, space, closeButton);
 
 
         var playlistRow = new HBox();
@@ -187,8 +218,13 @@ public class PlaylistController {
         addPlaylistButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //TODO add a playlist to the lists
-                anchorPane.visibleProperty().set(false);
+                try {
+                    playlistModel.createPlaylist(new Playlist(1, playlistName.getText(0,playlistName.getLength()),0));
+                    fillTable();
+                } catch (ApplicationException e) {
+                    throw new RuntimeException(e);
+                }
+                popUpContent.visibleProperty().set(false);
             }
         });
         vBoxHolder.getChildren().addAll(addPlaylistButton);

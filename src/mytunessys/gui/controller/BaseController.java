@@ -101,7 +101,7 @@ public class BaseController implements Initializable {
         showSearchBar();
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
-        songCont.Show(centerContent);
+        songCont.show(centerContent);
 
     }
 
@@ -111,7 +111,7 @@ public class BaseController implements Initializable {
         showSearchBar();
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists2.png")));
-        playlistCont.Show(centerContent);
+        playlistCont.show(centerContent);
     }
 
     public void switchToSongOnPlaylistInterface(ActionEvent actionEvent, Playlist playlist) throws ApplicationException {
@@ -153,6 +153,7 @@ public class BaseController implements Initializable {
         btnPlay.setOnAction(this::listener);
         btnNext.setOnAction(this::nextSong);
         btnPrevious.setOnAction(this::previousSong);
+
         btnGoBack.setVisible(false);
         setSearch();
         try {
@@ -313,8 +314,9 @@ public class BaseController implements Initializable {
     public void NewItem(ActionEvent actionEvent) {
         if (lblCurrentLocation.getText().equals("Songs"))
             songCont.NewSong();
+
         else
-            playlistCont.NewPlaylist();
+            playlistCont.newPlaylist();
     }
 
     public void btnUpAction(ActionEvent actionEvent) {
