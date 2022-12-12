@@ -14,8 +14,8 @@
                   <Button fx:id="btnGoBack" focusTraversable="false" layoutX="7.0" layoutY="17.0" mnemonicParsing="false" text="&lt;" />
                   <Button fx:id="btnAdd" focusTraversable="false" layoutX="335.0" layoutY="17.0" mnemonicParsing="false" onAction="#NewItem" styleClass="addBtn" text=" " />
                   <TextField fx:id="txfSearchBar" focusTraversable="false" layoutX="166.0" layoutY="17.0" promptText="Search..." styleClass="search-input" />
-                  <Button fx:id="btnUp" focusTraversable="false" layoutX="232.0" layoutY="17.0" mnemonicParsing="false" onAction="#btnUpAction" text="goUp" visible="false" />
-                  <Button fx:id="btnDown" focusTraversable="false" layoutX="284.0" layoutY="17.0" mnemonicParsing="false" onAction="#btnDownAction" text="goDown" visible="false" />
+                  <Button fx:id="btnUp" focusTraversable="false" layoutX="232.0" layoutY="17.0" mnemonicParsing="false" onAction="#btnUpAction" style="-fx-background-image: url('mytunessys/gui/icons/Up.png');" text="    " visible="false" />
+                  <Button fx:id="btnDown" focusTraversable="false" layoutX="284.0" layoutY="17.0" mnemonicParsing="false" onAction="#btnDownAction" style="-fx-background-image: url('mytunessys/gui/icons/Down.png');" text="     " visible="false" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="centerContent" layoutX="14.0" layoutY="60.0" prefHeight="381.0" prefWidth="346.0" />
