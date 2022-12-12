@@ -33,8 +33,10 @@ public class PlaylistController {
     private AnchorPane popUpContent;
     private AnchorPane window;
     private final PlaylistModel playlistModel;
+
+    private BaseController baseController;
     private TableView<Playlist> table;
-    BaseController baseController;
+
     public PlaylistController(AnchorPane contentWindow,PlaylistModel playlistModel,BaseController baseController){
         this.window = contentWindow; // refer to this. instead of just the name  :)
         this.playlistModel = playlistModel;
@@ -46,10 +48,19 @@ public class PlaylistController {
     public void show(AnchorPane centerContent) throws ApplicationException {
         table = new TableView<>();
 
-        TableColumn<Playlist, String> nameColumn = new TableColumn<>();
-        nameColumn.setText("Playlist Name");
-        nameColumn.prefWidthProperty().set(233);
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("playlistName"));
+
+    public TableView<Playlist> getTable(){
+        return table;
+    }
+
+    public void Show(AnchorPane centerContent) throws ApplicationException {
+        table = new TableView<>();
+
+        TableColumn<Playlist, String> NameColumn = new TableColumn<>();
+        NameColumn.setText("Playlist Name");
+        NameColumn.prefWidthProperty().set(233);
+        NameColumn.setCellValueFactory(new PropertyValueFactory<>("playlistName"));
+
 
         TableColumn<Playlist, Integer> NumberOfSongsColumn = new TableColumn<>();
         NumberOfSongsColumn.setText("Number of Songs");
@@ -59,7 +70,10 @@ public class PlaylistController {
         TableColumn<Playlist, String> optionsColumn = new TableColumn<>();
         optionsColumn.setText("Options");
 
-        optionsColumn.prefWidthProperty().set(47);
+        OptionsColumn.prefWidthProperty().set(47);
+
+        MenuItem editItem = new MenuItem("Edit Playlist");
+        var menu = new ContextMenu(editItem);
 
         Callback<TableColumn<Playlist, String>, TableCell<Playlist, String>> cellFactory
             = //

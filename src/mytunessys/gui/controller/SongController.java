@@ -13,8 +13,7 @@ import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
-import javafx.fxml.Initializable;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
@@ -23,7 +22,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
 import javafx.scene.input.MouseButton;
+
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.media.Media;
@@ -35,15 +36,21 @@ import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.GenreManager;
 import mytunessys.bll.exceptions.ApplicationException;
+
+import mytunessys.bll.utilities.MusicPlayer;
+
 import mytunessys.bll.utilities.AlertNotification;
 import mytunessys.gui.models.PlaylistModel;
+
 import mytunessys.gui.models.SongModel;
 /**
  * @author Bálint, Matej & Tomas
  */
 
+
 public class SongController {
     private AnchorPane window;
+
     private AnchorPane popUpContent;
     private TableView<Song> table;
     private TextField filePath;
@@ -56,20 +63,33 @@ public class SongController {
     private MouseEvent mouseEventType;
     private Button submitButton;
     private File selectedFile;
-    private int songId;
-    
-    public SongController(AnchorPane contentWindow, SongModel model, PlaylistModel playlistModel){
-        this.window = contentWindow;
-        this.playlistModel = playlistModel;
+
+    private int SongId;
+    private BaseController baseController;
+    private TableView<Song> Table;
+
+
+    public SongController(AnchorPane contentWindow,SongModel model,BaseController baseController){
+        Window = contentWindow;
+
         this.songModel = model;
+        this.baseController = baseController;
+    }
+
+    public TableView<Song> getTable(){
+        return Table;
     }
     public void fillTable() throws ApplicationException {
         table.setItems(songModel.getAllSongs());
     }
     public void show(AnchorPane centerContent) throws ApplicationException {
 
-        table = new TableView<>();
-        table.setFocusTraversable(false);
+
+    public void Show(AnchorPane centerContent) throws ApplicationException {
+
+        Table = new TableView<>();
+        Table.setFocusTraversable(false);
+
 
         TableColumn<Song, String> TitleColumn = new TableColumn<>();
         TitleColumn.setText("Title");
@@ -151,7 +171,26 @@ public class SongController {
                 }
             };
 
+        Table.setRowFactory(new Callback<TableView<Song>, TableRow<Song>>() {
+            @Override
+            public TableRow<Song> call(TableView<Song> param) {
+
+                TableRow<Song> row = new TableRow<>();
+                row.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if(event.getClickCount() == 2 && (!row.isEmpty())){
+                            baseController.updatePlayerUI(param);
+                            baseController.playSong(param);
+                        }
+                    }
+                });
+                return row;
+            }
+        });
+
         OptionsColumn.setCellFactory(cellFactory);
+
         table.editableProperty().set(false);
         table.getColumns().addAll(TitleColumn,GenreColumn,DurationColumn,OptionsColumn);
         table.setFocusTraversable(false);
@@ -325,6 +364,7 @@ public class SongController {
         });
 
     }
+
 
     private void addSongToPlaylist(Song songToBeAdded,Playlist playlistToBeFilled) {
         boolean finalResult;

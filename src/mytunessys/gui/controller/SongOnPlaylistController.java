@@ -3,17 +3,28 @@ package mytunessys.gui.controller;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.value.ObservableValue; //remove later with other data
 import javafx.collections.ObservableList;
+
+import javafx.event.EventHandler;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Side;
+
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+
 import javafx.scene.layout.VBox;
+
 import javafx.util.Callback;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.exceptions.ApplicationException;
+
+import mytunessys.bll.utilities.MusicPlayer;
+
 import mytunessys.bll.utilities.AlertNotification;
+
 import mytunessys.gui.models.PlaylistModel;
 
 import java.util.ArrayList;
@@ -34,11 +45,18 @@ public class SongOnPlaylistController {
 
     private TableView<Song> table;
 
-    private Playlist currentPlaylist;
 
-    public SongOnPlaylistController(AnchorPane contentWindow,PlaylistModel playlist) {
+    private BaseController baseController;
+
+    public SongOnPlaylistController(AnchorPane contentWindow,PlaylistModel playlist,BaseController baseController) {
+
         this.contentWindow = contentWindow;
         this.playlistModel = playlist;
+        this.baseController = baseController;
+    }
+
+    public TableView<Song> getTable(){
+        return table;
     }
 
     public void Show(AnchorPane centerContent,Playlist playlist) throws ApplicationException {
@@ -75,6 +93,24 @@ public class SongOnPlaylistController {
                 } else {
                     setText(Integer.toString(index));
                 }
+            }
+        });
+
+
+        table.setRowFactory(new Callback<TableView<Song>, TableRow<Song>>() {
+            @Override
+            public TableRow<Song> call(TableView<Song> param) {
+                TableRow<Song> row = new TableRow<>();
+                row.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        if(event.getClickCount() == 2 && (!row.isEmpty())){
+                            Song serialData = row.getItem();
+                            baseController.updatePlayerUI(param);
+                        }
+                    }
+                });
+                return row;
             }
         });
 
@@ -120,12 +156,15 @@ public class SongOnPlaylistController {
 
         OptionsColumn.setCellFactory(cellFactory);
 
+
         table.editableProperty().set(false);
         table.getColumns().addAll(TitleColumn,GenreColumn,DurationColumn,OptionsColumn);
         table.setFocusTraversable(false);
         centerContent.getChildren().add(table);
         this.currentPlaylist = playlist;
         table.setItems(playlistModel.getPlaylistById(playlist));
+        table.getSelectionModel().clearAndSelect(0);
+        //baseController.playSong(table);
     }
 
     private void removeSongFromPlaylist(Song item) {
@@ -178,8 +217,6 @@ public class SongOnPlaylistController {
 
             savePlaylistState();//move the save state to any buttons pressed that leaves the interface
         }
-
-
     }
 
     public void moveDown(){
