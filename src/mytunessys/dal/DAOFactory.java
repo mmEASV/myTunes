@@ -10,29 +10,29 @@ import mytunessys.dal.repository.interfaces.ISongDAO;
 public class DAOFactory extends AbstractDAOFactory{
 
     /**
-     *
+     * method that instantiate new song dao from mssql
      * @return SongDAO instantiated in factory from its interface
      */
     @Override
-    public ISongDAO getSongDAO() {
-         return new SongDAO();
+    public ISongDAO getSongDAO() throws Exception {
+        return new SongDAO();
     }
 
     /**
-     *
+     * method that instantiate new playlist dao from mssql
      * @return PlaylistDAO instantiated in factory from its interface
      */
     @Override
-    public IPlaylistDAO playlistDAO() {
+    public IPlaylistDAO playlistDAO() throws Exception {
         return new PlaylistDAO();
     }
 
     /**
-     *
+     * method that instantiate new genre dao from mssql
      * @return SongOnPlaylistDAO instantiated in the factory from its interface
      */
     @Override
-    public IGenreDAO genreDAO() {
+    public IGenreDAO genreDAO() throws Exception {
         return new GenreDAO();
     }
 

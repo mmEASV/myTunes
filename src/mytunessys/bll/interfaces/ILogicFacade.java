@@ -6,74 +6,77 @@
 package mytunessys.bll.interfaces;
 
 
-import mytunessys.be.Song;
-import mytunessys.bll.exceptions.ApplicationException;
+import mytunessys.be.Playlist;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- *
- * @author Tomas Simko, MatejMazur
+ * This is manager interface that serves a ILogicFacade and connects model on gui with
+ *  all the application managers with generic params
+ * @author Tomas Simko, Matej Mazur
  */
 public interface ILogicFacade<T>
 {
     /**
-     * Gets list of object that needs to be castes into given object
+     * Gets list of object that from the manager
      * @return object that will be cast in order to get list of Songs
-     * @throws ApplicationException if fails to establish connection due to some unexpected reasons
+     * @throws Exception if fails to establish connection due to some unexpected reasons
      */
-    List<T> getAllObject() throws ApplicationException;
+    List<T> getAllObject() throws Exception;
 
     /**
-     * Creates object that will be cast
-     * @throws ApplicationException if fails to establish connection due to some unexpected reasons
+     * Creates object that will be fetched by its id
+     * @param object that will be fetched by its id
+     * @throws Exception if fails to establish connection due to some unexpected reasons
      */
-    T getObjectById(T object) throws ApplicationException;
+    Optional<T> getObjectById(T object) throws Exception;
 
     /**
-     * Creates object that will be cast
-     * @throws ApplicationException if fails to establish connection due to some unexpected reasons
+     * Creates object that will be created
+     * @param object that will be created
+     * @throws Exception if fails to establish connection due to some unexpected reasons
      */
-    void createObject(T object) throws ApplicationException;
+    void createObject(T object) throws Exception;
 
     /**
-     * Creates object
-     * @throws ApplicationException if fails to establish connection due to some unexpected reasons
+     * creates object
+     * @param object that will be updated by its id
+     * @throws Exception if fails to establish connection due to some unexpected reasons
      */
 
-    void updateObject(T object) throws ApplicationException;
+    void updateObject(T object) throws Exception;
 
     /**
-     *
-     * @param object
-     * @return
+     * deletes object by its id
+     * @param object that will be removed
+     * @return false if not able to delete
      */
-    boolean deleteObject(T object) throws ApplicationException;
+    boolean deleteObject(T object) throws Exception;
 
     /**
-     *
-     * @param list
-     * @param query
-     * @return
+     * executes simple iteration (Linear search) by the query that is provided
+     * @param list to be iterated
+     * @param query to be found inside the list
+     * @return list that contains query
      */
     List<T> searchObjects(List<T> list,String query);
 
     /**
-     *
-     * @param object
-     * @param secondObject
-     * @return
-     * @throws ApplicationException
+     * adds song to playlist
+     * @param object first object that will be added
+     * @param secondObject object that will add first object
+     * @return false if not added
+     * @throws Exception if not able to remove it from its playlist
      */
-    boolean addToObject(Object object, Object secondObject) throws ApplicationException;
+    boolean addToObject(Object object, Object secondObject) throws Exception;
 
     /**
-     *
-     * @return
-     * @throws ApplicationException
+     * removes songs from playlist
+     * @return false if object could not have been removed
+     * @throws Exception if not able to remove it from its playlist
      */
-    boolean removeObjectFrom(Object object) throws ApplicationException;
+    boolean removeObjectFrom(Object object) throws Exception;
 
 
 }

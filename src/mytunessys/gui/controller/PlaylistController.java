@@ -41,7 +41,7 @@ public class PlaylistController {
         this.baseController = baseController;
     }
 
-    public void fillTable() throws ApplicationException {
+    public void fillTable() throws Exception {
         table.setItems(playlistModel.getAllPlaylists());
     }
 
@@ -50,7 +50,7 @@ public class PlaylistController {
     }
 
 
-        public void show (AnchorPane centerContent) throws ApplicationException {
+        public void show (AnchorPane centerContent) throws Exception {
             table = new TableView<>();
 
             TableColumn<Playlist, String> nameColumn = new TableColumn<>();
@@ -124,7 +124,7 @@ public class PlaylistController {
                                 Playlist serialData = row.getItem();
                                 try {
                                     baseController.switchToSongOnPlaylistInterface(new ActionEvent(), serialData);
-                                } catch (ApplicationException e) {
+                                } catch (Exception e) {
                                     throw new RuntimeException(e);
                                 }
 
@@ -157,7 +157,7 @@ public class PlaylistController {
                 try {
                     playlistModel.deletePlaylist(playlistToDelete);
                     fillTable();
-                } catch (ApplicationException e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -213,7 +213,7 @@ public class PlaylistController {
                     try {
                         playlistModel.createPlaylist(new Playlist(1, playlistName.getText(0, playlistName.getLength()), 0));
                         fillTable();
-                    } catch (ApplicationException e) {
+                    } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                     popUpContent.visibleProperty().set(false);

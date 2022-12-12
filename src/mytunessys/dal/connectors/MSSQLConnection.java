@@ -2,40 +2,46 @@ package mytunessys.dal.connectors;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
-import mytunessys.bll.exceptions.ConnectionExceptions;
-import mytunessys.bll.exceptions.IOCustomException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.Properties;
 
+
+/**
+ * @author Tomas Simko
+ * MSSQL connector that will load data from config file when instantiated
+ * and can be used in try with resources by getting the connection source
+ */
+
 public class MSSQLConnection {
 
-    private static SQLServerDataSource ds = null;
     private static final String MSSQL_FILE = "resources/mssqlConfig.properties";
 
+    private SQLServerDataSource dataSource = null;
+
+    /**
+     * Default constructor that will try to load config and set new Datasource
+     * @throws IOException if fails load configuration files for this connector
+     */
+    public MSSQLConnection() throws IOException {
+        Properties properties = loadConfigFile();
+        this.dataSource = new SQLServerDataSource();
+        this.dataSource.setDatabaseName(properties.getProperty("db.name"));
+        this.dataSource.setUser(properties.getProperty("db.username"));
+        this.dataSource.setPassword(properties.getProperty("db.password"));
+        this.dataSource.setServerName(properties.getProperty("db.server"));
+        this.dataSource.setPortNumber(Integer.parseInt(properties.getProperty("db.port")));
+        this.dataSource.setTrustServerCertificate(true);
+    }
     /**
      * Creates connection from SQLServerDataSource and binds credentials from environmental variables
      * @return Connection (session) with specific database
-     * @throws ConnectionExceptions if failed to connect with the session database
+     * @throws SQLServerException if failed to connect with the session database
      */
-    public static Connection createConnection() throws ConnectionExceptions{
-        Connection conn = null;
-        try {
-            Properties properties = loadConfigFile();
-            ds = new SQLServerDataSource();
-            ds.setDatabaseName(properties.getProperty("db.name"));
-            ds.setUser(properties.getProperty("db.username"));
-            ds.setPassword(properties.getProperty("db.password"));
-            ds.setServerName(properties.getProperty("db.server"));
-            ds.setPortNumber(Integer.parseInt(properties.getProperty("db.port")));
-            ds.setTrustServerCertificate(true);
-            conn  = ds.getConnection();
-        } catch (SQLServerException | IOCustomException ex) {
-            throw new ConnectionExceptions(ex.getMessage(), ex.getCause());
-        }
-        return conn;
+    public Connection createConnection() throws SQLServerException {
+        return dataSource.getConnection();
     }
 
     /**
@@ -43,13 +49,11 @@ public class MSSQLConnection {
      * and loads them into properties
      * @return Properties read from instance variable (pref resources)
      */
-    private static Properties loadConfigFile() throws IOCustomException{
+    private static Properties loadConfigFile() throws IOException {
         try(FileInputStream fs = new FileInputStream(MSSQL_FILE)){
             Properties properties = new Properties();
             properties.load(fs);
             return properties;
-        }catch(IOException ex){
-            throw new IOCustomException("Could not load credentials from config file ",ex.getCause());
         }
     }
 }

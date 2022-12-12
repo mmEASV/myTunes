@@ -6,59 +6,65 @@ import mytunessys.bll.exceptions.ApplicationException;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public interface IPlaylistDAO {
     /**
-     * Gets all playlists from database
+     * Method that gets all playlists
      *
      * @return List of playlists from database
-     * @throws ApplicationException when data are not able to be updated with message and cause
+     * @throws Exception if unexpected problem occurred
      */
-    List<Playlist> getAllPlaylists() throws ApplicationException;
+    List<Playlist> getAllPlaylists() throws Exception;
 
     /**
-     * Creates new playlist from object model playlist
+     * Method that creates new playlist from object model playlist
      *
-     * @param playlist object
-     * @throws ApplicationException when data are not able to be updated with message and cause
+     * @param playlist that will be created
+     * @throws Exception if unexpected problem occurred
      */
-    void createPlaylist(Playlist playlist) throws ApplicationException;
+    void createPlaylist(Playlist playlist) throws Exception;
 
     /**
-     *
+     * Method that will get playlist by its id
+     * @param playlist that contains its id that will be retrieved
+     * @return playlist object that is found
+     * @throws Exception if unexpected problem occurred
      */
-    Playlist getPlaylistById(Playlist playlist) throws ApplicationException;
+    Optional<Playlist> getPlaylistById(Playlist playlist) throws Exception;
 
     /**
-     *
-     * @param song
-     * @param playlist
-     * @return
-     * @throws ApplicationException
+     * Method that add song to its playlist
+     * @param song that contains song id that is needed for adding to db
+     * @param playlist that contains playlist id that is needed for adding to db
+     * @return false not able to add song to playlist
+     * @throws Exception when data are not able to be added with message and cause
      */
-    boolean addSongToPlaylist(Song song, Playlist playlist) throws ApplicationException;
+    boolean addSongToPlaylist(Song song, Playlist playlist) throws Exception;
 
     /**
      * Updates playlist from object playlist
      *
      * @param playlist object
-     * @throws ApplicationException when data are not able to be updated with message and cause
+     * @throws Exception when data are not able to be updated with message and cause
      */
-    void updatePlaylist(Playlist playlist) throws ApplicationException;
+    void updatePlaylist(Playlist playlist) throws Exception;
 
     /**
-     * Boolean method that deleted playlist with given id from the database
+     * Method that deleted playlist with given id from the database
      *
      * @param id int of the playlist that will be deleted from database
      * @return return true if playlist was deleted otherwise return false if failed
-     * @throws ApplicationException when data are not able to be updated with message and cause
+     * @throws Exception when data are not able to be deleted with message and cause
      */
-    boolean deletePlaylist(int id) throws ApplicationException;
+    boolean deletePlaylist(int id) throws Exception;
 
     /**
+     * Method to remove song from its playlist
      *
-     * @return
+     * @param playlist that contains song that will be removed
+     * @return false if not able to delete
+     * @throws Exception if unexpected problem occurred
      */
-    boolean removeSongFromPlaylist(Playlist playlist) throws ApplicationException;
+    boolean removeSongFromPlaylist(Playlist playlist) throws Exception;
 }
-

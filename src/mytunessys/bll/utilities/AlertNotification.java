@@ -8,7 +8,16 @@ import javafx.stage.StageStyle;
 
 import java.util.Optional;
 
+/**
+ * @author Tomas Simko
+ */
 public class AlertNotification {
+    /**
+     * Show custom alert box with needed description and its alert type
+     * @param content that will be displayed inside the show alert as main message
+     * @param type java fx scene control Alert enum type
+     * @return alert that will be shown and will be waiting for user action
+     */
     public static Optional<ButtonType> showAlertWindow(String content,Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setHeaderText(null);

@@ -1,8 +1,7 @@
 package mytunessys.bll.exceptions;
 
-import java.sql.SQLException;
 
-public class ApplicationException extends SQLException {
+public class ApplicationException extends Exception {
     public ApplicationException(String message, Throwable exception) {
         super(message, exception);
     }
