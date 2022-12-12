@@ -18,6 +18,7 @@ import javafx.scene.media.MediaPlayer;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.exceptions.ApplicationException;
+import mytunessys.bll.utilities.AlertNotification;
 import mytunessys.bll.utilities.MusicPlayer;
 import mytunessys.gui.models.PlaylistModel;
 import mytunessys.gui.models.SongModel;
@@ -73,8 +74,8 @@ public class BaseController implements Initializable {
     private AnchorPane centerContent;
     //endregion
     //region Variables
-    private SongModel songModel = new SongModel();
-    private PlaylistModel playlistModel = new PlaylistModel();
+    private SongModel songModel;
+    private PlaylistModel playlistModel;
     private SongController songCont;
     private PlaylistController playlistCont;
     private SongOnPlaylistController songOnPlaylistCont;
@@ -96,7 +97,7 @@ public class BaseController implements Initializable {
     }
 
     @FXML
-    private void switchToSongInterface(ActionEvent actionEvent) throws ApplicationException {
+    private void switchToSongInterface(ActionEvent actionEvent) throws Exception {
         ShowInterface(actionEvent, "Songs");
         showSearchBar();
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
@@ -106,7 +107,7 @@ public class BaseController implements Initializable {
     }
 
     @FXML
-    private void switchToPlaylistInterface(ActionEvent actionEvent) throws ApplicationException {
+    private void switchToPlaylistInterface(ActionEvent actionEvent) throws Exception {
         ShowInterface(actionEvent, "Playlists");
         showSearchBar();
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
@@ -114,7 +115,7 @@ public class BaseController implements Initializable {
         playlistCont.show(centerContent);
     }
 
-    public void switchToSongOnPlaylistInterface(ActionEvent actionEvent, Playlist playlist) throws ApplicationException {
+    public void switchToSongOnPlaylistInterface(ActionEvent actionEvent, Playlist playlist) throws Exception {
         ShowInterface(actionEvent, playlist.getPlaylistName());//implement playlist.getName() edited CSS, mention word-break and overflow-wrap
         hideSearchBar();
         songOnPlaylistCont.Show(centerContent, playlist);
@@ -146,24 +147,24 @@ public class BaseController implements Initializable {
     //endregion
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        songCont = new SongController(contentWindow, songModel, this, playlistModel);
-        playlistCont = new PlaylistController(contentWindow, playlistModel, this);
-        songOnPlaylistCont = new SongOnPlaylistController(contentWindow, playlistModel, this);
 
-
-
+        try {
+            this.songModel = new SongModel();
+            this.playlistModel = new PlaylistModel();
+            songCont = new SongController(contentWindow, songModel, this, playlistModel);
+            playlistCont = new PlaylistController(contentWindow, playlistModel, this);
+            songOnPlaylistCont = new SongOnPlaylistController(contentWindow, playlistModel, this);
+            switchToSongInterface(new ActionEvent());
+        } catch (Exception e) {
+            AlertNotification.showAlertWindow(e.getMessage(), Alert.AlertType.ERROR);
+        }
+        btnGoBack.setVisible(false);
         btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
         btnPlay.setOnAction(this::listener);
         btnNext.setOnAction(this::nextSong);
         btnPrevious.setOnAction(this::previousSong);
-
         btnGoBack.setVisible(false);
         setSearch();
-        try {
-            switchToSongInterface(new ActionEvent());
-        } catch (ApplicationException e) {
-            e.printStackTrace();
-        }
         sldrVolume.setValue(musicPlayer.getVolume()*100);
         sldrVolume.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -279,13 +280,13 @@ public class BaseController implements Initializable {
 
                 try {
                     songOnPlaylistCont.Show(centerContent, playlistCont.getTable().getSelectionModel().getSelectedItem());
-                } catch (ApplicationException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
                 try {
                     playlistCont.show(centerContent);
-                } catch (ApplicationException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 

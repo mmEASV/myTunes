@@ -79,10 +79,10 @@ public class SongController {
     public TableView<Song> getTable(){
         return table;
     }
-    public void fillTable() throws ApplicationException {
+    public void fillTable() throws Exception {
         table.setItems(songModel.getAllSongs());
     }
-    public void show(AnchorPane centerContent) throws ApplicationException {
+    public void show(AnchorPane centerContent) throws Exception {
 
 
 
@@ -207,7 +207,7 @@ public class SongController {
             try {
                 songModel.createSong(_song);
                 fillTable();
-            } catch (ApplicationException e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
             window.getChildren().remove(popUpContent);
@@ -222,7 +222,7 @@ public class SongController {
             try {
                 songModel.updateSong(_song);
                 fillTable();
-            } catch (ApplicationException e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
             window.getChildren().remove(popUpContent);
@@ -242,7 +242,7 @@ public class SongController {
             try {
                 songModel.deleteSong(songToDelete);
                 fillTable();
-            } catch (ApplicationException e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
 
             }
@@ -316,7 +316,7 @@ public class SongController {
                 null;
         try {
             Items = FXCollections.observableArrayList(new GenreManager().getAllObject());
-        } catch (ApplicationException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         genreOptions = new ComboBox(Items);
@@ -376,7 +376,7 @@ public class SongController {
             } else {
                 finalResult = playlistModel.addSongToPlaylist(songToBeAdded,playlistToBeFilled);
             }
-        } catch (ApplicationException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
         if(finalResult){
