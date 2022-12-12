@@ -8,6 +8,7 @@ import mytunessys.dal.AbstractDAOFactory;
 import mytunessys.dal.repository.interfaces.IGenreDAO;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Bálint, Matej & Tomas,Julian
@@ -31,7 +32,7 @@ public class GenreManager implements ILogicFacade<Genre> {
 
     /** NOT IMPLEMENTED **/
     @Override
-    public Genre getObjectById(Genre object) throws Exception {
+    public Optional<Genre> getObjectById(Genre object) throws Exception {
         return null;
     }
 

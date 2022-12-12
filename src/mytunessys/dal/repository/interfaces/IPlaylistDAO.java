@@ -6,6 +6,7 @@ import mytunessys.bll.exceptions.ApplicationException;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public interface IPlaylistDAO {
     /**
@@ -30,7 +31,7 @@ public interface IPlaylistDAO {
      * @return playlist object that is found
      * @throws Exception if unexpected problem occurred
      */
-    Playlist getPlaylistById(Playlist playlist) throws Exception;
+    Optional<Playlist> getPlaylistById(Playlist playlist) throws Exception;
 
     /**
      * Method that add song to its playlist

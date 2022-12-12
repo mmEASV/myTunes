@@ -11,6 +11,7 @@ import mytunessys.dal.AbstractDAOFactory;
 import mytunessys.dal.repository.interfaces.IPlaylistDAO;
 
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -39,7 +40,7 @@ public class PlaylistManager implements ILogicFacade<Playlist> {
     }
 
     @Override
-    public Playlist getObjectById(Playlist object) throws Exception {
+    public Optional<Playlist> getObjectById(Playlist object) throws Exception {
         return this.playlistDAO.getPlaylistById(object);
     }
 

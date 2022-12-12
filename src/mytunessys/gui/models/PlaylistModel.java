@@ -35,7 +35,7 @@ public class PlaylistModel {
     }
 
     public ObservableList<Song> getPlaylistById(Playlist playlist) throws Exception {
-        List<Song> songs = new ArrayList<>(playlistManager.getObjectById(playlist).getSongList().values());
+        List<Song> songs = new ArrayList<>(playlistManager.getObjectById(playlist).orElseThrow().getSongList().values());
         return FXCollections.observableArrayList(songs);
     }
 

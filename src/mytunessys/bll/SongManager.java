@@ -1,5 +1,6 @@
 package mytunessys.bll;
 
+import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.exceptions.*;
 import mytunessys.bll.helpers.ISearchHelper;
@@ -10,6 +11,7 @@ import mytunessys.dal.AbstractDAOFactory;
 import mytunessys.dal.repository.interfaces.ISongDAO;
 
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -37,7 +39,7 @@ public class SongManager implements ILogicFacade<Song> {
     }
 
     @Override
-    public Song getObjectById(Song object) throws Exception {
+    public Optional<Song> getObjectById(Song object) throws Exception {
         return null;
     }
 

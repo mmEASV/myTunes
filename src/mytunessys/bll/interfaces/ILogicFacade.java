@@ -6,10 +6,14 @@
 package mytunessys.bll.interfaces;
 
 
+import mytunessys.be.Playlist;
+
 import java.util.List;
+import java.util.Optional;
 
 /**
- *
+ * This is manager interface that serves a ILogicFacade and connects model on gui with
+ *  all the application managers with generic params
  * @author Tomas Simko, Matej Mazur
  */
 public interface ILogicFacade<T>
@@ -26,7 +30,7 @@ public interface ILogicFacade<T>
      * @param object that will be fetched by its id
      * @throws Exception if fails to establish connection due to some unexpected reasons
      */
-    T getObjectById(T object) throws Exception;
+    Optional<T> getObjectById(T object) throws Exception;
 
     /**
      * Creates object that will be created

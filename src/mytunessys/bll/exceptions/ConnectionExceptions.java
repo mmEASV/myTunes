@@ -1,7 +1,7 @@
 package mytunessys.bll.exceptions;
 
 /**
- * @author Tomas
+ * @author Tomas Simko 
  */
 public class ConnectionExceptions extends Exception {
     public ConnectionExceptions(String message, Throwable cause) {

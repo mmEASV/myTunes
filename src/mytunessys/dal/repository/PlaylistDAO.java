@@ -12,10 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Tomas,Julian
@@ -53,12 +50,12 @@ public class PlaylistDAO implements IPlaylistDAO {
         return retrievedPlaylists;
     }
 
-    public Playlist getPlaylistById(Playlist playlist) throws Exception{
+    public Optional<Playlist> getPlaylistById(Playlist playlist) throws Exception{
         HashMap<Integer, Song> fetchedSongs = new HashMap<>();
         SongMapper songMapper = new SongMapper();
+        Playlist playlist1 = null;
         String name = "";
         try (Connection connection = mssqlConnection.createConnection()) {
-
             String sql = """
                     SELECT p.id as playlist_id,s.id,s.title,s.duration,s.artist,s.absolute_path,g.id as genre_id,g.genre_name as genre_name,ps.song_order as song_order,p.playlist_name
                     FROM song s
@@ -68,7 +65,6 @@ public class PlaylistDAO implements IPlaylistDAO {
                     WHERE playlist_id = ?
                     ORDER BY p.id,song_order;
                     """;
-
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1,playlist.getId());
             ResultSet rs = preparedStatement.executeQuery();
@@ -78,7 +74,8 @@ public class PlaylistDAO implements IPlaylistDAO {
                 name = rs.getString("playlist_name");
             }
        }
-        return new Playlist(playlist.getId(), name,fetchedSongs);
+        playlist1 = new Playlist(playlist.getId(), name,fetchedSongs);
+        return Optional.of(playlist1);
     }
     @Override
     public void createPlaylist(Playlist playlist) throws Exception {
@@ -87,8 +84,6 @@ public class PlaylistDAO implements IPlaylistDAO {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, playlist.getPlaylistName());
             preparedStatement.executeUpdate();
-        } catch (SQLException ex) {
-            throw new ApplicationException(ex.getMessage(), ex.getCause());
         }
     }
 
