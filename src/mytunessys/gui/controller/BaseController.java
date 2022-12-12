@@ -290,15 +290,7 @@ public class BaseController implements Initializable {
                 lblArtist.setText(tbvContentTable.getSelectionModel().getSelectedItem().getArtist());
                 lblNameOfSong.setText(tbvContentTable.getSelectionModel().getSelectedItem().getTitle());
                 playSong(tbvContentTable);
-            }
-
-            //note to self, remove later:
-            //open the selected playlist, play the first song and go back to playlist view
-            //it should continuously play the next song, the one after and so on
-            //(next and previous buttons still work even if we select an item in the new view)
-            //and update the labels even though we're not at that view
-            //try to instantiate playlist controller -> start playing -> go back to playlist view
-            //(the buttons should control the song on playlist table)
+            }     
 
         }
 
