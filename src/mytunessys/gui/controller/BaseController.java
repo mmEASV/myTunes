@@ -2,17 +2,15 @@ package mytunessys.gui.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
-import javax.swing.JLabel;
-
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,8 +30,13 @@ public class BaseController implements Initializable {
 
     //region FXML
     //TODO QUESTION: SHOULD BE ANNOTATED AS FXML ?
-
+    @FXML
+    private ProgressBar progressBar;
+    @FXML
+    private Slider sldrVolume;
+    @FXML
     private AnchorPane top;
+    @FXML
     private AnchorPane contentWindow;
     @FXML
     private Button btnUp;
@@ -80,6 +83,9 @@ public class BaseController implements Initializable {
     private PlaylistController playlistCont;
     private SongOnPlaylistController songOnPlaylistCont;
     private boolean songIsPlaying = false;
+    private Timer timer;
+    private TimerTask task;
+    private boolean timerIsRunning;
 
     MusicPlayer musicPlayer = MusicPlayer.getInstance();
     MediaPlayer player;
@@ -100,6 +106,7 @@ public class BaseController implements Initializable {
         if(!songIsPlaying){
             songIsPlaying = true;
             btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));//make pause button
+            beginTimer();
             musicPlayer.play();
             musicPlayer.setRepeat(true);
 
@@ -189,6 +196,44 @@ public class BaseController implements Initializable {
         } catch (ApplicationException e) {
             e.printStackTrace();
         }
+        sldrVolume.setValue(musicPlayer.getVolume()*100);
+        sldrVolume.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                musicPlayer.setVolume(sldrVolume.getValue()/100);
+            }
+        });
+    }
+
+    /**
+     * Starts timer to begin filling of progressbar to see song progress
+     * boolean running is set to true
+     */
+    public void beginTimer(){
+        timer = new Timer();
+
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                timerIsRunning = true;
+                double current = musicPlayer.getMediaPlayer().getCurrentTime().toSeconds();
+                double end = musicPlayer.getMediaPlayer().getTotalDuration().toSeconds();
+                progressBar.setProgress(current/end);
+                if(current/end == 1){
+                    cancelTimer();
+                }
+            }
+        };
+        timer.schedule(task, 1000, 1000);
+    }
+
+    /**
+     * stops timer, used if song is finished or song is changed
+     * boolean running is set to false
+     */
+    public void cancelTimer(){
+        timerIsRunning = false;
+        timer.cancel();
     }
 
     private void previousSong(ActionEvent actionEvent) {

@@ -74,9 +74,21 @@ public class MusicPlayer {
             mediaPlayer.setVolume(volume);
 
 
+
         } catch (UnsupportedOperationException exception) {
             AlertNotification.showAlertWindow(exception.getMessage(), Alert.AlertType.ERROR);
         }
+    }
+
+    /**
+     *
+     * @param volume double value, used on the volume slider to change volume of song that is currently playing
+     */
+    public void setVolume(Double volume){
+            getMediaPlayer().setVolume(volume);
+    }
+    public double getVolume(){
+        return volume;
     }
 
     public void setPath() {
