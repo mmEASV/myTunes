@@ -30,15 +30,22 @@ public class PlaylistController {
     // TODO: do not write inst var with upper case letter first please
     private AnchorPane Window;
     private final PlaylistModel playlistModel;
-    BaseController baseController;
+    private BaseController baseController;
+    private TableView<Playlist> table;
+
+
     public PlaylistController(AnchorPane contentWindow,PlaylistModel playlistModel,BaseController baseController){
         this.Window = contentWindow; // refer to this. instead of just the name  :)
         this.playlistModel = playlistModel;
         this.baseController = baseController;
     }
 
+    public TableView<Playlist> getTable(){
+        return table;
+    }
+
     public void Show(AnchorPane centerContent) throws ApplicationException {
-        TableView<Playlist> table = new TableView<>();
+        table = new TableView<>();
 
         TableColumn<Playlist, String> NameColumn = new TableColumn<>();
         NameColumn.setText("Playlist Name");
@@ -55,7 +62,7 @@ public class PlaylistController {
 
         OptionsColumn.prefWidthProperty().set(47);
 
-        MenuItem editItem = new MenuItem("edit song");
+        MenuItem editItem = new MenuItem("Edit Playlist");
         var menu = new ContextMenu(editItem);
 
         Callback<TableColumn<Playlist, String>, TableCell<Playlist, String>> cellFactory

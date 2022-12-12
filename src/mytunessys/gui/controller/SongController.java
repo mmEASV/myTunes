@@ -12,7 +12,6 @@ import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -42,7 +41,7 @@ import java.io.Console;
  * @author Bálint, Matej & Tomas
  */
 
-public class SongController {
+public class SongController{
     // TODO: why some of them are first cap and some of them are not ?
     private AnchorPane Window;
     private AnchorPane popUpContent;
@@ -57,6 +56,8 @@ public class SongController {
     private File selectedFile;
     private int SongId;
     private BaseController baseController;
+    private TableView<Song> Table;
+
 
     public SongController(AnchorPane contentWindow,SongModel model,BaseController baseController){
         Window = contentWindow;
@@ -64,9 +65,13 @@ public class SongController {
         this.baseController = baseController;
     }
 
+    public TableView<Song> getTable(){
+        return Table;
+    }
+
     public void Show(AnchorPane centerContent) throws ApplicationException {
 
-        TableView<Song> Table = new TableView<>();
+        Table = new TableView<>();
         Table.setFocusTraversable(false);
 
         TableColumn<Song, String> TitleColumn = new TableColumn<>();
@@ -91,7 +96,6 @@ public class SongController {
         TableColumn<Song, String> OptionsColumn = new TableColumn<>();
         OptionsColumn.prefWidthProperty().set(47);
         OptionsColumn.setResizable(false);
-
 
         Callback<TableColumn<Song, String>, TableCell<Song, String>> cellFactory
             = //
@@ -141,7 +145,6 @@ public class SongController {
                     @Override
                     public void handle(MouseEvent event) {
                         if(event.getClickCount() == 2 && (!row.isEmpty())){
-                            Song serialData = row.getItem(); // SONG AT THAT ROW WITH ITS ID AND POSITION
                             baseController.updatePlayerUI(param);
                             baseController.playSong(param);
                         }
@@ -361,11 +364,4 @@ public class SongController {
         });
 
     }
-
-    private void CreateSong()
-    {
-
-    }
-
-
 }

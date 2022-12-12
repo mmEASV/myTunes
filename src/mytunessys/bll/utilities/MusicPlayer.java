@@ -18,14 +18,10 @@ public class MusicPlayer {
     private String path;
 
     private TableView<Song> songTable;
+    private Song currentlyPlaying;
 
     private int row;
     private boolean repeat = false;
-
-    //    private final int PREVIOUS_SONG = -1;
-    //    private final int CURRENT_SONG = 0;
-    //    private final int NEXT_SONG = 1;
-    //    public final int NORMAL_MODE = 0;
 
     private MusicPlayer() {
         this.volume = 20;
@@ -47,6 +43,10 @@ public class MusicPlayer {
         return instance;
     }
 
+    public Song getCurrentlyPlaying(){
+        return currentlyPlaying;
+    }
+
     public boolean getRepeat(){
         return repeat;
     }
@@ -65,11 +65,11 @@ public class MusicPlayer {
             mediaPlayer.pause();
         }
         try {
-            Song song = null;
+            currentlyPlaying = null;
 
             row = songTable.getSelectionModel().getSelectedIndex();
-            song = songTable.getItems().get(row);
-            this.mediaPlayer = new MediaPlayer(new Media(song.getAbsolutePath()));
+            currentlyPlaying = songTable.getItems().get(row);
+            this.mediaPlayer = new MediaPlayer(new Media(currentlyPlaying.getAbsolutePath()));
             mediaPlayer.play();
             mediaPlayer.setVolume(volume);
 

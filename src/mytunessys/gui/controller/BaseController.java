@@ -3,14 +3,11 @@ package mytunessys.gui.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import javax.swing.JLabel;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -43,10 +40,6 @@ public class BaseController implements Initializable {
     // ----
     @FXML
     private TableView<Song> tbvContentTable;
-    @FXML
-    private TableColumn<Song, String> tbvCol1;
-    @FXML
-    private TableColumn<Song, String> tbvCol2;
 
     @FXML
     private Label lblNameOfSong;
@@ -73,7 +66,7 @@ public class BaseController implements Initializable {
     @FXML
     private AnchorPane centerContent;
     //endregion
-
+    //region Variables
     private SongModel songModel = new SongModel();
     private PlaylistModel playlistModel = new PlaylistModel();
     private SongController songCont;
@@ -81,48 +74,15 @@ public class BaseController implements Initializable {
     private SongOnPlaylistController songOnPlaylistCont;
     private boolean songIsPlaying = false;
 
-    MusicPlayer musicPlayer = MusicPlayer.getInstance();
-    MediaPlayer player;
-
+    private final MusicPlayer musicPlayer = MusicPlayer.getInstance();
+    private MediaPlayer player;
+    //endregion
+    //region Interface Control
     public void updatePlayerUI(TableView<Song> songTableView) {
         lblNameOfSong.setText(songTableView.getItems().get(songTableView.getSelectionModel().getSelectedIndex()).getTitle());
         lblArtist.setText(songTableView.getItems().get(songTableView.getSelectionModel().getSelectedIndex()).getArtist());
 
         playSong(songTableView);
-
-    }
-
-    public void playSong(TableView<Song> songTableView) {
-
-        musicPlayer.setSongs(songTableView);
-        musicPlayer.setPath();
-
-        if(!songIsPlaying){
-            songIsPlaying = true;
-            btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));//make pause button
-            musicPlayer.play();
-            musicPlayer.setRepeat(true);
-
-            musicPlayer.getMediaPlayer().setOnEndOfMedia(() -> {
-                if (songTableView.getSelectionModel().getSelectedIndex() < songTableView.getItems().size() - 1) {
-                    songTableView.getSelectionModel().clearAndSelect(songTableView.getSelectionModel().getSelectedIndex() + 1);
-
-                    lblNameOfSong.setText(songTableView.getSelectionModel().getSelectedItem().getTitle());
-                    lblArtist.setText(songTableView.getSelectionModel().getSelectedItem().getArtist());
-                    musicPlayer.play();
-                } else {
-                    musicPlayer.stop();
-                    songIsPlaying = false;
-                }
-            });
-        }
-        else
-        {
-            musicPlayer.stop();
-            songIsPlaying = false;
-            playSong(songTableView);
-        }
-
 
     }
 
@@ -146,7 +106,7 @@ public class BaseController implements Initializable {
     }
 
     public void switchToSongOnPlaylistInterface(ActionEvent actionEvent, Playlist playlist) throws ApplicationException {
-        ShowInterface(actionEvent, playlist.getPlaylistName());//implement playlist.getName() edited CSS, mention word-break and overflow-wrap
+        ShowInterface(actionEvent, playlist.getPlaylistName());
         hideSearchBar();
         songOnPlaylistCont.Show(centerContent, playlist);
     }
@@ -155,7 +115,7 @@ public class BaseController implements Initializable {
         centerContent.getChildren().removeAll(centerContent.getChildren());
     }
 
-    public void ShowInterface(ActionEvent actionEvent, String name) {
+    public void ShowInterface(ActionEvent actionEvent, String name) { //no need for actionEvent here
         CleanCenterContent();
         lblCurrentLocation.setText(name);
     }
@@ -174,11 +134,13 @@ public class BaseController implements Initializable {
         btnAdd.setVisible(false);
     }
 
+    //endregion
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         songCont = new SongController(contentWindow, songModel, this);
         playlistCont = new PlaylistController(contentWindow, playlistModel, this);
         songOnPlaylistCont = new SongOnPlaylistController(contentWindow, playlistModel, this);
+        btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
         btnPlay.setOnAction(this::listener);
         btnNext.setOnAction(this::nextSong);
         btnPrevious.setOnAction(this::previousSong);
@@ -191,31 +153,105 @@ public class BaseController implements Initializable {
         }
     }
 
+    //region Play Controls
+    public void playSong(TableView<Song> songTableView) {
+        tbvContentTable = songTableView;
+
+        musicPlayer.setSongs(songTableView);
+        musicPlayer.setPath();
+
+        if (!songIsPlaying) {
+            songIsPlaying = true;
+            btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Close.png")));//make pause button
+            musicPlayer.play();
+            musicPlayer.setRepeat(true);
+
+            musicPlayer.getMediaPlayer().setOnEndOfMedia(() -> {
+                if (songTableView.getSelectionModel().getSelectedIndex() < songTableView.getItems().size() - 1) {
+                    songTableView.getSelectionModel().clearAndSelect(songTableView.getSelectionModel().getSelectedIndex() + 1);
+
+                    lblNameOfSong.setText(songTableView.getSelectionModel().getSelectedItem().getTitle());
+                    lblArtist.setText(songTableView.getSelectionModel().getSelectedItem().getArtist());
+                    musicPlayer.play();
+                } else {
+                    musicPlayer.stop();
+                    btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
+                    songIsPlaying = false;
+                }
+            });
+        } else {
+            musicPlayer.stop();
+            songIsPlaying = false;
+            playSong(songTableView);
+        }
+    }
+
     private void previousSong(ActionEvent actionEvent) {
-        // do previous song
+        if (tbvContentTable.getSelectionModel().getSelectedIndex() > 0) {
+            tbvContentTable.getSelectionModel().clearAndSelect(tbvContentTable.getSelectionModel().getSelectedIndex() - 1);
+
+            lblNameOfSong.setText(tbvContentTable.getSelectionModel().getSelectedItem().getTitle());
+            lblArtist.setText(tbvContentTable.getSelectionModel().getSelectedItem().getArtist());
+        }
+        playSong(tbvContentTable);
     }
 
     private void nextSong(ActionEvent actionEvent) {
-        // do next song
+        if (tbvContentTable.getSelectionModel().getSelectedIndex() < tbvContentTable.getItems().size() - 1) {
+            tbvContentTable.getSelectionModel().clearAndSelect(tbvContentTable.getSelectionModel().getSelectedIndex() + 1);
+
+            lblNameOfSong.setText(tbvContentTable.getSelectionModel().getSelectedItem().getTitle());
+            lblArtist.setText(tbvContentTable.getSelectionModel().getSelectedItem().getArtist());
+        }
+        playSong(tbvContentTable);
     }
+    //endregion
 
     public void listener(ActionEvent actionEvent) {
         player = musicPlayer.getMediaPlayer();
-        if (player != null){
+
+        if (player != null) {
             if (player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
                 player.pause();
                 // we pause and change the button
-                btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Close.png")));
+                btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
             }
             if (player.getStatus().equals(MediaPlayer.Status.PAUSED)) {
                 // if pause we play again and return the button
                 player.play();
-                btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
+                btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Close.png")));
             }
-        }
-        else
-        {
-            //TODO add play selected row from the tableView
+        } else {//cut this from here and edit + insert it into the function of "play selected playlist" button, only need minor changes 10-20min at most
+            if (lblCurrentLocation.getText().equalsIgnoreCase("playlists")) { //blueprint for the idea
+                songOnPlaylistCont = new SongOnPlaylistController(contentWindow, playlistModel, this);
+
+                try {
+                    songOnPlaylistCont.Show(centerContent, playlistCont.getTable().getSelectionModel().getSelectedItem());
+                } catch (ApplicationException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    playlistCont.Show(centerContent);
+                } catch (ApplicationException e) {
+                    e.printStackTrace();
+                }
+
+                tbvContentTable = songOnPlaylistCont.getTable();
+                tbvContentTable.getSelectionModel().clearAndSelect(0);
+                lblArtist.setText(tbvContentTable.getSelectionModel().getSelectedItem().getArtist());
+                lblNameOfSong.setText(tbvContentTable.getSelectionModel().getSelectedItem().getTitle());
+                playSong(tbvContentTable);
+            }
+
+            //note to self, remove later:
+            //open the selected playlist, play the first song and go back to playlist view
+            //it should continuously play the next song, the one after and so on
+            //(next and previous buttons still work even if we select an item in the new view)
+            //and update the labels even though we're not at that view
+            //try to instantiate playlist controller -> start playing -> go back to playlist view
+            //(the buttons should control the song on playlist table)
+
         }
 
     }
@@ -234,7 +270,7 @@ public class BaseController implements Initializable {
         });
     }
 
-    public void NewItem(ActionEvent actionEvent) {
+    public void NewItem() {//removed actionEvent, it wasn't used
         if (lblCurrentLocation.getText().equals("Songs"))
             songCont.NewSong();
         else
@@ -243,9 +279,9 @@ public class BaseController implements Initializable {
 
     public void btnUpAction(ActionEvent actionEvent) {
         songOnPlaylistCont.moveUp();
-    }
+    }//no need for actionEvent here
 
     public void btnDownAction(ActionEvent actionEvent) {
         songOnPlaylistCont.moveDown();
-    }
+    }//no need for actionEvent here
 }

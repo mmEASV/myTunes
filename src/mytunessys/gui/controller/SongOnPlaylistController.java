@@ -38,6 +38,10 @@ public class SongOnPlaylistController {
         this.baseController = baseController;
     }
 
+    public TableView<Song> getTable(){
+        return table;
+    }
+
     public void Show(AnchorPane centerContent,Playlist playlist) throws ApplicationException {
 
         table = new TableView<>();
@@ -97,6 +101,8 @@ public class SongOnPlaylistController {
 
         centerContent.getChildren().add(table);
         table.setItems(playlistModel.getPlaylistById(playlist));
+        table.getSelectionModel().clearAndSelect(0);
+        //baseController.playSong(table);
     }
 
     private <S, T> TableColumn<S, T> createColumn(String title,
