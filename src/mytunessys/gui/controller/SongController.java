@@ -199,52 +199,102 @@ public class SongController {
         fillTable();
     }
 
+    /**
+     * void method that sets on action submit button that will fire event to validate all user inputs and if true then it will
+     * try to create new song from song model
+     * implements alert notifications of the state that the method of creating song is
+     */
     public void newSong() {
         displayEditPopUp(null);
         submitButton.setOnAction(event -> {
-            var _song = new Song(2000, songName.getText(), songDuration.getText(), artistName.getText(), filePath.getText(),(Genre) genreOptions.getSelectionModel().getSelectedItem());
-
-            try {
-                songModel.createSong(_song);
-                fillTable();
-            } catch (ApplicationException e) {
-                throw new RuntimeException(e);
-            }
+            if(validation()){
+            var _song = new Song(songName.getText().trim(), songDuration.getText().trim(), artistName.getText().trim(), filePath.getText().trim(),(Genre) genreOptions.getSelectionModel().getSelectedItem());
+                try {
+                    songModel.createSong(_song);
+                    fillTable();
+                } catch (ApplicationException e) {
+                    AlertNotification.showAlertWindow(e.getMessage() + " " + e.getCause(), Alert.AlertType.WARNING);
+                }
             window.getChildren().remove(popUpContent);
+            AlertNotification.showAlertWindow("Song with name: " + _song.getTitle() + " was created !", Alert.AlertType.INFORMATION);
             event.consume();
+            }else {
+                AlertNotification.showAlertWindow("Please make sure all the field are filled", Alert.AlertType.WARNING);
+            }
         });
     }
+
+    /**
+     * Very simple validation method that check whenever all the fields are filled up or not
+     * @return false if any of the field are null or empty where required
+     */
+    private boolean validation() {
+        if(songName == null ||
+                songName.getText().isEmpty()){
+            return false;
+        }
+        if(songDuration.getText() == null ||
+                songDuration.getText().isEmpty()){
+            return false;
+        }
+        if(genreOptions.getSelectionModel().getSelectedItem() == null ||
+                genreOptions.getSelectionModel() == null ||
+                genreOptions == null){
+            return false;
+        }
+        if(filePath.getText() == null ||
+                filePath.getText().isEmpty()){
+            return false;
+        }
+        if(artistName.getText() == null ||
+                artistName.getText().isEmpty()){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * void method that sets on action submit button that will fire event to validate all user inputs and if true then it will
+     * try to create new song from song model
+     * implements alert notifications of the state that the method of creating song is
+     */
     public void editSong(Song song){
         displayEditPopUp(song);
         submitButton.setOnAction(event -> {
-            var _song = new Song(song.getId(), songName.getText(), songDuration.getText(), artistName.getText(), filePath.getText(),(Genre) genreOptions.getSelectionModel().getSelectedItem());
-
-            try {
-                songModel.updateSong(_song);
-                fillTable();
-            } catch (ApplicationException e) {
-                throw new RuntimeException(e);
+            if(validation()){
+                var _song = new Song(song.getId(), songName.getText(), songDuration.getText(), artistName.getText(), filePath.getText(),(Genre) genreOptions.getSelectionModel().getSelectedItem());
+                try {
+                    songModel.updateSong(_song);
+                    fillTable();
+                } catch (ApplicationException e) {
+                    AlertNotification.showAlertWindow(e.getMessage() + " " + e.getCause(), Alert.AlertType.WARNING);
+                }
+                AlertNotification.showAlertWindow("Song with name: " + _song.getTitle() + " was successfully updated!", Alert.AlertType.INFORMATION);
+                window.getChildren().remove(popUpContent);
+                event.consume();
+            }else {
+                AlertNotification.showAlertWindow("Please make sure all the field are filled", Alert.AlertType.WARNING);
             }
-            window.getChildren().remove(popUpContent);
-            event.consume();
         });
     }
 
-    public void deleteSong(Song song){
+    private void deleteSong(Song song){
         displayedDeleteConfirmation(song);
     }
-
-
     private void displayedDeleteConfirmation(Song songToDelete){
-
         var confirm = AlertNotification.showAlertWindow("You are about to delete this song.", Alert.AlertType.CONFIRMATION);
+        var result = false;
         if(confirm.get().equals(ButtonType.OK)){
             try {
-                songModel.deleteSong(songToDelete);
-                fillTable();
-            } catch (ApplicationException e) {
-                throw new RuntimeException(e);
-
+                result = songModel.deleteSong(songToDelete);
+                if(result){
+                    fillTable();
+                    AlertNotification.showAlertWindow("Song with id: " + songToDelete.getId() + " successfully deleted ", Alert.AlertType.INFORMATION);
+                } else {
+                    AlertNotification.showAlertWindow("Could not delete song with id: " + songToDelete.getId(), Alert.AlertType.ERROR);
+                }
+            } catch (Exception e) {
+                AlertNotification.showAlertWindow(e.getMessage(), Alert.AlertType.ERROR);
             }
         }
     }
@@ -324,7 +374,7 @@ public class SongController {
         vBoxHolder.getChildren().add(genreRow);
 
         var submitRow = new HBox();
-        submitButton = new Button("Submit");
+        submitButton = new Button("Add Song...");
         submitRow.getChildren().addAll(submitButton);
         vBoxHolder.getChildren().add(submitRow);
 
@@ -368,7 +418,6 @@ public class SongController {
 
     private void addSongToPlaylist(Song songToBeAdded,Playlist playlistToBeFilled) {
         boolean finalResult;
-
         try {
             List<Song> fetchedPlaylist =  playlistModel.getPlaylistById(playlistToBeFilled);
             if(findSongInPlaylist(fetchedPlaylist,songToBeAdded.getTitle())){
@@ -390,8 +439,6 @@ public class SongController {
                 .anyMatch(row -> row.getTitle()
                         .contains(songTitle));
     }
-
-
 }
 
 

@@ -17,6 +17,14 @@ public class Song {
         this.genre = genre;
     }
 
+    public Song(String title, String duration, String artist, String absolutePath, Genre genre) {
+        this.title = title;
+        this.duration = duration;
+        this.artist = artist;
+        this.absolutePath = absolutePath;
+        this.genre = genre;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -69,4 +77,5 @@ public class Song {
     public String toString() {
         return this.id + " " + this.title + " " + this.genre.getName() + " " + this.duration;
     }
+
 }

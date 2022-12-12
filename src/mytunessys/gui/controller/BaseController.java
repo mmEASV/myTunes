@@ -149,9 +149,6 @@ public class BaseController implements Initializable {
         songCont = new SongController(contentWindow, songModel, this, playlistModel);
         playlistCont = new PlaylistController(contentWindow, playlistModel, this);
         songOnPlaylistCont = new SongOnPlaylistController(contentWindow, playlistModel, this);
-
-
-
         btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
         btnPlay.setOnAction(this::listener);
         btnNext.setOnAction(this::nextSong);
