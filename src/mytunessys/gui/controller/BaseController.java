@@ -11,10 +11,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.exceptions.ApplicationException;
@@ -32,7 +34,11 @@ public class BaseController implements Initializable {
     //region FXML
     //TODO QUESTION: SHOULD BE ANNOTATED AS FXML ?
     @FXML
-    private ProgressBar progressBar;
+    private Slider progressBar;
+    @FXML
+    private Label lblCurrentDuration;
+    @FXML
+    private Label lblTotalDuration;
     @FXML
     private Slider sldrVolume;
     @FXML
@@ -82,7 +88,7 @@ public class BaseController implements Initializable {
     private boolean songIsPlaying = false;
     private Timer timer;
     private TimerTask task;
-    private boolean timerIsRunning;
+    private Duration duration;
 
     private final MusicPlayer musicPlayer = MusicPlayer.getInstance();
     private MediaPlayer player;
@@ -184,15 +190,17 @@ public class BaseController implements Initializable {
         task = new TimerTask() {
             @Override
             public void run() {
-                timerIsRunning = true;
                 double current = musicPlayer.getMediaPlayer().getCurrentTime().toSeconds();
                 double end = musicPlayer.getMediaPlayer().getTotalDuration().toSeconds();
-                progressBar.setProgress(current/end);
+                progressBar.setMax(end);
+                progressBar.setValue((current/end));
+
                 if(current/end == 1){
                     cancelTimer();
                 }
             }
         };
+
         timer.schedule(task, 1000, 1000);
     }
 
@@ -201,9 +209,19 @@ public class BaseController implements Initializable {
      * boolean running is set to false
      */
     public void cancelTimer(){
-        timerIsRunning = false;
         timer.cancel();
     }
+
+    public void onDragDetected(MouseEvent mouseEvent) {
+            updateSongTime();
+    }
+    public void updateSongTime(){
+        progressBar.setMax(musicPlayer.getMediaPlayer().getTotalDuration().toSeconds());
+        duration = Duration.seconds(progressBar.getValue());
+        System.out.println(Duration.seconds(progressBar.getValue()) + ", " + progressBar.getMax());
+        musicPlayer.getMediaPlayer().seek(duration);
+    }
+
 
     //region Play Controls
     public void playSong(TableView<Song> songTableView) {
@@ -330,4 +348,6 @@ public class BaseController implements Initializable {
     public void btnDownAction(ActionEvent actionEvent) {
         songOnPlaylistCont.moveDown();
     }
+
+
 }
