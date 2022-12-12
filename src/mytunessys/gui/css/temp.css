@@ -219,3 +219,9 @@
     -fx-border-width: 2;
     -fx-border-radius: 10;
 }
+.slider .track{
+    -fx-background-color: -fx-nord6;
+}
+.slider .thumb{
+    -fx-background-color: -fx-nord3;
+}
