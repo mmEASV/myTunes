@@ -141,6 +141,7 @@ public class PlaylistController {
             table.setFocusTraversable(false);
             centerContent.getChildren().add(table);
             fillTable();
+            table.getSelectionModel().clearAndSelect(0);
         }
         public void newPlaylist () {
             displayPlaylistPopUp(null);

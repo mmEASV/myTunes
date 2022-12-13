@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="brdrPane" prefHeight="571.0" prefWidth="373.0" styleClass="borderPane" stylesheets="@../css/temp.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunessys.gui.controller.BaseController">
+<BorderPane fx:id="brdrPane" prefHeight="571.0" prefWidth="373.0" styleClass="borderPane" stylesheets="@../css/temp.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mytunessys.gui.controller.BaseController">
    <center>
       <AnchorPane fx:id="contentWindow" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -20,12 +20,14 @@
                   <Button fx:id="btnGoBack" focusTraversable="false" layoutX="7.0" layoutY="17.0" mnemonicParsing="false" text="&lt;" />
                   <Button fx:id="btnAdd" focusTraversable="false" layoutX="335.0" layoutY="17.0" mnemonicParsing="false" onAction="#NewItem" text="+" />
                   <TextField fx:id="txfSearchBar" focusTraversable="false" layoutX="179.0" layoutY="17.0" promptText="Search..." />
-                  <Button fx:id="btnUp" focusTraversable="false" layoutX="232.0" layoutY="17.0" mnemonicParsing="false" onAction="#btnUpAction" text="goUp" visible="false" />
-                  <Button fx:id="btnDown" focusTraversable="false" layoutX="284.0" layoutY="17.0" mnemonicParsing="false" onAction="#btnDownAction" text="goDown" visible="false" />
+                  <Button fx:id="btnUp" focusTraversable="false" layoutX="232.0" layoutY="17.0" mnemonicParsing="false" onAction="#btnUpAction" visible="false" />
+                  <Button fx:id="btnDown" focusTraversable="false" layoutX="284.0" layoutY="17.0" mnemonicParsing="false" onAction="#btnDownAction" visible="false" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="centerContent" layoutX="14.0" layoutY="60.0" prefHeight="381.0" prefWidth="346.0" />
             <ProgressBar fx:id="progressBar" layoutX="12.0" layoutY="457.0" prefHeight="11.0" prefWidth="347.0" progress="0.0" />
+            <Button fx:id="btnStartPlaylist" focusTraversable="false" layoutX="20.0" layoutY="430.0" mnemonicParsing="false" onAction="#StartPlaylist" prefHeight="25.0" prefWidth="160.0" text="Start Playlist" visible="false" />
+            <Button fx:id="btnShuffle" focusTraversable="false" layoutX="200.0" layoutY="430.0" mnemonicParsing="false" onAction="#shuffleSongs" prefHeight="25.0" prefWidth="160.0" text="Shuffle" visible="false" />
          </children>
       </AnchorPane>
    </center>
