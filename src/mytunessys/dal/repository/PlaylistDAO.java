@@ -2,8 +2,9 @@ package mytunessys.dal.repository;
 
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
-import mytunessys.bll.exceptions.ApplicationException;
-import mytunessys.dal.connectors.MSSQLConnection;
+import mytunessys.bll.types.DatabaseType;
+import mytunessys.dal.AbstractConnectionFactory;
+import mytunessys.dal.ConnectionFactory;
 import mytunessys.dal.mappers.PlaylistMapper;
 import mytunessys.dal.mappers.SongMapper;
 import mytunessys.dal.repository.interfaces.IPlaylistDAO;
@@ -11,7 +12,6 @@ import mytunessys.dal.repository.interfaces.IPlaylistDAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -22,16 +22,17 @@ import java.util.*;
 public class PlaylistDAO implements IPlaylistDAO {
 
     private PreparedStatement preparedStatement;
-    private final MSSQLConnection mssqlConnection;
+
+    AbstractConnectionFactory mssqlFactory;
 
     public PlaylistDAO() throws Exception {
-        this.mssqlConnection = new MSSQLConnection();
+        this.mssqlFactory = ConnectionFactory.getFactory(DatabaseType.MSSQL);
     }
 
     public List<Playlist> getAllPlaylists() throws Exception {
         PlaylistMapper playlistMapper = new PlaylistMapper();
         List<Playlist> retrievedPlaylists = new ArrayList<>();
-        try (Connection connection = mssqlConnection.createConnection()) {
+        try (Connection connection = mssqlFactory.createConnection()) {
             String sql = """
                     SELECT COALESCE(count(ps.song_id), 0) as amount,
                      p.id,
@@ -55,7 +56,7 @@ public class PlaylistDAO implements IPlaylistDAO {
         SongMapper songMapper = new SongMapper();
         Playlist playlist1 = null;
         String name = "";
-        try (Connection connection = mssqlConnection.createConnection()) {
+        try (Connection connection = mssqlFactory.createConnection()) {
             String sql = """
                     SELECT p.id as playlist_id,s.id,s.title,s.duration,s.artist,s.absolute_path,g.id as genre_id,g.genre_name as genre_name,ps.song_order as song_order,p.playlist_name
                     FROM song s
@@ -79,7 +80,7 @@ public class PlaylistDAO implements IPlaylistDAO {
     }
     @Override
     public void createPlaylist(Playlist playlist) throws Exception {
-        try (Connection connection = mssqlConnection.createConnection()) {
+        try (Connection connection = mssqlFactory.createConnection()) {
             String sql = "INSERT INTO playlist(playlist_name) VALUES(?)";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, playlist.getPlaylistName());
@@ -89,7 +90,7 @@ public class PlaylistDAO implements IPlaylistDAO {
 
     @Override
     public void updatePlaylist(Playlist playlist) throws Exception {
-        try (Connection connection = mssqlConnection.createConnection()) {
+        try (Connection connection = mssqlFactory.createConnection()) {
             String sql = "UPDATE playlist SET playlist_name = ? WHERE id = ?";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, playlist.getPlaylistName());
@@ -100,7 +101,7 @@ public class PlaylistDAO implements IPlaylistDAO {
 
     @Override
     public boolean addSongToPlaylist(Song song,Playlist playlist) throws Exception {
-        try(Connection connection = mssqlConnection.createConnection()){
+        try(Connection connection = mssqlFactory.createConnection()){
             String sql = "INSERT INTO playlist_song(song_id,playlist_id,song_order) VALUES(?,?,?)";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, song.getId());
@@ -131,7 +132,7 @@ public class PlaylistDAO implements IPlaylistDAO {
 
     @Override
     public boolean deletePlaylist(int id) throws Exception {
-        try (Connection connection = mssqlConnection.createConnection()) {
+        try (Connection connection = mssqlFactory.createConnection()) {
             String sql = "DELETE FROM playlist WHERE(id=?)";
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
@@ -146,7 +147,7 @@ public class PlaylistDAO implements IPlaylistDAO {
 
     @Override
     public boolean removeSongFromPlaylist(Playlist playlist) throws Exception{
-        try (Connection connection = mssqlConnection.createConnection()) {
+        try (Connection connection = mssqlFactory.createConnection()) {
             String sql = "DELETE FROM playlist_song WHERE song_id = ? AND playlist_id = ? ";
             preparedStatement = connection.prepareStatement(sql);
             Song flagSong = null;
