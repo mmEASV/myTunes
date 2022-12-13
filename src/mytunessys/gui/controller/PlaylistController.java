@@ -101,7 +101,7 @@ public class PlaylistController {
                                         event.consume();
                                     });
                                     btn.setOnAction(event -> {
-                                        menu.show(btn, Side.BOTTOM, 0, 0);
+                                        menu.show(btn, Side.BOTTOM, -75, 0);
                                     });
                                     setGraphic(btn);
                                     setText(null);
