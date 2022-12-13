@@ -326,7 +326,7 @@ public class BaseController implements Initializable {
         songOnPlaylistCont.moveDown();
     }
 
-    public void StartPlaylist(ActionEvent actionEvent) {
+    public void startPlaylist(ActionEvent actionEvent) {
         if (lblCurrentLocation.getText().equalsIgnoreCase("playlists")) {
             songOnPlaylistCont = new SongOnPlaylistController(contentWindow, playlistModel, this);
             int selectedRow = 0;

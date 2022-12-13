@@ -5,7 +5,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.*;
 
-import it.sauronsoftware.jave.Encoder;
+
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
