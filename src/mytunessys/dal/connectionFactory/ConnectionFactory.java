@@ -1,4 +1,4 @@
-package mytunessys.dal;
+package mytunessys.dal.connectionFactory;
 
 import mytunessys.bll.types.DatabaseType;
 import mytunessys.dal.connectors.MSSQLConnection;
@@ -12,7 +12,7 @@ public class ConnectionFactory {
      * @return Factory for chosen database type connection
      * @throws IOException if not able to retrieve credentials from configuration file
      */
-        public static AbstractConnectionFactory getFactory(DatabaseType type) throws IOException {
+        public static IConnectionFactory getFactory(DatabaseType type) throws IOException {
             switch (type) {
                 case MSSQL:
                     return new MSSQLConnection();

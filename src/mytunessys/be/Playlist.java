@@ -18,6 +18,9 @@ public class Playlist {
         this.songAmount = amount;
     }
 
+    public Playlist(String playlistName) {
+        this.playlistName = playlistName;
+    }
     public Playlist(int id, String playlistName,HashMap<Integer,Song> songz) {
         this.id = id;
         this.playlistName = playlistName;

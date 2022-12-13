@@ -1,13 +1,12 @@
 package mytunessys.bll;
 
-import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.exceptions.*;
 import mytunessys.bll.helpers.ISearchHelper;
 import mytunessys.bll.helpers.SearchHelper;
 import mytunessys.bll.interfaces.ILogicFacade;
 import mytunessys.bll.types.DatabaseType;
-import mytunessys.dal.AbstractDAOFactory;
+import mytunessys.dal.daoFactory.AbstractDAOFactory;
 import mytunessys.dal.repository.interfaces.ISongDAO;
 
 import java.util.List;

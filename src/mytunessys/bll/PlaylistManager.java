@@ -7,7 +7,7 @@ import mytunessys.bll.helpers.ISearchHelper;
 import mytunessys.bll.helpers.SearchHelper;
 import mytunessys.bll.interfaces.ILogicFacade;
 import mytunessys.bll.types.DatabaseType;
-import mytunessys.dal.AbstractDAOFactory;
+import mytunessys.dal.daoFactory.AbstractDAOFactory;
 import mytunessys.dal.repository.interfaces.IPlaylistDAO;
 
 import java.util.List;

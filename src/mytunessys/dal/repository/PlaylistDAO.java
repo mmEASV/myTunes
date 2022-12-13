@@ -3,8 +3,8 @@ package mytunessys.dal.repository;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
 import mytunessys.bll.types.DatabaseType;
-import mytunessys.dal.AbstractConnectionFactory;
-import mytunessys.dal.ConnectionFactory;
+import mytunessys.dal.connectionFactory.IConnectionFactory;
+import mytunessys.dal.connectionFactory.ConnectionFactory;
 import mytunessys.dal.mappers.PlaylistMapper;
 import mytunessys.dal.mappers.SongMapper;
 import mytunessys.dal.repository.interfaces.IPlaylistDAO;
@@ -23,7 +23,7 @@ public class PlaylistDAO implements IPlaylistDAO {
 
     private PreparedStatement preparedStatement;
 
-    AbstractConnectionFactory mssqlFactory;
+    IConnectionFactory mssqlFactory;
 
     public PlaylistDAO() throws Exception {
         this.mssqlFactory = ConnectionFactory.getFactory(DatabaseType.MSSQL);

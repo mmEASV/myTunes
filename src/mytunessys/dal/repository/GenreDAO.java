@@ -3,8 +3,8 @@ package mytunessys.dal.repository;
 
 import mytunessys.be.Genre;
 import mytunessys.bll.types.DatabaseType;
-import mytunessys.dal.AbstractConnectionFactory;
-import mytunessys.dal.ConnectionFactory;
+import mytunessys.dal.connectionFactory.IConnectionFactory;
+import mytunessys.dal.connectionFactory.ConnectionFactory;
 import mytunessys.dal.mappers.GenreMapper;
 import mytunessys.dal.repository.interfaces.IGenreDAO;
 
@@ -20,7 +20,7 @@ import java.util.List;
 
 public class GenreDAO implements IGenreDAO {
 
-    AbstractConnectionFactory mssqlFactory;
+    IConnectionFactory mssqlFactory;
 
     public GenreDAO() throws Exception{
         this.mssqlFactory = ConnectionFactory.getFactory(DatabaseType.MSSQL);

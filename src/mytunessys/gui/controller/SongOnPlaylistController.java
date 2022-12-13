@@ -44,8 +44,7 @@ public class SongOnPlaylistController {
     private ObservableList<Song> currentSongsInPlaylist;
 
     private TableView<Song> table;
-
-
+    private Playlist temp;
     private BaseController baseController;
     private Playlist currentPlaylist;
 
@@ -58,6 +57,10 @@ public class SongOnPlaylistController {
 
     public TableView<Song> getTable(){
         return table;
+    }
+
+    public void fillTable() throws Exception {
+        table.setItems(playlistModel.getPlaylistById(currentPlaylist));
     }
 
     public void Show(AnchorPane centerContent,Playlist playlist) throws Exception {
@@ -170,16 +173,16 @@ public class SongOnPlaylistController {
     }
 
     private void removeSongFromPlaylist(Song item) {
-        boolean finalResult = false;
+        boolean finalResult;
         try {
             HashMap<Integer,Song> listToBest = new HashMap<>();
             listToBest.put(item.getId(),item);
             currentPlaylist.setSongList(listToBest);
-           finalResult = playlistModel.removeSongFromPlaylist(currentPlaylist);
+            finalResult = playlistModel.removeSongFromPlaylist(currentPlaylist);
+            fillTable();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
         if(finalResult){
             AlertNotification.showAlertWindow("Successfully removed song with id " + item.getId(), Alert.AlertType.INFORMATION);
         }else {
@@ -199,7 +202,7 @@ public class SongOnPlaylistController {
         }
     }
 
-    private Playlist temp;
+
 
 
     private <S, T> TableColumn<S, T> createColumn(String title,

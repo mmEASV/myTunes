@@ -1,4 +1,4 @@
-package mytunessys.dal;
+package mytunessys.dal.daoFactory;
 
 import mytunessys.dal.repository.GenreDAO;
 import mytunessys.dal.repository.PlaylistDAO;
@@ -7,7 +7,7 @@ import mytunessys.dal.repository.interfaces.IGenreDAO;
 import mytunessys.dal.repository.interfaces.IPlaylistDAO;
 import mytunessys.dal.repository.interfaces.ISongDAO;
 
-public class DAOFactory extends AbstractDAOFactory{
+public class DAOFactory extends AbstractDAOFactory {
 
     /**
      * method that instantiate new song dao from mssql

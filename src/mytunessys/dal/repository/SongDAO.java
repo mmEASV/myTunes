@@ -2,8 +2,8 @@ package mytunessys.dal.repository;
 
 import mytunessys.be.Song;
 import mytunessys.bll.types.DatabaseType;
-import mytunessys.dal.AbstractConnectionFactory;
-import mytunessys.dal.ConnectionFactory;
+import mytunessys.dal.connectionFactory.IConnectionFactory;
+import mytunessys.dal.connectionFactory.ConnectionFactory;
 import mytunessys.dal.mappers.SongMapper;
 import mytunessys.dal.repository.interfaces.ISongDAO;
 import java.sql.Connection;
@@ -19,7 +19,7 @@ import java.util.List;
 public class SongDAO implements ISongDAO {
 
     private PreparedStatement preparedStatement;
-    AbstractConnectionFactory mssqlFactory;
+    IConnectionFactory mssqlFactory;
 
     public SongDAO() throws Exception{
         this.mssqlFactory =  ConnectionFactory.getFactory(DatabaseType.MSSQL);

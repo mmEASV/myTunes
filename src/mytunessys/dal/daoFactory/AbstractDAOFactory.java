@@ -1,4 +1,4 @@
-package mytunessys.dal;
+package mytunessys.dal.daoFactory;
 
 import mytunessys.bll.types.DatabaseType;
 import mytunessys.dal.repository.interfaces.IGenreDAO;

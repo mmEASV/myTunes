@@ -4,7 +4,7 @@ import mytunessys.be.Genre;
 import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.bll.interfaces.ILogicFacade;
 import mytunessys.bll.types.DatabaseType;
-import mytunessys.dal.AbstractDAOFactory;
+import mytunessys.dal.daoFactory.AbstractDAOFactory;
 import mytunessys.dal.repository.interfaces.IGenreDAO;
 
 import java.util.List;
