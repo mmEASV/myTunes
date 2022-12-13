@@ -14,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import javafx.util.Callback;
@@ -164,7 +165,10 @@ public class SongOnPlaylistController {
         table.setFocusTraversable(false);
         centerContent.getChildren().add(table);
         this.currentPlaylist = playlist;
-        table.setItems(playlistModel.getPlaylistById(playlist));
+        fillTable();
+    }
+    public void fillTable() throws Exception {
+        table.setItems(playlistModel.getPlaylistById(this.currentPlaylist));
         table.getSelectionModel().clearAndSelect(0);
         //baseController.playSong(table);
     }
@@ -175,7 +179,8 @@ public class SongOnPlaylistController {
             HashMap<Integer,Song> listToBest = new HashMap<>();
             listToBest.put(item.getId(),item);
             currentPlaylist.setSongList(listToBest);
-           finalResult = playlistModel.removeSongFromPlaylist(currentPlaylist);
+            finalResult = playlistModel.removeSongFromPlaylist(currentPlaylist);
+            fillTable();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -194,6 +199,7 @@ public class SongOnPlaylistController {
             listToBest.put(item.getId(),item);
             currentPlaylist.setSongList(listToBest);
             finalResult = playlistModel.removeSongFromPlaylist(currentPlaylist);
+            fillTable();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
