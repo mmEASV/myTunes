@@ -159,7 +159,7 @@ public class BaseController implements Initializable {
             AlertNotification.showAlertWindow(e.getMessage(), Alert.AlertType.ERROR);
         }
         btnGoBack.setVisible(false);
-        btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
+        btnPlay.setStyle("-fx-background-image: url('mytunessys/gui/icons/Play.png')");
         btnPlay.setOnAction(this::listener);
         btnNext.setOnAction(this::nextSong);
         btnPrevious.setOnAction(this::previousSong);
@@ -214,7 +214,7 @@ public class BaseController implements Initializable {
 
         if (!songIsPlaying) {
             songIsPlaying = true;
-            btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Close.png")));//make pause button
+            btnPlay.setStyle("-fx-background-image: url('mytunessys/gui/icons/Pause.png')");
             musicPlayer.play();
             beginTimer();
             musicPlayer.setRepeat(true);
@@ -228,7 +228,7 @@ public class BaseController implements Initializable {
                     musicPlayer.play();
                 } else {
                     musicPlayer.stop();
-                    btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
+                    btnPlay.setStyle("-fx-background-image: url('mytunessys/gui/icons/Play.png')");
                     songIsPlaying = false;
                 }
             });
@@ -267,12 +267,12 @@ public class BaseController implements Initializable {
             if (player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
                 player.pause();
                 // we pause and change the button
-                btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
+                btnPlay.setStyle("-fx-background-image: url('mytunessys/gui/icons/Play.png')");
             }
             if (player.getStatus().equals(MediaPlayer.Status.PAUSED)) {
                 // if pause we play again and return the button
                 player.play();
-                btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Close.png")));
+                btnPlay.setStyle("-fx-background-image: url('mytunessys/gui/icons/Pause.png')");
             }
         } else {//cut this from here and edit + insert it into the function of "play selected playlist" button, only need minor changes 10-20min at most
             if (lblCurrentLocation.getText().equalsIgnoreCase("playlists")) { //blueprint for the idea
