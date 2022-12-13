@@ -70,6 +70,8 @@ public class PlaylistController {
 
             MenuItem editItem = new MenuItem("Edit Playlist");
             var menu = new ContextMenu(editItem);
+            ImageView editImage = new ImageView("mytunessys/gui/icons/Edit.png");
+            ImageView removeImage = new ImageView("mytunessys/gui/icons/Remove.png");
 
             Callback<TableColumn<Playlist, String>, TableCell<Playlist, String>> cellFactory
                 = //
@@ -87,8 +89,8 @@ public class PlaylistController {
                                     setGraphic(null);
                                     setText(null);
                                 } else {
-                                    MenuItem editItem = new MenuItem("edit playlist");
-                                    MenuItem deletePlaylist = new MenuItem("delete playlist");
+                                    MenuItem editItem = new MenuItem("edit playlist", editImage);
+                                    MenuItem deletePlaylist = new MenuItem("delete playlist", removeImage);
                                     var menu = new ContextMenu(editItem, deletePlaylist);
                                     editItem.setOnAction(event -> {
                                         editPlaylist(getTableRow().getItem());
