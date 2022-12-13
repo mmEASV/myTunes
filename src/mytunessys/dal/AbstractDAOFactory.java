@@ -39,7 +39,7 @@ public abstract class AbstractDAOFactory {
     public static AbstractDAOFactory getDAOFactory(DatabaseType databaseType) {
         return switch (databaseType) {
             case MSSQL -> new DAOFactory();
-            case TEXT_FILE -> throw new UnsupportedOperationException();
+            case TEXT_FILE -> throw new IllegalArgumentException("Invalid database type: " + databaseType);
         };
     }
 }
