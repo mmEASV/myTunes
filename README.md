@@ -8,7 +8,7 @@
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 # MyTunes JavaFX
-:school_satchel: Exam | 1st Semester | SDE & SCO
+:school_satchel: Exam | 1st Semester | SDE & SCO  
 
 [![Contributors][contributors-shield]][contributors-url]
 
@@ -180,6 +180,6 @@ Project Link: [https://github.com/mmEASV/myTunes]()
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo.svg?style=for-the-badge
-[contributors-url]: https://github.com/TomassSimko/Vesterhavsgruppen-Project/graphs/contributors
+[contributors-shield]: https://img.shields.io/github/contributors/mmEASV/myTunes.svg?style=for-the-badge
+[contributors-url]: https://github.com/mmEASV/myTunes/graphs/contributors
 
