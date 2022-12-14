@@ -16,7 +16,6 @@ public class MusicPlayer {
     private MediaPlayer mediaPlayer;
     private double volume;
     private String path;
-
     private TableView<Song> songTable;
     private Song currentlyPlaying;
 
@@ -80,11 +79,13 @@ public class MusicPlayer {
         }
     }
 
+
     /**
      *
      * @param volume double value, used on the volume slider to change volume of song that is currently playing
      */
     public void setVolume(Double volume){
+        if(mediaPlayer != null)
             getMediaPlayer().setVolume(volume);
     }
     public double getVolume(){

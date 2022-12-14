@@ -48,6 +48,7 @@ public class PlaylistController {
     }
         public void show (AnchorPane centerContent) throws Exception {
             table = new TableView<>();
+            table.getStyleClass().add("playlist-table");
 
             TableColumn<Playlist, String> nameColumn = new TableColumn<>();
             nameColumn.setText("Playlist Name");
