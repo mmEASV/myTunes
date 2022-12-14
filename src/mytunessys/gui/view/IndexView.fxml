@@ -29,8 +29,8 @@
             <AnchorPane fx:id="centerContent" layoutX="14.0" layoutY="60.0" prefHeight="381.0" prefWidth="346.0" />
 
             
-            <Button fx:id="btnStartPlaylist" layoutX="25.0" layoutY="425.0" mnemonicParsing="false" onAction="#startPlaylist" text="Start Playlist" />
-            <Button fx:id="btnShuffle" layoutX="215.0" layoutY="425.0" mnemonicParsing="false" onAction="#shuffleSongs" text="Shuffle" />
+            <Button fx:id="btnStartPlaylist" layoutX="25.0" layoutY="420.0" mnemonicParsing="false" onAction="#startPlaylist" text="Start Playlist" />
+            <Button fx:id="btnShuffle" layoutX="215.0" layoutY="420.0" mnemonicParsing="false" onAction="#shuffleSongs" text="Shuffle" />
 
 
             <Slider fx:id="progressBar" layoutX="32.0" layoutY="452.0" onMousePressed="#onMousePressed" onMouseReleased="#onMouseRelease" prefHeight="14.0" prefWidth="309.0" />
