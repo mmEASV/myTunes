@@ -30,6 +30,7 @@ public class PlaylistController {
     private final PlaylistModel playlistModel;
     private BaseController baseController;
     private TableView<Playlist> table;
+    private boolean editing = false;
 
     public PlaylistController(AnchorPane contentWindow, PlaylistModel playlistModel, BaseController baseController) {
         this.window = contentWindow;
@@ -47,7 +48,8 @@ public class PlaylistController {
     }
 
     /**
-     * TODO: write docs
+     * Fills the TableView with information about the Playlist.
+     *
      * @return
      */
 
@@ -96,10 +98,12 @@ public class PlaylistController {
                                     var menu = new ContextMenu(editItem, deletePlaylist);
                                     editItem.setOnAction(event -> {
                                         editPlaylist(getTableRow().getItem());
+                                        editing = true;
                                         event.consume();
                                     });
                                     deletePlaylist.setOnAction(event -> {
                                         deletePlaylist(getTableRow().getItem());
+                                        editing = false;
                                         event.consume();
                                     });
                                     btn.setOnAction(event -> {
@@ -233,9 +237,15 @@ public class PlaylistController {
                 @Override
                 public void handle(ActionEvent event) {
                     try {
-                        playlistModel.createPlaylist(new Playlist(playlistName.getText(0, playlistName.getLength())));
-                        fillTable();
-                        AlertNotification.showAlertWindow("Successfully created playlist with id : " + playlistName.getId() + " !", Alert.AlertType.INFORMATION);
+                        if(editing){
+                            playlistModel.updatePlaylist(new Playlist(content.getId(),playlistName.getText(),content.getSongAmount()));
+                            fillTable();
+                            AlertNotification.showAlertWindow("Successfully updated playlist with id : " + content.getId() + " !", Alert.AlertType.INFORMATION);
+                        }else{
+                            playlistModel.createPlaylist(new Playlist(playlistName.getText(0, playlistName.getLength())));
+                            fillTable();
+                            AlertNotification.showAlertWindow("Successfully created playlist with id : " + playlistName.getId() + " !", Alert.AlertType.INFORMATION);
+                        }
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
