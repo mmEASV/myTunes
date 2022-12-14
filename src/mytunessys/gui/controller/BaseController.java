@@ -241,7 +241,7 @@ public class BaseController implements Initializable {
      * formats total duration label to total duration of song in mm:ss
      */
 
-    public void setVolumeAndTotalDuration() {
+    public void setPlayerVolume() {
         musicPlayer.setVolume(sldrVolume.getValue() / 100);
     }
 
@@ -264,7 +264,9 @@ public class BaseController implements Initializable {
      */
     public void onMouseRelease(MouseEvent mouseEvent) {
         if (isDragging) {
-            updateSongTime();
+            if(musicPlayer.getMediaPlayer() != null) {
+                updateSongTime();
+            }
             isDragging = false;
         }
     }
@@ -302,7 +304,7 @@ public class BaseController implements Initializable {
             if (!isDragging) {
                 updateProgressBar();
             }
-            setVolumeAndTotalDuration();
+            setPlayerVolume();
             musicPlayer.getMediaPlayer().setOnEndOfMedia(() -> {
                 if (songTableView.getSelectionModel().getSelectedIndex() < songTableView.getItems().size() - 1) {
                     songTableView.getSelectionModel().clearAndSelect(songTableView.getSelectionModel().getSelectedIndex() + 1);
@@ -313,7 +315,7 @@ public class BaseController implements Initializable {
                     if (!isDragging) {
                         updateProgressBar();
                     }
-                    setVolumeAndTotalDuration();
+                    setPlayerVolume();
                 } else {
                     musicPlayer.stop();
                     btnPlay.setStyle("-fx-background-image: url('mytunessys/gui/icons/Play.png')");
