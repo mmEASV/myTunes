@@ -86,9 +86,8 @@ public class BaseController implements Initializable {
     private PlaylistController playlistCont;
     private SongOnPlaylistController songOnPlaylistCont;
     private boolean songIsPlaying = false;
-    private Timer timer;
-    private TimerTask task;
     private Duration duration;
+    private boolean isDragging;
 
     private final MusicPlayer musicPlayer = MusicPlayer.getInstance();
     private MediaPlayer player;
@@ -171,54 +170,99 @@ public class BaseController implements Initializable {
         btnPrevious.setOnAction(this::previousSong);
         btnGoBack.setVisible(false);
         setSearch();
-        sldrVolume.setValue(musicPlayer.getVolume()*100);
+        sldrVolume.setValue(musicPlayer.getVolume() * 100);
         sldrVolume.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                musicPlayer.setVolume(sldrVolume.getValue()/100);
+                musicPlayer.setVolume(sldrVolume.getValue() / 100);
             }
         });
     }
 
     /**
-     * Starts timer to begin filling of progressbar to see song progress
-     * boolean running is set to true
+     * change listener to update progress bar's max value to the total duration of the song
+     * and its current value to the current time in the song
+     *
+     * also updates the current time label to show user where they are in the song in mm:ss
      */
-    public void beginTimer(){
-        timer = new Timer();
-
-        task = new TimerTask() {
+    public void updateProgressBar(){
+        musicPlayer.getMediaPlayer().currentTimeProperty().addListener(new ChangeListener<Duration>() {
             @Override
-            public void run() {
+            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
                 double current = musicPlayer.getMediaPlayer().getCurrentTime().toSeconds();
                 double end = musicPlayer.getMediaPlayer().getTotalDuration().toSeconds();
                 progressBar.setMax(end);
-                progressBar.setValue((current/end));
-
-                if(current/end == 1){
-                    cancelTimer();
+                if(!isDragging) {
+                    progressBar.setValue(current);
                 }
-            }
-        };
 
-        timer.schedule(task, 1000, 1000);
+                String currentTime = formatTime(current);
+                lblCurrentDuration.setText(currentTime);
+                lblTotalDuration.setText(formatTime(end));
+            }
+        });
     }
 
     /**
-     * stops timer, used if song is finished or song is changed
-     * boolean running is set to false
+     * formats double value of seconds to a mm:ss format
+     *
+     * @param time double value given from media's current time or total duration
+     * @return
      */
-    public void cancelTimer(){
-        timer.cancel();
+    public String formatTime(Double time){
+        Double minutes;
+        Double seconds;
+        minutes = time/60;
+        seconds = time%60;
+        String stringSeconds = "" + seconds;
+
+        stringSeconds = stringSeconds.substring(0,2);
+
+
+        if(stringSeconds.contains(".")){
+            stringSeconds = "0" +stringSeconds.substring(0,1);
+        }
+        return minutes.intValue() + ":" + stringSeconds;
     }
 
-    public void onDragDetected(MouseEvent mouseEvent) {
-            updateSongTime();
+    /**
+     * sets volume of media to value of volume slider
+     * formats total duration label to total duration of song in mm:ss
+     */
+    public void setVolumeAndTotalDuration(){
+        Double duration = musicPlayer.getMediaPlayer().getTotalDuration().toSeconds();
+        String stringDuration = formatTime(duration);
+        musicPlayer.setVolume(sldrVolume.getValue()/100);
+
     }
+
+    /**
+     * switches isDragging boolean to true to stop auto-updating of progress bar
+     * @param mouseEvent
+     */
+    public void onMousePressed(MouseEvent mouseEvent){
+        if(!isDragging) {
+            isDragging = true;
+        }
+    }
+
+    /**
+     * updates current song position to value of progress bar that the mouse released its click on
+     * changes isDragging boolean back to false
+     * @param mouseEvent
+     */
+    public void onMouseRelease(MouseEvent mouseEvent) {
+        if(isDragging){
+            updateSongTime();
+            isDragging = false;
+        }
+    }
+
+    /**
+     * updates the time that the song is playing at to the value that the progress bar is at
+     */
     public void updateSongTime(){
-        progressBar.setMax(musicPlayer.getMediaPlayer().getTotalDuration().toSeconds());
         duration = Duration.seconds(progressBar.getValue());
-        System.out.println(Duration.seconds(progressBar.getValue()) + ", " + progressBar.getMax());
         musicPlayer.getMediaPlayer().seek(duration);
     }
 
@@ -230,13 +274,16 @@ public class BaseController implements Initializable {
         musicPlayer.setSongs(songTableView);
         musicPlayer.setPath();
 
+
         if (!songIsPlaying) {
             songIsPlaying = true;
             btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Close.png")));//make pause button
             musicPlayer.play();
-            beginTimer();
             musicPlayer.setRepeat(true);
-
+                if(!isDragging) {
+                    updateProgressBar();
+                }
+            setVolumeAndTotalDuration();
             musicPlayer.getMediaPlayer().setOnEndOfMedia(() -> {
                 if (songTableView.getSelectionModel().getSelectedIndex() < songTableView.getItems().size() - 1) {
                     songTableView.getSelectionModel().clearAndSelect(songTableView.getSelectionModel().getSelectedIndex() + 1);
@@ -244,6 +291,10 @@ public class BaseController implements Initializable {
                     lblNameOfSong.setText(songTableView.getSelectionModel().getSelectedItem().getTitle());
                     lblArtist.setText(songTableView.getSelectionModel().getSelectedItem().getArtist());
                     musicPlayer.play();
+                    if(!isDragging) {
+                        updateProgressBar();
+                    }
+                    setVolumeAndTotalDuration();
                 } else {
                     musicPlayer.stop();
                     btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
@@ -254,6 +305,7 @@ public class BaseController implements Initializable {
             musicPlayer.stop();
             songIsPlaying = false;
             playSong(songTableView);
+            updateProgressBar();
         }
     }
 
@@ -264,6 +316,7 @@ public class BaseController implements Initializable {
             lblNameOfSong.setText(tbvContentTable.getSelectionModel().getSelectedItem().getTitle());
             lblArtist.setText(tbvContentTable.getSelectionModel().getSelectedItem().getArtist());
         }
+
         playSong(tbvContentTable);
     }
 

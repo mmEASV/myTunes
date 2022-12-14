@@ -16,7 +16,6 @@ public class MusicPlayer {
     private MediaPlayer mediaPlayer;
     private double volume;
     private String path;
-
     private TableView<Song> songTable;
     private Song currentlyPlaying;
 
@@ -79,6 +78,7 @@ public class MusicPlayer {
             AlertNotification.showAlertWindow(exception.getMessage(), Alert.AlertType.ERROR);
         }
     }
+
 
     /**
      *

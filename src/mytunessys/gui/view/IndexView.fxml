@@ -24,7 +24,7 @@
                </children>
             </AnchorPane>
             <AnchorPane fx:id="centerContent" layoutX="14.0" layoutY="60.0" prefHeight="381.0" prefWidth="346.0" />
-            <Slider fx:id="progressBar" layoutX="32.0" layoutY="452.0" onMouseReleased="#onDragDetected" prefHeight="14.0" prefWidth="309.0" />
+            <Slider fx:id="progressBar" layoutX="32.0" layoutY="452.0" onMousePressed="#onMousePressed" onMouseReleased="#onMouseRelease" prefHeight="14.0" prefWidth="309.0" />
             <Label fx:id="lblCurrentDuration" layoutX="4.0" layoutY="450.0" text="0:00" />
             <Label fx:id="lblTotalDuration" layoutX="343.0" layoutY="450.0" text="0:00" />
          </children>
