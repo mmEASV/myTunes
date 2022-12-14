@@ -75,7 +75,9 @@
     -fx-background-radius: 20px;
     -fx-background-color: transparent;
 }
-
+.playlist-table{
+    -fx-max-height: 360px;
+}
 .table-view:focused{
     -fx-background-color: transparent;
 }

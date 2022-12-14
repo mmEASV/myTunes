@@ -113,6 +113,13 @@ public class BaseController implements Initializable {
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
         btnStartPlaylist.setVisible(false);
         btnShuffle.setVisible(false);
+
+        if(songOnPlaylistCont.getPlaylistChanged()){
+            songOnPlaylistCont.savePlaylistState();
+            songOnPlaylistCont.setPlaylistChanged(false);
+        }
+
+
         songCont.show(centerContent);
 
     }
@@ -126,11 +133,17 @@ public class BaseController implements Initializable {
         btnStartPlaylist.setVisible(true);
         btnShuffle.setVisible(true);
         btnShuffle.setDisable(true);
+
+        if(songOnPlaylistCont.getPlaylistChanged()){
+            songOnPlaylistCont.savePlaylistState();
+            songOnPlaylistCont.setPlaylistChanged(false);
+        }
+
         playlistCont.show(centerContent);
     }
 
     public void switchToSongOnPlaylistInterface(ActionEvent actionEvent, Playlist playlist) throws Exception {
-        ShowInterface(actionEvent, playlist.getPlaylistName());//implement playlist.getName() edited CSS, mention word-break and overflow-wrap
+        ShowInterface(actionEvent, playlist.getPlaylistName());
         hideSearchBar();
         btnStartPlaylist.setVisible(true);
         btnShuffle.setVisible(true);
@@ -168,6 +181,8 @@ public class BaseController implements Initializable {
         try {
             this.songModel = new SongModel();
             this.playlistModel = new PlaylistModel();
+            btnShuffle.getStyleClass().add("submit-Button");
+            btnStartPlaylist.getStyleClass().add("submit-Button");
             songCont = new SongController(contentWindow, songModel, this, playlistModel);
             playlistCont = new PlaylistController(contentWindow, playlistModel, this);
             songOnPlaylistCont = new SongOnPlaylistController(contentWindow, playlistModel, this);
@@ -283,6 +298,11 @@ public class BaseController implements Initializable {
 
 
     //region Play Controls
+
+    /**
+     * Plays all the songs on the current TableView until it reaches the end or gets a new table.
+     * @param songTableView Must be a Song TableView.
+     */
     public void playSong(TableView<Song> songTableView) {
         tbvContentTable = songTableView;
 
@@ -326,6 +346,10 @@ public class BaseController implements Initializable {
         }
     }
 
+    /**
+     * Plays the previous song on the active playlist (not the displayed one).
+     * @param actionEvent
+     */
     private void previousSong(ActionEvent actionEvent) {
         if (tbvContentTable.getSelectionModel().getSelectedIndex() > 0) {
             tbvContentTable.getSelectionModel().clearAndSelect(tbvContentTable.getSelectionModel().getSelectedIndex() - 1);
@@ -337,6 +361,10 @@ public class BaseController implements Initializable {
         playSong(tbvContentTable);
     }
 
+    /**
+     * Plays the next song on the active playlist (not the displayed one).
+     * @param actionEvent
+     */
     private void nextSong(ActionEvent actionEvent) {
         if (tbvContentTable.getSelectionModel().getSelectedIndex() < tbvContentTable.getItems().size() - 1) {
             tbvContentTable.getSelectionModel().clearAndSelect(tbvContentTable.getSelectionModel().getSelectedIndex() + 1);
@@ -398,10 +426,14 @@ public class BaseController implements Initializable {
         songOnPlaylistCont.moveDown();
     }
 
+    /**
+     * Starts playing the playlist without displaying the playlist for the user.
+     * @param actionEvent
+     */
     public void startPlaylist(ActionEvent actionEvent) {
         if (lblCurrentLocation.getText().equalsIgnoreCase("playlists")) {
             songOnPlaylistCont = new SongOnPlaylistController(contentWindow, playlistModel, this);
-            int selectedRow = 0;
+            int selectedRow = playlistCont.getTable().getSelectionModel().getSelectedIndex();;
 
             try {
                 songOnPlaylistCont.Show(centerContent, playlistCont.getTable().getSelectionModel().getSelectedItem());
@@ -411,12 +443,12 @@ public class BaseController implements Initializable {
 
             try {
                 playlistCont.show(centerContent);
+                playlistCont.getTable().getSelectionModel().clearAndSelect(selectedRow);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             tbvContentTable = songOnPlaylistCont.getTable();
-            tbvContentTable.getSelectionModel().clearAndSelect(selectedRow);
             lblArtist.setText(tbvContentTable.getSelectionModel().getSelectedItem().getArtist());
             lblNameOfSong.setText(tbvContentTable.getSelectionModel().getSelectedItem().getTitle());
             playSong(tbvContentTable);
@@ -426,6 +458,7 @@ public class BaseController implements Initializable {
         }
 
     }
+
 
     public void shuffleSongs(ActionEvent actionEvent) {
         songOnPlaylistCont.shuffleSongs();
