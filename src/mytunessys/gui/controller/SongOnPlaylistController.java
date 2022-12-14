@@ -37,21 +37,15 @@ import java.util.function.Function;
  * @author Bálint
  */
 public class SongOnPlaylistController {
-    private AnchorPane contentWindow;
 
     private PlaylistModel playlistModel;
 
-    private ObservableList<Song> currentSongsInPlaylist;
-
     private TableView<Song> table;
-    private Playlist temp;
     private BaseController baseController;
     private Playlist currentPlaylist;
     private boolean playlistChanged = false;
 
-    public SongOnPlaylistController(AnchorPane contentWindow,PlaylistModel playlist,BaseController baseController) {
-
-        this.contentWindow = contentWindow;
+    public SongOnPlaylistController(PlaylistModel playlist,BaseController baseController) {
         this.playlistModel = playlist;
         this.baseController = baseController;
     }
@@ -75,12 +69,10 @@ public class SongOnPlaylistController {
 
     public void Show(AnchorPane centerContent,Playlist playlist) throws Exception {
 
-        temp = playlist;
+        currentPlaylist = playlist;
         table = new TableView<>();
         table.setFocusTraversable(false);
         table.getStyleClass().add("playlist-table");
-
-        ReadOnlyIntegerProperty selectedIndex = table.getSelectionModel().selectedIndexProperty();
 
         TableColumn<Song, String> TitleColumn = new TableColumn<>();
         TitleColumn.setText("Title");
@@ -91,7 +83,6 @@ public class SongOnPlaylistController {
         GenreColumn.setText("Genre");
         GenreColumn.prefWidthProperty().set(47);
         GenreColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("genre"));
-
 
         TableColumn<Song, String> DurationColumn = new TableColumn<>();
         DurationColumn.setText("Duration");
@@ -121,7 +112,6 @@ public class SongOnPlaylistController {
                     @Override
                     public void handle(MouseEvent event) {
                         if(event.getClickCount() == 2 && (!row.isEmpty())){
-                            Song serialData = row.getItem();
                             baseController.updatePlayerUI(param);
                         }
                     }
@@ -209,19 +199,15 @@ public class SongOnPlaylistController {
      * @param item Needs to be a Song.
      */
     private void removeSongWithoutPopup(Song item) {
-        boolean finalResult = false;
         try {
             HashMap<Integer,Song> listToBest = new HashMap<>();
             listToBest.put(item.getId(),item);
             currentPlaylist.setSongList(listToBest);
-            finalResult = playlistModel.removeSongFromPlaylist(currentPlaylist);
+            playlistModel.removeSongFromPlaylist(currentPlaylist);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
-
-
 
     private <S, T> TableColumn<S, T> createColumn(String title,
         Function<S, ObservableValue<T>> property, double width) {

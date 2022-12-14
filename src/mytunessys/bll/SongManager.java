@@ -14,6 +14,7 @@ import java.util.Optional;
 
 
 /**
+ * Manager class that is responsible for all the logic implementation with current abstract dao factory and with the use of abstraction
  * @author Bálint, Matej & Tomas,Julian
  */
 

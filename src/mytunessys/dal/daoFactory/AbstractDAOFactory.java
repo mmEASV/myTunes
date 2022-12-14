@@ -5,6 +5,11 @@ import mytunessys.dal.repository.interfaces.IGenreDAO;
 import mytunessys.dal.repository.interfaces.IPlaylistDAO;
 import mytunessys.dal.repository.interfaces.ISongDAO;
 
+/**
+ * Abstract dao factory
+ * @author Tomas
+ */
+
 public abstract class AbstractDAOFactory {
     /**
      * abstract instantiation of ISongDAO

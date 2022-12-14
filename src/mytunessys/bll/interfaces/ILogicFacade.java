@@ -5,9 +5,6 @@
  */
 package mytunessys.bll.interfaces;
 
-
-import mytunessys.be.Playlist;
-
 import java.util.List;
 import java.util.Optional;
 

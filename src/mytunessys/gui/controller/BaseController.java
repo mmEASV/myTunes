@@ -2,8 +2,6 @@ package mytunessys.gui.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -19,7 +17,6 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
-import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.bll.utilities.AlertNotification;
 import mytunessys.bll.utilities.MusicPlayer;
 import mytunessys.gui.models.PlaylistModel;
@@ -32,55 +29,38 @@ import mytunessys.gui.models.SongModel;
 public class BaseController implements Initializable {
 
     //region FXML
+
     @FXML
-    public Button btnStartPlaylist;
+    private Slider progressBar,
+            sldrVolume;
     @FXML
-    public Button btnShuffle;
+    private Label lblCurrentDuration,
+            lblNameOfSong,
+            lblArtist,
+            lblCurrentLocation,
+            lblTotalDuration;
     @FXML
-    private Slider progressBar;
-    @FXML
-    private Label lblCurrentDuration;
-    @FXML
-    private Label lblTotalDuration;
-    @FXML
-    private Slider sldrVolume;
-    @FXML
-    private AnchorPane top;
-    @FXML
-    private AnchorPane contentWindow;
-    @FXML
-    private Button btnUp;
-    @FXML
-    private Button btnDown;
+    private AnchorPane contentWindow,
+            centerContent;
 
     // ----
     @FXML
     private TableView<Song> tbvContentTable;
+    @FXML
+    private Button btnPrevious,
+            btnPlay,
+            btnNext,
+            btnSongs,
+            btnPlaylists,
+            btnAdd,
+            btnGoBack,
+            btnDown,
+            btnUp,
+            btnStartPlaylist,
+            btnShuffle;
 
     @FXML
-    private Label lblNameOfSong;
-    @FXML
-    private Label lblArtist;
-    @FXML
-    private Button btnPrevious;
-    @FXML
-    private Button btnPlay;
-    @FXML
-    private Button btnNext;
-    @FXML
-    private Button btnSongs;
-    @FXML
-    private Button btnPlaylists;
-    @FXML
-    private Button btnAdd;
-    @FXML
-    private Button btnGoBack;
-    @FXML
-    private Label lblCurrentLocation;
-    @FXML
     private TextField txfSearchBar;
-    @FXML
-    private AnchorPane centerContent;
     //endregion
     //region Variables
     private SongModel songModel;
@@ -88,15 +68,17 @@ public class BaseController implements Initializable {
     private SongController songCont;
     private PlaylistController playlistCont;
     private SongOnPlaylistController songOnPlaylistCont;
-    private boolean songIsPlaying = false;
     private Duration duration;
-    private boolean isDragging;
 
     private final MusicPlayer musicPlayer = MusicPlayer.getInstance();
     private MediaPlayer player;
 
+    private boolean songIsPlaying,
+            isDragging;
+
     //endregion
     //region Interface Control
+
     public void updatePlayerUI(TableView<Song> songTableView) {
         lblNameOfSong.setText(songTableView.getItems().get(songTableView.getSelectionModel().getSelectedIndex()).getTitle());
         lblArtist.setText(songTableView.getItems().get(songTableView.getSelectionModel().getSelectedIndex()).getArtist());
@@ -114,7 +96,7 @@ public class BaseController implements Initializable {
         btnStartPlaylist.setVisible(false);
         btnShuffle.setVisible(false);
 
-        if(songOnPlaylistCont.getPlaylistChanged()){
+        if (songOnPlaylistCont.getPlaylistChanged()) {
             songOnPlaylistCont.savePlaylistState();
             songOnPlaylistCont.setPlaylistChanged(false);
         }
@@ -134,7 +116,7 @@ public class BaseController implements Initializable {
         btnShuffle.setVisible(true);
         btnShuffle.setDisable(true);
 
-        if(songOnPlaylistCont.getPlaylistChanged()){
+        if (songOnPlaylistCont.getPlaylistChanged()) {
             songOnPlaylistCont.savePlaylistState();
             songOnPlaylistCont.setPlaylistChanged(false);
         }
@@ -184,7 +166,7 @@ public class BaseController implements Initializable {
             btnStartPlaylist.getStyleClass().add("submit-Button");
             songCont = new SongController(contentWindow, songModel, this, playlistModel);
             playlistCont = new PlaylistController(contentWindow, playlistModel, this);
-            songOnPlaylistCont = new SongOnPlaylistController(contentWindow, playlistModel, this);
+            songOnPlaylistCont = new SongOnPlaylistController(playlistModel, this);
             switchToSongInterface(new ActionEvent());
         } catch (Exception e) {
             AlertNotification.showAlertWindow(e.getMessage(), Alert.AlertType.ERROR);
@@ -210,10 +192,10 @@ public class BaseController implements Initializable {
     /**
      * change listener to update progress bar's max value to the total duration of the song
      * and its current value to the current time in the song
-     *
+     * <p>
      * also updates the current time label to show user where they are in the song in mm:ss
      */
-    public void updateProgressBar(){
+    public void updateProgressBar() {
         musicPlayer.getMediaPlayer().currentTimeProperty().addListener(new ChangeListener<Duration>() {
 
             @Override
@@ -222,7 +204,7 @@ public class BaseController implements Initializable {
                 double end = musicPlayer.getMediaPlayer().getTotalDuration().toSeconds();
 
                 progressBar.setMax(end);
-                if(!isDragging) {
+                if (!isDragging) {
                     progressBar.setValue(current);
                 }
                 String currentTime = formatTime(current);
@@ -238,18 +220,18 @@ public class BaseController implements Initializable {
      * @param time double value given from media's current time or total duration
      * @return
      */
-    public String formatTime(Double time){
+    public String formatTime(Double time) {
         Double minutes;
         Double seconds;
-        minutes = time/60;
-        seconds = time%60;
+        minutes = time / 60;
+        seconds = time % 60;
         String stringSeconds = "" + seconds;
 
-        stringSeconds = stringSeconds.substring(0,2);
+        stringSeconds = stringSeconds.substring(0, 2);
 
 
-        if(stringSeconds.contains(".")){
-            stringSeconds = "0" +stringSeconds.substring(0,1);
+        if (stringSeconds.contains(".")) {
+            stringSeconds = "0" + stringSeconds.substring(0, 1);
         }
         return minutes.intValue() + ":" + stringSeconds;
     }
@@ -259,18 +241,17 @@ public class BaseController implements Initializable {
      * formats total duration label to total duration of song in mm:ss
      */
 
-    public void setVolumeAndTotalDuration(){
-        Double duration = musicPlayer.getMediaPlayer().getTotalDuration().toSeconds();
-        String stringDuration = formatTime(duration);
-        musicPlayer.setVolume(sldrVolume.getValue()/100);
+    public void setVolumeAndTotalDuration() {
+        musicPlayer.setVolume(sldrVolume.getValue() / 100);
     }
 
     /**
      * switches isDragging boolean to true to stop auto-updating of progress bar
+     *
      * @param mouseEvent
      */
-    public void onMousePressed(MouseEvent mouseEvent){
-        if(!isDragging) {
+    public void onMousePressed(MouseEvent mouseEvent) {
+        if (!isDragging) {
             isDragging = true;
         }
     }
@@ -278,10 +259,11 @@ public class BaseController implements Initializable {
     /**
      * updates current song position to value of progress bar that the mouse released its click on
      * changes isDragging boolean back to false
+     *
      * @param mouseEvent
      */
     public void onMouseRelease(MouseEvent mouseEvent) {
-        if(isDragging){
+        if (isDragging) {
             updateSongTime();
             isDragging = false;
         }
@@ -290,7 +272,7 @@ public class BaseController implements Initializable {
     /**
      * updates the time that the song is playing at to the value that the progress bar is at
      */
-    public void updateSongTime(){
+    public void updateSongTime() {
         duration = Duration.seconds(progressBar.getValue());
         musicPlayer.getMediaPlayer().seek(duration);
     }
@@ -300,6 +282,7 @@ public class BaseController implements Initializable {
 
     /**
      * Plays all the songs on the current TableView until it reaches the end or gets a new table.
+     *
      * @param songTableView Must be a Song TableView.
      */
     public void playSong(TableView<Song> songTableView) {
@@ -316,9 +299,9 @@ public class BaseController implements Initializable {
 
             musicPlayer.play();
             musicPlayer.setRepeat(true);
-                if(!isDragging) {
-                    updateProgressBar();
-                }
+            if (!isDragging) {
+                updateProgressBar();
+            }
             setVolumeAndTotalDuration();
             musicPlayer.getMediaPlayer().setOnEndOfMedia(() -> {
                 if (songTableView.getSelectionModel().getSelectedIndex() < songTableView.getItems().size() - 1) {
@@ -327,7 +310,7 @@ public class BaseController implements Initializable {
                     lblNameOfSong.setText(songTableView.getSelectionModel().getSelectedItem().getTitle());
                     lblArtist.setText(songTableView.getSelectionModel().getSelectedItem().getArtist());
                     musicPlayer.play();
-                    if(!isDragging) {
+                    if (!isDragging) {
                         updateProgressBar();
                     }
                     setVolumeAndTotalDuration();
@@ -347,6 +330,7 @@ public class BaseController implements Initializable {
 
     /**
      * Plays the previous song on the active playlist (not the displayed one).
+     *
      * @param actionEvent
      */
     private void previousSong(ActionEvent actionEvent) {
@@ -362,6 +346,7 @@ public class BaseController implements Initializable {
 
     /**
      * Plays the next song on the active playlist (not the displayed one).
+     *
      * @param actionEvent
      */
     private void nextSong(ActionEvent actionEvent) {
@@ -431,12 +416,14 @@ public class BaseController implements Initializable {
 
     /**
      * Starts playing the playlist without displaying the playlist for the user.
+     *
      * @param actionEvent
      */
     public void startPlaylist(ActionEvent actionEvent) {
         if (lblCurrentLocation.getText().equalsIgnoreCase("playlists")) {
-            songOnPlaylistCont = new SongOnPlaylistController(contentWindow, playlistModel, this);
-            int selectedRow = playlistCont.getTable().getSelectionModel().getSelectedIndex();;
+            songOnPlaylistCont = new SongOnPlaylistController(playlistModel, this);
+            int selectedRow = playlistCont.getTable().getSelectionModel().getSelectedIndex();
+            ;
 
             try {
                 songOnPlaylistCont.Show(centerContent, playlistCont.getTable().getSelectionModel().getSelectedItem());
@@ -455,8 +442,7 @@ public class BaseController implements Initializable {
             lblArtist.setText(tbvContentTable.getSelectionModel().getSelectedItem().getArtist());
             lblNameOfSong.setText(tbvContentTable.getSelectionModel().getSelectedItem().getTitle());
             playSong(tbvContentTable);
-        }
-        else{
+        } else {
             playSong(songOnPlaylistCont.getTable());
         }
 

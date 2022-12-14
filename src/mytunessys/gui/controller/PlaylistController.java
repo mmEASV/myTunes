@@ -18,7 +18,6 @@ import javafx.scene.layout.*;
 
 import javafx.util.Callback;
 import mytunessys.be.Playlist;
-import mytunessys.bll.exceptions.ApplicationException;
 import mytunessys.bll.utilities.AlertNotification;
 import mytunessys.gui.models.PlaylistModel;
 
@@ -27,8 +26,7 @@ import mytunessys.gui.models.PlaylistModel;
  */
 
 public class PlaylistController {
-    private AnchorPane popUpContent;
-    private AnchorPane window;
+    private AnchorPane popUpContent,window;
     private final PlaylistModel playlistModel;
     private BaseController baseController;
     private TableView<Playlist> table;
@@ -43,10 +41,17 @@ public class PlaylistController {
         table.setItems(playlistModel.getAllPlaylists());
     }
 
+
     public TableView<Playlist> getTable(){
         return this.table;
     }
-        public void show (AnchorPane centerContent) throws Exception {
+
+    /**
+     * TODO: write docs
+     * @return
+     */
+
+    public void show (AnchorPane centerContent) throws Exception {
             table = new TableView<>();
             table.getStyleClass().add("playlist-table");
 
@@ -111,7 +116,6 @@ public class PlaylistController {
 
             optionsColumn.setCellFactory(cellFactory);
 
-            // this is sketchy but works for now
             table.setRowFactory(new Callback<TableView<Playlist>, TableRow<Playlist>>() {
                 @Override
                 public TableRow<Playlist> call(TableView<Playlist> param) {
@@ -168,7 +172,13 @@ public class PlaylistController {
                 }
             }
         }
-        public void displayPlaylistPopUp (Playlist content){
+
+    /**
+     * TODO : comments
+     * @param content
+     */
+
+    public void displayPlaylistPopUp (Playlist content){
             popUpContent = new AnchorPane();
             popUpContent.setMinSize(400,470);
             popUpContent.getStyleClass().add("new");

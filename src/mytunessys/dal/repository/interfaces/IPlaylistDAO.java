@@ -2,9 +2,6 @@ package mytunessys.dal.repository.interfaces;
 
 import mytunessys.be.Playlist;
 import mytunessys.be.Song;
-import mytunessys.bll.exceptions.ApplicationException;
-
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 

@@ -1,16 +1,16 @@
 package mytunessys.bll.utilities;
 
-import java.io.IOException;
 
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import mytunessys.be.Song;
-import mytunessys.gui.controller.BaseController;
 
+
+/**
+ * TODO:
+ */
 public class MusicPlayer {
     private static MusicPlayer instance = null;
     private MediaPlayer mediaPlayer;
@@ -40,14 +40,6 @@ public class MusicPlayer {
             }
         }
         return instance;
-    }
-
-    public Song getCurrentlyPlaying(){
-        return currentlyPlaying;
-    }
-
-    public boolean getRepeat(){
-        return repeat;
     }
 
     public void setRepeat(boolean repeat){
@@ -88,6 +80,7 @@ public class MusicPlayer {
         if(mediaPlayer != null)
             getMediaPlayer().setVolume(volume);
     }
+
     public double getVolume(){
         return volume;
     }
@@ -105,14 +98,6 @@ public class MusicPlayer {
         if (mediaPlayer.getMedia() != null)
             this.mediaPlayer.stop();
     }
-
-    public MediaPlayer.Status getState() {
-        if (mediaPlayer.getMedia() != null) {
-            return this.mediaPlayer.getStatus();
-        }
-        return MediaPlayer.Status.STOPPED;
-    }
-
     public void setSongs(TableView<Song> songTableView) {
         this.songTable = songTableView;
     }

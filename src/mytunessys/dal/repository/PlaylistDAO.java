@@ -153,11 +153,9 @@ public class PlaylistDAO implements IPlaylistDAO {
             Song flagSong = null;
             for (Map.Entry<Integer, Song> entry : playlist.getSongList().entrySet()) {
                 flagSong = entry.getValue();
-                // Do things with the list
             }
             preparedStatement.setInt(1,flagSong.getId());
             preparedStatement.setInt(2, playlist.getId());
-            // TODO: updates all other song_order;
             int result = preparedStatement.executeUpdate();
             if(result > 0)
                 return true;
