@@ -48,6 +48,7 @@ public class SongOnPlaylistController {
 
     private BaseController baseController;
     private Playlist currentPlaylist;
+    private boolean playlistChanged = false;
 
     public SongOnPlaylistController(AnchorPane contentWindow,PlaylistModel playlist,BaseController baseController) {
 
@@ -60,11 +61,19 @@ public class SongOnPlaylistController {
         return table;
     }
 
+    public boolean getPlaylistChanged(){
+        return playlistChanged;
+    }
+    public void setPlaylistChanged(boolean value){
+        playlistChanged = value;
+    }
+
     public void Show(AnchorPane centerContent,Playlist playlist) throws Exception {
 
         temp = playlist;
         table = new TableView<>();
         table.setFocusTraversable(false);
+        table.getStyleClass().add("playlist-table");
 
         ReadOnlyIntegerProperty selectedIndex = table.getSelectionModel().selectedIndexProperty();
 
@@ -216,8 +225,9 @@ public class SongOnPlaylistController {
 
             table.getItems().add(index-1, table.getItems().remove(index));
             table.getSelectionModel().clearAndSelect(index-1);
+            playlistChanged = true;
 
-            savePlaylistState();//move the save state to any buttons pressed that leaves the interface
+            //savePlaylistState();//move the save state to any buttons pressed that leaves the interface
         }
     }
 
@@ -231,7 +241,8 @@ public class SongOnPlaylistController {
             table.getItems().add(index+1, table.getItems().remove(index));
             table.getSelectionModel().clearAndSelect(index+1);
 
-            savePlaylistState();//move the save state to any buttons pressed that leaves the interface
+            playlistChanged = true;
+            //savePlaylistState();//move the save state to any buttons pressed that leaves the interface
         }
 
 
@@ -256,7 +267,7 @@ public class SongOnPlaylistController {
 
     }
 
-    private void savePlaylistState(){
+    public void savePlaylistState(){
 
         for (Song s : table.getItems()) {
             removeSongWithoutPopup(s);

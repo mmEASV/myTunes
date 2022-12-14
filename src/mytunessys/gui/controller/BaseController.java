@@ -108,6 +108,13 @@ public class BaseController implements Initializable {
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
         btnStartPlaylist.setVisible(false);
         btnShuffle.setVisible(false);
+
+        if(songOnPlaylistCont.getPlaylistChanged()){
+            songOnPlaylistCont.savePlaylistState();
+            songOnPlaylistCont.setPlaylistChanged(false);
+        }
+
+
         songCont.show(centerContent);
 
     }
@@ -121,6 +128,12 @@ public class BaseController implements Initializable {
         btnStartPlaylist.setVisible(true);
         btnShuffle.setVisible(true);
         btnShuffle.setDisable(true);
+
+        if(songOnPlaylistCont.getPlaylistChanged()){
+            songOnPlaylistCont.savePlaylistState();
+            songOnPlaylistCont.setPlaylistChanged(false);
+        }
+
         playlistCont.show(centerContent);
     }
 
@@ -163,6 +176,8 @@ public class BaseController implements Initializable {
         try {
             this.songModel = new SongModel();
             this.playlistModel = new PlaylistModel();
+            btnShuffle.getStyleClass().add("submit-Button");
+            btnStartPlaylist.getStyleClass().add("submit-Button");
             songCont = new SongController(contentWindow, songModel, this, playlistModel);
             playlistCont = new PlaylistController(contentWindow, playlistModel, this);
             songOnPlaylistCont = new SongOnPlaylistController(contentWindow, playlistModel, this);
@@ -329,7 +344,7 @@ public class BaseController implements Initializable {
     public void startPlaylist(ActionEvent actionEvent) {
         if (lblCurrentLocation.getText().equalsIgnoreCase("playlists")) {
             songOnPlaylistCont = new SongOnPlaylistController(contentWindow, playlistModel, this);
-            int selectedRow = 0;
+            int selectedRow = playlistCont.getTable().getSelectionModel().getSelectedIndex();;
 
             try {
                 songOnPlaylistCont.Show(centerContent, playlistCont.getTable().getSelectionModel().getSelectedItem());
@@ -339,12 +354,12 @@ public class BaseController implements Initializable {
 
             try {
                 playlistCont.show(centerContent);
+                playlistCont.getTable().getSelectionModel().clearAndSelect(selectedRow);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             tbvContentTable = songOnPlaylistCont.getTable();
-            tbvContentTable.getSelectionModel().clearAndSelect(selectedRow);
             lblArtist.setText(tbvContentTable.getSelectionModel().getSelectedItem().getArtist());
             lblNameOfSong.setText(tbvContentTable.getSelectionModel().getSelectedItem().getTitle());
             playSong(tbvContentTable);

@@ -29,8 +29,8 @@
             </AnchorPane>
             <AnchorPane fx:id="centerContent" layoutX="14.0" layoutY="60.0" prefHeight="381.0" prefWidth="346.0" />
             <ProgressBar fx:id="progressBar" layoutY="462.0" prefHeight="11.0" prefWidth="374.0" progress="0.0" styleClass="progressBar" />
-            <Button fx:id="btnStartPlaylist" layoutX="60.0" layoutY="440.0" mnemonicParsing="false" onAction="#startPlaylist" text="Start Playlist" />
-            <Button fx:id="btnShuffle" layoutX="250.0" layoutY="440.0" mnemonicParsing="false" onAction="#shuffleSongs" text="Shuffle" />
+            <Button fx:id="btnStartPlaylist" layoutX="25.0" layoutY="425.0" mnemonicParsing="false" onAction="#startPlaylist" text="Start Playlist" />
+            <Button fx:id="btnShuffle" layoutX="215.0" layoutY="425.0" mnemonicParsing="false" onAction="#shuffleSongs" text="Shuffle" />
 
          </children>
       </AnchorPane>
