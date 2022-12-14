@@ -14,18 +14,17 @@
 
 
 <!-- PROJECT LOGO -->
-
-<h3 align="center">myTunes</h3>
-
-
+<br />
+<p align="center">
+  <a href="https://user-images.githubusercontent.com/72190589/207565741-1867a0a5-7bd6-46c8-a985-6e0ac64e4cac.png">
+    <img src="https://user-images.githubusercontent.com/72190589/207565741-1867a0a5-7bd6-46c8-a985-6e0ac64e4cac.png" alt="Logo" width="350">
+  </a>
   <p align="center">
-    Standard desktop application built with JavaFx 
+    myTunes desktop application
     <br />
     <a href="https://github.com/mmEASV/myTunes"><strong>Explore the docs »</strong></a>
     <br />
-    <br />
   </p>
-
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
@@ -63,9 +62,6 @@ MyTune project was about learning object-oriented-programming and functionalitie
 Basics of programming with a strongly typed language Java and with the help of JavaFx we were able to develop application where we worked on the logic, added extra design pattern and exploring options within JavaFX and Liberica 19
 All the requirements are fulfilled, and we also added some extra features we found useful and good for learning purposes.
 Our main focus was on lowest coupling as possible and on high cohesion throughout the development.
-
-
-![landing_page_look]()
 
 ## Application design:
 Our application was re-design by us in Figma 
@@ -161,6 +157,10 @@ public class DAOFactory extends AbstractDAOFactory{
 
 Way of how we approached the problem of having sensitive data publicly 
 
+## Application interface 
+
+![Screenshot 2022-12-14 at 10 41 16](https://user-images.githubusercontent.com/72190589/207567000-e4513d5f-8ae8-4210-abba-df79ff2581b9.png)
+
 ## Licence
 
 Distributed under the MIT License. See LICENSE for more information.
@@ -173,6 +173,9 @@ TTT :black_nib:
 ## Contact
 
 Tomas Simko - [@twitter](https://twitter.com/TomasSimko_) - simko.t@email.cz - [@linkedIn](https://www.linkedin.com/in/tomas-simko/)
+Balint Farkas - [@twitter](https://twitter.com/TomasSimko_) - simko.t@email.cz - [@linkedIn](https://www.linkedin.com/in/tomas-simko/)
+Matej Mazur - [@twitter](https://twitter.com/TomasSimko_) - simko.t@email.cz - [@linkedIn](https://www.linkedin.com/in/tomas-simko/)
+Julian Hesberg - [@twitter](https://twitter.com/TomasSimko_) - simko.t@email.cz - [@linkedIn](https://www.linkedin.com/in/tomas-simko/)
 
 Project Link: [https://github.com/mmEASV/myTunes]()
 
