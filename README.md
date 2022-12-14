@@ -21,19 +21,10 @@
   <p align="center">
     Standard desktop application built with JavaFx 
     <br />
-    <a href="https://github.com/TomassSimko/Vue-E-Commerce"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/mmEASV/myTunes"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    :octocat: <a href="https://vue-e-commerce-e01af.web.app/">View Demo</a>
-    ·
-    :hammer:<a href="https://github.com/TomassSimko/Vue-E-Commerce/issues">Report Bug</a>
-    📄 <a href="https://github.com/TomassSimko/UML-diagram">UML Diagram</a>
-
-
   </p>
-</p>
-
-
 
 
 <!-- TABLE OF CONTENTS -->
@@ -56,23 +47,31 @@
 
 
 ## Tech stack
-* [Java](https://github.com/vuejs/vue)
-* [Liberetica 19](https://github.com/vuejs/vuex)
-* [JavaFX](https://firebase.google.com)
+* [Java](https://www.java.com/en/)
+* [Liberica 19](https://bell-sw.com/libericajdk/)
+* [JavaFX](https://www.java.com/en/)
 
 
 ## Style
-* [CSS](https://github.com/sass/sass)
-* [Bootstrap Vue](https://github.com/bootstrap-vue/bootstrap-vue)
+* [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference)
 
 
 <!-- ABOUT THE PROJECT -->
 ## OOP & CRUD
 
+MyTune project was about learning object-oriented-programming and functionalities.
+Basics of programming with a strongly typed language Java and with the help of JavaFx we were able to develop application where we worked on the logic, added extra design pattern and exploring options within JavaFX and Liberica 19
+All the requirements are fulfilled, and we also added some extra features we found useful and good for learning purposes.
+Our main focus was on lowest coupling as possible and on high cohesion throughout the development.
+
+
 ![landing_page_look]()
 
 ## Application design:
-**SIMPLE RATHER MINIMALISTIC**
+Our application was re-design by us in Figma 
+
+![Screenshot 2022-12-14 at 10 23 40](https://user-images.githubusercontent.com/72190589/207556989-5708457c-1a69-4c19-8a27-a0754b53f382.png)
+
 
 ## Features
 - [x] JDBC database connection
@@ -107,36 +106,75 @@
     - [x] QUILL Editor with fb storage upload
 
 
-<!-- GETTING STARTED -->
+  
+## Database design
+
+MSSQL Database diagram
+![Screenshot 2021-11-15 at 19 39 17](https://user-images.githubusercontent.com/72190589/207555267-3bf24d97-e49f-4f47-bb65-1bab7eb257ea.png)
+
+## UML diagram
+
+![UML](https://user-images.githubusercontent.com/72190589/207556029-147be047-55bd-4140-9b0b-8ac60b41ad57.png)
 
 
+## Abstraction in myTunes 
 
-## Details
+### Connection switch statement 
 
+```java
+public class ConnectionFactory {
+  public static AbstractConnectionFactory getFactory(DatabaseType type) {
+    switch (type) {
+      case MSSQL:
+        return new MSSQLConnection();
+      default:
+        throw new IllegalArgumentException("Invalid database type: " + type);
+    }
+  }
+}
+```
 
-![#example]()
+Using abstraction and factories in java helped the application with decoupling in certain degree
 
-## Song
+### DAO
+``` java
+public class DAOFactory extends AbstractDAOFactory{
+    @Override
+    public ISongDAO getSongDAO() throws Exception {
+        return new SongDAO();
+    }
+```
 
-![Screenshot 2021-11-15 at 19 39 17]()
+## Environmental variables 
 
+``` java 
+ public MSSQLConnection() throws IOException {
+        Properties properties = loadConfigFile();
+        this.dataSource = new SQLServerDataSource();
+        this.dataSource.setDatabaseName(properties.getProperty("db.name"));
+        this.dataSource.setUser(properties.getProperty("db.username"));
+        this.dataSource.setPassword(properties.getProperty("db.password"));
+        this.dataSource.setServerName(properties.getProperty("db.server"));
+        this.dataSource.setPortNumber(Integer.parseInt(properties.getProperty("db.port")));
+    }
+```
+
+Way of how we approached the problem of having sensitive data publicly 
 
 ## Licence
 
 Distributed under the MIT License. See LICENSE for more information.
 
-isEmpty() {true} 2022 SDE & SCO cs project posted here on GitHub.
-Hope you will like it!
+Team: isEmpty() {true} <br>
+2022 SDE & SCO cs project posted here on GitHub. <br>
+Hope you will like it! <br>
 Thank you for your attention!
 TTT :black_nib:
 ## Contact
 
 Tomas Simko - [@twitter](https://twitter.com/TomasSimko_) - simko.t@email.cz - [@linkedIn](https://www.linkedin.com/in/tomas-simko/)
-Balint Farkas - [@twitter](https://twitter.com/TomasSimko_) - simko.t@email.cz - [@linkedIn](https://www.linkedin.com/in/tomas-simko/)
-Julian Hesberg - [@twitter](https://twitter.com/TomasSimko_) - simko.t@email.cz - [@linkedIn](https://www.linkedin.com/in/tomas-simko/)
-Matej Mazur - [@twitter](https://twitter.com/TomasSimko_) - simko.t@email.cz - [@linkedIn](https://www.linkedin.com/in/tomas-simko/)
 
-Project Link: []()
+Project Link: [https://github.com/mmEASV/myTunes]()
 
 
 
