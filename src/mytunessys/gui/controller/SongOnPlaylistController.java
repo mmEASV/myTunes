@@ -63,6 +63,7 @@ public class SongOnPlaylistController {
 
     public void fillTable() throws Exception {
         table.setItems(playlistModel.getPlaylistById(currentPlaylist));
+    }
 
     public boolean getPlaylistChanged(){
         return playlistChanged;
