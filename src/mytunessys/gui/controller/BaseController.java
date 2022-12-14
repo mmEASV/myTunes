@@ -225,7 +225,7 @@ public class BaseController implements Initializable {
                 progressBar.setMax(end);
                 if(!isDragging) {
                     progressBar.setValue(current);
-
+                }
                 String currentTime = formatTime(current);
                 lblCurrentDuration.setText(currentTime);
                 lblTotalDuration.setText(formatTime(end));
