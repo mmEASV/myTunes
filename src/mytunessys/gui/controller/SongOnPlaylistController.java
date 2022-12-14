@@ -1,7 +1,7 @@
 package mytunessys.gui.controller;
 
 import javafx.beans.property.ReadOnlyIntegerProperty;
-import javafx.beans.value.ObservableValue; //remove later with other data
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 
 import javafx.event.EventHandler;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function; //remove later with other data
+import java.util.function.Function;
 
 /**
  * @author Bálint
@@ -175,7 +175,6 @@ public class SongOnPlaylistController {
         this.currentPlaylist = playlist;
         table.setItems(playlistModel.getPlaylistById(playlist));
         table.getSelectionModel().clearAndSelect(0);
-        //baseController.playSong(table);
     }
 
     private void removeSongFromPlaylist(Song item) {
@@ -226,8 +225,6 @@ public class SongOnPlaylistController {
             table.getItems().add(index-1, table.getItems().remove(index));
             table.getSelectionModel().clearAndSelect(index-1);
             playlistChanged = true;
-
-            //savePlaylistState();//move the save state to any buttons pressed that leaves the interface
         }
     }
 
@@ -242,7 +239,6 @@ public class SongOnPlaylistController {
             table.getSelectionModel().clearAndSelect(index+1);
 
             playlistChanged = true;
-            //savePlaylistState();//move the save state to any buttons pressed that leaves the interface
         }
 
 
@@ -250,13 +246,13 @@ public class SongOnPlaylistController {
 
     public void shuffleSongs(){
         Random rnd = new Random();
-        //moveUp the 2nd half of the songs by a random value
+
         int middle = table.getItems().size() % 2 == 0 ? table.getItems().size() / 2 : table.getItems().size() / 2 + 1;
         int moveSongAmount;
 
-        for (int i = 0; i <= middle; i++) {//for every row after the middle point
-
-            moveSongAmount = rnd.nextInt(0, middle + i); //move up by the random amount between 0 and the location of the moving song
+        for (int i = 0; i <= middle; i++) { //for every row after the middle point
+                                            //move up by the random amount between 0 and the location of the moving song
+            moveSongAmount = rnd.nextInt(0, middle + i);
             table.getSelectionModel().select(middle + i);
 
             for (int j = 0; j < moveSongAmount; j++) {
@@ -280,7 +276,6 @@ public class SongOnPlaylistController {
                 e.printStackTrace();
             }
         }
-        //maybe have a "saving..." graphical layout while it's saving the songs state to the DB
     }
 
 
