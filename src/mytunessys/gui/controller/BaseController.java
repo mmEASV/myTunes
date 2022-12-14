@@ -26,13 +26,16 @@ import mytunessys.gui.models.PlaylistModel;
 import mytunessys.gui.models.SongModel;
 
 /**
- * @author Bálint, Matej & Tomas
+ * @author Bálint, Matej, Julian & Tomas
  */
 
 public class BaseController implements Initializable {
 
     //region FXML
-    //TODO QUESTION: SHOULD BE ANNOTATED AS FXML ?
+    @FXML
+    public Button btnStartPlaylist;
+    @FXML
+    public Button btnShuffle;
     @FXML
     private Slider progressBar;
     @FXML
@@ -91,6 +94,7 @@ public class BaseController implements Initializable {
 
     private final MusicPlayer musicPlayer = MusicPlayer.getInstance();
     private MediaPlayer player;
+
     //endregion
     //region Interface Control
     public void updatePlayerUI(TableView<Song> songTableView) {
@@ -107,6 +111,8 @@ public class BaseController implements Initializable {
         showSearchBar();
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists.png")));
+        btnStartPlaylist.setVisible(false);
+        btnShuffle.setVisible(false);
         songCont.show(centerContent);
 
     }
@@ -117,12 +123,18 @@ public class BaseController implements Initializable {
         showSearchBar();
         btnSongs.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Songs2.png")));
         btnPlaylists.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Playlists2.png")));
+        btnStartPlaylist.setVisible(true);
+        btnShuffle.setVisible(true);
+        btnShuffle.setDisable(true);
         playlistCont.show(centerContent);
     }
 
     public void switchToSongOnPlaylistInterface(ActionEvent actionEvent, Playlist playlist) throws Exception {
         ShowInterface(actionEvent, playlist.getPlaylistName());//implement playlist.getName() edited CSS, mention word-break and overflow-wrap
         hideSearchBar();
+        btnStartPlaylist.setVisible(true);
+        btnShuffle.setVisible(true);
+        btnShuffle.setDisable(false);
         songOnPlaylistCont.Show(centerContent, playlist);
     }
 
@@ -164,7 +176,9 @@ public class BaseController implements Initializable {
             AlertNotification.showAlertWindow(e.getMessage(), Alert.AlertType.ERROR);
         }
         btnGoBack.setVisible(false);
-        btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
+
+        btnPlay.setStyle("-fx-background-image: url('mytunessys/gui/icons/Play.png')");
+
         btnPlay.setOnAction(this::listener);
         btnNext.setOnAction(this::nextSong);
         btnPrevious.setOnAction(this::previousSong);
@@ -187,14 +201,15 @@ public class BaseController implements Initializable {
      */
     public void updateProgressBar(){
         musicPlayer.getMediaPlayer().currentTimeProperty().addListener(new ChangeListener<Duration>() {
+
             @Override
             public void changed(ObservableValue<? extends Duration> observable, Duration oldValue, Duration newValue) {
                 double current = musicPlayer.getMediaPlayer().getCurrentTime().toSeconds();
                 double end = musicPlayer.getMediaPlayer().getTotalDuration().toSeconds();
+
                 progressBar.setMax(end);
                 if(!isDragging) {
                     progressBar.setValue(current);
-                }
 
                 String currentTime = formatTime(current);
                 lblCurrentDuration.setText(currentTime);
@@ -229,11 +244,11 @@ public class BaseController implements Initializable {
      * sets volume of media to value of volume slider
      * formats total duration label to total duration of song in mm:ss
      */
+
     public void setVolumeAndTotalDuration(){
         Double duration = musicPlayer.getMediaPlayer().getTotalDuration().toSeconds();
         String stringDuration = formatTime(duration);
         musicPlayer.setVolume(sldrVolume.getValue()/100);
-
     }
 
     /**
@@ -277,7 +292,9 @@ public class BaseController implements Initializable {
 
         if (!songIsPlaying) {
             songIsPlaying = true;
-            btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Close.png")));//make pause button
+
+            btnPlay.setStyle("-fx-background-image: url('mytunessys/gui/icons/Pause.png')");
+
             musicPlayer.play();
             musicPlayer.setRepeat(true);
                 if(!isDragging) {
@@ -297,7 +314,7 @@ public class BaseController implements Initializable {
                     setVolumeAndTotalDuration();
                 } else {
                     musicPlayer.stop();
-                    btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
+                    btnPlay.setStyle("-fx-background-image: url('mytunessys/gui/icons/Play.png')");
                     songIsPlaying = false;
                 }
             });
@@ -338,36 +355,15 @@ public class BaseController implements Initializable {
             if (player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
                 player.pause();
                 // we pause and change the button
-                btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Play.png")));
+                btnPlay.setStyle("-fx-background-image: url('mytunessys/gui/icons/Play.png')");
             }
             if (player.getStatus().equals(MediaPlayer.Status.PAUSED)) {
                 // if pause we play again and return the button
                 player.play();
-                btnPlay.setGraphic(new ImageView(new Image("mytunessys/gui/icons/Close.png")));
+
+                btnPlay.setStyle("-fx-background-image: url('mytunessys/gui/icons/Pause.png')");
+
             }
-        } else {//cut this from here and edit + insert it into the function of "play selected playlist" button, only need minor changes 10-20min at most
-            if (lblCurrentLocation.getText().equalsIgnoreCase("playlists")) { //blueprint for the idea
-                songOnPlaylistCont = new SongOnPlaylistController(contentWindow, playlistModel, this);
-
-                try {
-                    songOnPlaylistCont.Show(centerContent, playlistCont.getTable().getSelectionModel().getSelectedItem());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    playlistCont.show(centerContent);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                tbvContentTable = songOnPlaylistCont.getTable();
-                tbvContentTable.getSelectionModel().clearAndSelect(0);
-                lblArtist.setText(tbvContentTable.getSelectionModel().getSelectedItem().getArtist());
-                lblNameOfSong.setText(tbvContentTable.getSelectionModel().getSelectedItem().getTitle());
-                playSong(tbvContentTable);
-            }     
-
         }
 
     }
@@ -402,5 +398,36 @@ public class BaseController implements Initializable {
         songOnPlaylistCont.moveDown();
     }
 
+    public void startPlaylist(ActionEvent actionEvent) {
+        if (lblCurrentLocation.getText().equalsIgnoreCase("playlists")) {
+            songOnPlaylistCont = new SongOnPlaylistController(contentWindow, playlistModel, this);
+            int selectedRow = 0;
 
+            try {
+                songOnPlaylistCont.Show(centerContent, playlistCont.getTable().getSelectionModel().getSelectedItem());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                playlistCont.show(centerContent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            tbvContentTable = songOnPlaylistCont.getTable();
+            tbvContentTable.getSelectionModel().clearAndSelect(selectedRow);
+            lblArtist.setText(tbvContentTable.getSelectionModel().getSelectedItem().getArtist());
+            lblNameOfSong.setText(tbvContentTable.getSelectionModel().getSelectedItem().getTitle());
+            playSong(tbvContentTable);
+        }
+        else{
+            playSong(songOnPlaylistCont.getTable());
+        }
+
+    }
+
+    public void shuffleSongs(ActionEvent actionEvent) {
+        songOnPlaylistCont.shuffleSongs();
+    }
 }
