@@ -177,6 +177,10 @@ public class SongOnPlaylistController {
         table.getSelectionModel().clearAndSelect(0);
     }
 
+    /**
+     * Removes a Song from the playlist and notifies the user if it was successful or not.
+     * @param item Needs to be a Song.
+     */
     private void removeSongFromPlaylist(Song item) {
         boolean finalResult = false;
         try {
@@ -195,6 +199,10 @@ public class SongOnPlaylistController {
         }
     }
 
+    /**
+     * Removes song without a notification to the user.
+     * @param item Needs to be a Song.
+     */
     private void removeSongWithoutPopup(Song item) {
         boolean finalResult = false;
         try {
@@ -218,6 +226,9 @@ public class SongOnPlaylistController {
         return col;
     }
 
+    /**
+     * Moves songs inside the playlist up by 1.
+     */
     public void moveUp(){
         if(table.getSelectionModel().getSelectedIndex() > 0){
             int index = table.getSelectionModel().getSelectedIndex();
@@ -228,6 +239,9 @@ public class SongOnPlaylistController {
         }
     }
 
+    /**
+     * Moves songs inside the playlist down by 1.
+     */
     public void moveDown(){
 
         if(table.getSelectionModel().getSelectedIndex() < table.getItems().size() - 1 &&
@@ -244,14 +258,16 @@ public class SongOnPlaylistController {
 
     }
 
+    /**
+     * Shuffles the 2nd half of the songs up by a random amount inside the playlist.
+     */
     public void shuffleSongs(){
         Random rnd = new Random();
 
         int middle = table.getItems().size() % 2 == 0 ? table.getItems().size() / 2 : table.getItems().size() / 2 + 1;
         int moveSongAmount;
 
-        for (int i = 0; i <= middle; i++) { //for every row after the middle point
-                                            //move up by the random amount between 0 and the location of the moving song
+        for (int i = 0; i <= middle; i++) {
             moveSongAmount = rnd.nextInt(0, middle + i);
             table.getSelectionModel().select(middle + i);
 
@@ -263,6 +279,9 @@ public class SongOnPlaylistController {
 
     }
 
+    /**
+     * Saves the state of the current TableView inside the playlist into the DB.
+     */
     public void savePlaylistState(){
 
         for (Song s : table.getItems()) {
