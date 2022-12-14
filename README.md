@@ -173,7 +173,7 @@ TTT :black_nib:
 ## Contact
 
 Tomas Simko - [@twitter](https://twitter.com/TomasSimko_) - simko.t@email.cz - [@linkedIn](https://www.linkedin.com/in/tomas-simko/)  
-Balint Farkas - [@twitter](https://twitter.com/TomasSimko_) - simko.t@email.cz - [@linkedIn](https://www.linkedin.com/in/tomas-simko/)  
+Balint Farkas - [@twitter](https://twitter.com/) - balint.imal@gmail.com - [@linkedIn](https://www.linkedin.com/in/b%C3%A1lint-farkas-38b170252/)  
 Matej Mazur - [@github](https://github.com/MatejMa2ur)  
 Julian Hesberg - [@twitter](https://twitter.com/TomasSimko_) - simko.t@email.cz - [@linkedIn](https://www.linkedin.com/in/tomas-simko/)  
 
