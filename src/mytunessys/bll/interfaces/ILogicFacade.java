@@ -10,13 +10,14 @@ import java.util.Optional;
 
 /**
  * This is manager interface that serves a ILogicFacade and connects model on gui with
- *  all the application managers with generic params
+ * all the application managers with generic params
+ *
  * @author Tomas Simko, Matej Mazur
  */
-public interface ILogicFacade<T>
-{
+public interface ILogicFacade<T> {
     /**
      * Gets list of object that from the manager
+     *
      * @return object that will be cast in order to get list of Songs
      * @throws Exception if fails to establish connection due to some unexpected reasons
      */
@@ -24,6 +25,7 @@ public interface ILogicFacade<T>
 
     /**
      * Creates object that will be fetched by its id
+     *
      * @param object that will be fetched by its id
      * @throws Exception if fails to establish connection due to some unexpected reasons
      */
@@ -31,6 +33,7 @@ public interface ILogicFacade<T>
 
     /**
      * Creates object that will be created
+     *
      * @param object that will be created
      * @throws Exception if fails to establish connection due to some unexpected reasons
      */
@@ -38,6 +41,7 @@ public interface ILogicFacade<T>
 
     /**
      * creates object
+     *
      * @param object that will be updated by its id
      * @throws Exception if fails to establish connection due to some unexpected reasons
      */
@@ -46,6 +50,7 @@ public interface ILogicFacade<T>
 
     /**
      * deletes object by its id
+     *
      * @param object that will be removed
      * @return false if not able to delete
      */
@@ -53,15 +58,17 @@ public interface ILogicFacade<T>
 
     /**
      * executes simple iteration (Linear search) by the query that is provided
-     * @param list to be iterated
+     *
+     * @param list  to be iterated
      * @param query to be found inside the list
      * @return list that contains query
      */
-    List<T> searchObjects(List<T> list,String query);
+    List<T> searchObjects(List<T> list, String query);
 
     /**
      * adds song to playlist
-     * @param object first object that will be added
+     *
+     * @param object       first object that will be added
      * @param secondObject object that will add first object
      * @return false if not added
      * @throws Exception if not able to remove it from its playlist
@@ -70,10 +77,10 @@ public interface ILogicFacade<T>
 
     /**
      * removes songs from playlist
+     *
      * @return false if object could not have been removed
      * @throws Exception if not able to remove it from its playlist
      */
     boolean removeObjectFrom(Object object) throws Exception;
-
 
 }

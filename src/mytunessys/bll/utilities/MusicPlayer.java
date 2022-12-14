@@ -14,7 +14,7 @@ import mytunessys.be.Song;
 public class MusicPlayer {
     private static MusicPlayer instance = null;
     private MediaPlayer mediaPlayer;
-    private double volume;
+    private final double volume;
     private String path;
     private TableView<Song> songTable;
     private Song currentlyPlaying;

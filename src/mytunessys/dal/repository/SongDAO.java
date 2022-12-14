@@ -6,6 +6,7 @@ import mytunessys.dal.connectionFactory.IConnectionFactory;
 import mytunessys.dal.connectionFactory.ConnectionFactory;
 import mytunessys.dal.mappers.SongMapper;
 import mytunessys.dal.repository.interfaces.ISongDAO;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Tomas,Julian
+ * @author Tomas, Julian
  */
 
 public class SongDAO implements ISongDAO {
@@ -21,17 +22,17 @@ public class SongDAO implements ISongDAO {
     private PreparedStatement preparedStatement;
     IConnectionFactory mssqlFactory;
 
-    public SongDAO() throws Exception{
-        this.mssqlFactory =  ConnectionFactory.getFactory(DatabaseType.MSSQL);
+    public SongDAO() throws Exception {
+        this.mssqlFactory = ConnectionFactory.getFactory(DatabaseType.MSSQL);
     }
 
     @Override
-    public List<Song> getAllSongs() throws Exception{
+    public List<Song> getAllSongs() throws Exception {
         SongMapper mapper = new SongMapper();
         List<Song> retrievedSongs = new ArrayList<>();
         try (Connection connection = mssqlFactory.createConnection()) {
             String sql = "SELECT s.id,s.title,s.duration,s.artist,s.absolute_path,s.genre_id,g.genre_name\n" +
-                    "FROM song s JOIN genre g ON g.id = s.genre_id";
+                "FROM song s JOIN genre g ON g.id = s.genre_id";
             preparedStatement = connection.prepareStatement(sql);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {

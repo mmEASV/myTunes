@@ -1,6 +1,5 @@
 package mytunessys.dal.repository;
 
-
 import mytunessys.be.Genre;
 import mytunessys.bll.types.DatabaseType;
 import mytunessys.dal.connectionFactory.IConnectionFactory;
@@ -15,14 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Tomas,Julian
+ * @author Tomas, Julian
  */
 
 public class GenreDAO implements IGenreDAO {
 
     IConnectionFactory mssqlFactory;
 
-    public GenreDAO() throws Exception{
+    public GenreDAO() throws Exception {
         this.mssqlFactory = ConnectionFactory.getFactory(DatabaseType.MSSQL);
     }
 

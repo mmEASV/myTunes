@@ -22,12 +22,12 @@ public class SongModel {
         try {
             songManager = new SongManager();
         } catch (FactoryException e) {
-            throw new ApplicationException(e.getMessage(),e.getCause());
+            throw new ApplicationException(e.getMessage(), e.getCause());
         }
     }
 
     public ObservableList<Song> getAllSongs() throws Exception {
-        List<Song> temp =  songManager.getAllObject();
+        List<Song> temp = songManager.getAllObject();
         return songs = FXCollections.observableArrayList(temp);
     }
 
@@ -42,6 +42,7 @@ public class SongModel {
     public boolean deleteSong(Song song) throws Exception {
         return songManager.deleteObject(song);
     }
+
     public void searchSongs(String query) throws Exception {
         List<Song> searched = songManager.searchObjects(songManager.getAllObject(), query);
         songs.clear();

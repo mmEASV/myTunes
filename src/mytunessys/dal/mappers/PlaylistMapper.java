@@ -1,6 +1,7 @@
 package mytunessys.dal.mappers;
 
 import mytunessys.be.Playlist;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -9,12 +10,14 @@ import java.sql.SQLException;
  */
 public class PlaylistMapper {
     private Playlist playlist;
-    public PlaylistMapper(){
+
+    public PlaylistMapper() {
         this.playlist = null;
     }
 
     /**
      * maps result set into object for playlist
+     *
      * @param rs that will be mapped to object
      * @throws SQLException happens cannot get right values from table
      */
@@ -23,10 +26,10 @@ public class PlaylistMapper {
         int id = rs.getInt("id");
         String playlistName = rs.getString("playlist_name");
 
-        this.playlist = new Playlist(id, playlistName,amount);
+        this.playlist = new Playlist(id, playlistName, amount);
     }
 
-    public Playlist getPlaylist(){
+    public Playlist getPlaylist() {
         return this.playlist;
     }
 }

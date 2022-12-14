@@ -6,7 +6,6 @@ import mytunessys.be.Song;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 /**
  * @author Tomas Simko
  */

@@ -12,9 +12,9 @@ import mytunessys.dal.repository.interfaces.ISongDAO;
 import java.util.List;
 import java.util.Optional;
 
-
 /**
  * Manager class that is responsible for all the logic implementation with current abstract dao factory and with the use of abstraction
+ *
  * @author Bálint, Matej & Tomas,Julian
  */
 
@@ -24,11 +24,11 @@ public class SongManager implements ILogicFacade<Song> {
     ISongDAO songDAO;
     ISearchHelper searchHelper;
 
-    public SongManager() throws FactoryException{
+    public SongManager() throws FactoryException {
         try {
             this.songDAO = abstractDAOFactory.getSongDAO();
         } catch (Exception e) {
-            throw new FactoryException(e.getMessage(),e.getCause());
+            throw new FactoryException(e.getMessage(), e.getCause());
         }
         this.searchHelper = new SearchHelper();
     }

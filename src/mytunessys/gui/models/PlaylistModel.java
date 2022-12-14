@@ -25,12 +25,12 @@ public class PlaylistModel {
         try {
             playlistManager = new PlaylistManager();
         } catch (FactoryException e) {
-            throw new ApplicationException(e.getMessage(),e.getCause());
+            throw new ApplicationException(e.getMessage(), e.getCause());
         }
     }
 
     public ObservableList<Playlist> getAllPlaylists() throws Exception {
-        List<Playlist> temp =  playlistManager.getAllObject();
+        List<Playlist> temp = playlistManager.getAllObject();
         return playlists = FXCollections.observableArrayList(temp);
     }
 
@@ -39,25 +39,29 @@ public class PlaylistModel {
         return FXCollections.observableArrayList(songs);
     }
 
-    public boolean addSongToPlaylist(Song song,Playlist playlist) throws Exception {
-        return this.playlistManager.addToObject(song,playlist);
+    public boolean addSongToPlaylist(Song song, Playlist playlist) throws Exception {
+        return this.playlistManager.addToObject(song, playlist);
     }
 
     public void createPlaylist(Playlist playlist) throws Exception {
         this.playlistManager.createObject(playlist);
     }
+
     public void updatePlaylist(Playlist playlist) throws Exception {
         this.playlistManager.updateObject(playlist);
     }
+
     public boolean deletePlaylist(Playlist playlist) throws Exception {
         return this.playlistManager.deleteObject(playlist);
     }
+
     public void searchPlaylist(String query) throws Exception {
         List<Playlist> searched = playlistManager.searchObjects(playlistManager.getAllObject(), query);
         playlists.clear();
         playlists.addAll(searched);
     }
-    public boolean removeSongFromPlaylist(Playlist playlist) throws Exception{
+
+    public boolean removeSongFromPlaylist(Playlist playlist) throws Exception {
         return this.playlistManager.removeObjectFrom(playlist);
     }
 }

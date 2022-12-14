@@ -32,32 +32,32 @@ public class BaseController implements Initializable {
 
     @FXML
     private Slider progressBar,
-            sldrVolume;
+        sldrVolume;
     @FXML
     private Label lblCurrentDuration,
-            lblNameOfSong,
-            lblArtist,
-            lblCurrentLocation,
-            lblTotalDuration;
+        lblNameOfSong,
+        lblArtist,
+        lblCurrentLocation,
+        lblTotalDuration;
     @FXML
     private AnchorPane contentWindow,
-            centerContent;
+        centerContent;
 
     // ----
     @FXML
     private TableView<Song> tbvContentTable;
     @FXML
     private Button btnPrevious,
-            btnPlay,
-            btnNext,
-            btnSongs,
-            btnPlaylists,
-            btnAdd,
-            btnGoBack,
-            btnDown,
-            btnUp,
-            btnStartPlaylist,
-            btnShuffle;
+        btnPlay,
+        btnNext,
+        btnSongs,
+        btnPlaylists,
+        btnAdd,
+        btnGoBack,
+        btnDown,
+        btnUp,
+        btnStartPlaylist,
+        btnShuffle;
 
     @FXML
     private TextField txfSearchBar;
@@ -74,7 +74,7 @@ public class BaseController implements Initializable {
     private MediaPlayer player;
 
     private boolean songIsPlaying,
-            isDragging;
+        isDragging;
 
     //endregion
     //region Interface Control
@@ -100,7 +100,6 @@ public class BaseController implements Initializable {
             songOnPlaylistCont.savePlaylistState();
             songOnPlaylistCont.setPlaylistChanged(false);
         }
-
 
         songCont.show(centerContent);
 
@@ -229,9 +228,8 @@ public class BaseController implements Initializable {
 
         stringSeconds = stringSeconds.substring(0, 2);
 
-
         if (stringSeconds.contains(".")) {
-            stringSeconds = "0" + stringSeconds.substring(0, 1);
+            stringSeconds = "0" + stringSeconds.charAt(0);
         }
         return minutes.intValue() + ":" + stringSeconds;
     }
@@ -264,7 +262,7 @@ public class BaseController implements Initializable {
      */
     public void onMouseRelease(MouseEvent mouseEvent) {
         if (isDragging) {
-            if(musicPlayer.getMediaPlayer() != null) {
+            if (musicPlayer.getMediaPlayer() != null) {
                 updateSongTime();
             }
             isDragging = false;
@@ -279,7 +277,6 @@ public class BaseController implements Initializable {
         musicPlayer.getMediaPlayer().seek(duration);
     }
 
-
     //region Play Controls
 
     /**
@@ -292,7 +289,6 @@ public class BaseController implements Initializable {
 
         musicPlayer.setSongs(songTableView);
         musicPlayer.setPath();
-
 
         if (!songIsPlaying) {
             songIsPlaying = true;
@@ -425,7 +421,6 @@ public class BaseController implements Initializable {
         if (lblCurrentLocation.getText().equalsIgnoreCase("playlists")) {
             songOnPlaylistCont = new SongOnPlaylistController(playlistModel, this);
             int selectedRow = playlistCont.getTable().getSelectionModel().getSelectedIndex();
-            ;
 
             try {
                 songOnPlaylistCont.Show(centerContent, playlistCont.getTable().getSelectionModel().getSelectedItem());
@@ -449,7 +444,6 @@ public class BaseController implements Initializable {
         }
 
     }
-
 
     public void shuffleSongs(ActionEvent actionEvent) {
         songOnPlaylistCont.shuffleSongs();

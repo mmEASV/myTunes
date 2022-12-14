@@ -21,7 +21,7 @@ public class GenreModel {
     }
 
     public ObservableList<Genre> getAllGenres() throws Exception {
-        List<Genre> temp =  genreManager.getAllObject();
+        List<Genre> temp = genreManager.getAllObject();
         return genres = FXCollections.observableArrayList(temp);
     }
 }

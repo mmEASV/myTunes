@@ -2,10 +2,10 @@ package mytunessys.be;
 
 public class Song {
     private int id;
-    private String title;
-    private String duration;
-    private String artist;
-    private String absolutePath;
+    private final String title;
+    private final String duration;
+    private final String artist;
+    private final String absolutePath;
     private Genre genre;
 
     public Song(int id, String title, String duration, String artist, String absolutePath, Genre genre) {

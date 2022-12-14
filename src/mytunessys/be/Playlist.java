@@ -10,9 +10,9 @@ public class Playlist {
 
     private int songAmount;
 
-    private HashMap<Integer,Song> songList;
+    private HashMap<Integer, Song> songList;
 
-    public Playlist(int id, String playlistName,int amount) {
+    public Playlist(int id, String playlistName, int amount) {
         this.id = id;
         this.playlistName = playlistName;
         this.songAmount = amount;
@@ -21,7 +21,8 @@ public class Playlist {
     public Playlist(String playlistName) {
         this.playlistName = playlistName;
     }
-    public Playlist(int id, String playlistName,HashMap<Integer,Song> songz) {
+
+    public Playlist(int id, String playlistName, HashMap<Integer, Song> songz) {
         this.id = id;
         this.playlistName = playlistName;
         this.songList = songz;
@@ -51,15 +52,16 @@ public class Playlist {
         this.songAmount = songAmount;
     }
 
-    public HashMap<Integer,Song> getSongList() {
+    public HashMap<Integer, Song> getSongList() {
         return songList;
     }
 
-    public void setSongList(HashMap<Integer,Song> list){
+    public void setSongList(HashMap<Integer, Song> list) {
         this.songList = list;
     }
+
     @Override
-    public String toString(){
+    public String toString() {
         return this.playlistName;
     }
 }

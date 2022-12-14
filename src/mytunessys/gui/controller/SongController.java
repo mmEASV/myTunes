@@ -5,7 +5,6 @@ import java.io.File;
 import java.net.URL;
 import java.util.*;
 
-
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
@@ -48,26 +47,24 @@ import mytunessys.gui.models.SongModel;
  * @author Bálint, Matej & Tomas
  */
 
-
 public class SongController {
-    private AnchorPane window,
-            popUpContent;
+    private final AnchorPane window;
+    private AnchorPane popUpContent;
 
     private TableView<Song> table;
     private TextField filePath,
-            songName,
-            songDuration,
-            artistName;
+        songName,
+        songDuration,
+        artistName;
 
     private ComboBox genreOptions;
-    private SongModel songModel;
-    private PlaylistModel playlistModel;
+    private final SongModel songModel;
+    private final PlaylistModel playlistModel;
     private MouseEvent mouseEventType;
     private Button submitButton;
     private File selectedFile;
 
-    private BaseController baseController;
-
+    private final BaseController baseController;
 
     public SongController(AnchorPane contentWindow, SongModel model, BaseController baseController, PlaylistModel playlistModel) {
         window = contentWindow;
@@ -88,7 +85,6 @@ public class SongController {
         table = new TableView<>();
         table.setFocusTraversable(false);
 
-
         TableColumn<Song, String> TitleColumn = new TableColumn<>();
         TitleColumn.setText("Title");
         TitleColumn.prefWidthProperty().set(203);
@@ -101,7 +97,6 @@ public class SongController {
         GenreColumn.setResizable(false);
         GenreColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("genre"));
 
-
         TableColumn<Song, String> DurationColumn = new TableColumn<>();
         DurationColumn.setText("Duration");
         DurationColumn.prefWidthProperty().set(47);
@@ -112,64 +107,63 @@ public class SongController {
         OptionsColumn.prefWidthProperty().set(40);
         OptionsColumn.setResizable(false);
 
-
         List<Playlist> allPlaylists = playlistModel.getAllPlaylists();
         ImageView addToPlaylistImage = new ImageView("mytunessys/gui/icons/Add.png");
         ImageView editImage = new ImageView("mytunessys/gui/icons/Edit.png");
         ImageView removeImage = new ImageView("mytunessys/gui/icons/Remove.png");
 
         Callback<TableColumn<Song, String>, TableCell<Song, String>> cellFactory
-                = //
-                new Callback<TableColumn<Song, String>, TableCell<Song, String>>() {
-                    @Override
-                    public TableCell call(final TableColumn<Song, String> param) {
-                        final TableCell<Song, String> cell = new TableCell<Song, String>() {
+            = //
+            new Callback<TableColumn<Song, String>, TableCell<Song, String>>() {
+                @Override
+                public TableCell call(final TableColumn<Song, String> param) {
+                    final TableCell<Song, String> cell = new TableCell<Song, String>() {
 
-                            final Button btn = new Button("...");
+                        final Button btn = new Button("...");
 
-                            @Override
-                            public void updateItem(String item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (empty) {
-                                    setGraphic(null);
-                                    setText(null);
-                                } else {
-                                    Menu addToPlaylist = new Menu("Add to playlist", addToPlaylistImage);
-                                    MenuItem editItem = new MenuItem("edit song", editImage);
-                                    MenuItem deleteSong = new MenuItem("delete song", removeImage);
+                        @Override
+                        public void updateItem(String item, boolean empty) {
+                            super.updateItem(item, empty);
+                            if (empty) {
+                                setGraphic(null);
+                                setText(null);
+                            } else {
+                                Menu addToPlaylist = new Menu("Add to playlist", addToPlaylistImage);
+                                MenuItem editItem = new MenuItem("edit song", editImage);
+                                MenuItem deleteSong = new MenuItem("delete song", removeImage);
 
-                                    List<MenuItem> playlistMenuItems = new ArrayList<>();
-                                    allPlaylists.forEach((x) -> playlistMenuItems.add(new MenuItem(x.getPlaylistName())));
-                                    addToPlaylist.getItems().addAll(playlistMenuItems);
-                                    // adding all items to context menu
-                                    var menu = new ContextMenu(editItem, addToPlaylist, deleteSong);
-                                    editItem.setOnAction(event -> {
-                                        editSong(getTableRow().getItem());
-                                        event.consume();
-                                    });
-                                    deleteSong.setOnAction(event -> {
-                                        deleteSong(getTableRow().getItem());
-                                        event.consume();
-                                    });
-                                    playlistMenuItems.forEach(x -> x.setOnAction(event -> {
-                                        Playlist currentPlaylist = allPlaylists.stream()
-                                                .filter(y -> y.getPlaylistName()
-                                                        .equals(x.getText()))
-                                                .findFirst()
-                                                .get();
-                                        addSongToPlaylist(getTableRow().getItem(), currentPlaylist);
-                                    }));
-                                    btn.setOnAction(event -> {
-                                        menu.show(btn, Side.BOTTOM, -95, 0);
-                                    });
-                                    setGraphic(btn);
-                                    setText(null);
-                                }
+                                List<MenuItem> playlistMenuItems = new ArrayList<>();
+                                allPlaylists.forEach((x) -> playlistMenuItems.add(new MenuItem(x.getPlaylistName())));
+                                addToPlaylist.getItems().addAll(playlistMenuItems);
+                                // adding all items to context menu
+                                var menu = new ContextMenu(editItem, addToPlaylist, deleteSong);
+                                editItem.setOnAction(event -> {
+                                    editSong(getTableRow().getItem());
+                                    event.consume();
+                                });
+                                deleteSong.setOnAction(event -> {
+                                    deleteSong(getTableRow().getItem());
+                                    event.consume();
+                                });
+                                playlistMenuItems.forEach(x -> x.setOnAction(event -> {
+                                    Playlist currentPlaylist = allPlaylists.stream()
+                                        .filter(y -> y.getPlaylistName()
+                                            .equals(x.getText()))
+                                        .findFirst()
+                                        .get();
+                                    addSongToPlaylist(getTableRow().getItem(), currentPlaylist);
+                                }));
+                                btn.setOnAction(event -> {
+                                    menu.show(btn, Side.BOTTOM, -95, 0);
+                                });
+                                setGraphic(btn);
+                                setText(null);
                             }
-                        };
-                        return cell;
-                    }
-                };
+                        }
+                    };
+                    return cell;
+                }
+            };
 
         table.setRowFactory(new Callback<TableView<Song>, TableRow<Song>>() {
             @Override
@@ -209,11 +203,11 @@ public class SongController {
         submitButton.setOnAction(event -> {
             if (validation()) {
                 var _song = new Song(
-                        songName.getText().trim(),
-                        songDuration.getText().trim(),
-                        artistName.getText().trim(),
-                        filePath.getText().trim(), (Genre)
-                        genreOptions.getSelectionModel().getSelectedItem()
+                    songName.getText().trim(),
+                    songDuration.getText().trim(),
+                    artistName.getText().trim(),
+                    filePath.getText().trim(), (Genre)
+                    genreOptions.getSelectionModel().getSelectedItem()
                 );
                 try {
                     songModel.createSong(_song);
@@ -240,12 +234,12 @@ public class SongController {
         submitButton.setOnAction(event -> {
             if (validation()) {
                 var _song = new Song(
-                        song.getId(),
-                        songName.getText().trim(),
-                        songDuration.getText().trim(),
-                        artistName.getText().trim(),
-                        filePath.getText().trim(),
-                        (Genre) genreOptions.getSelectionModel().getSelectedItem()
+                    song.getId(),
+                    songName.getText().trim(),
+                    songDuration.getText().trim(),
+                    artistName.getText().trim(),
+                    filePath.getText().trim(),
+                    (Genre) genreOptions.getSelectionModel().getSelectedItem()
                 );
                 try {
                     songModel.updateSong(_song);
@@ -269,33 +263,29 @@ public class SongController {
      */
     private boolean validation() {
         if (songName == null ||
-                songName.getText().isEmpty()) {
+            songName.getText().isEmpty()) {
             return false;
         }
         if (songDuration.getText() == null ||
-                songDuration.getText().isEmpty()) {
+            songDuration.getText().isEmpty()) {
             return false;
         }
         if (genreOptions.getSelectionModel().getSelectedItem() == null ||
-                genreOptions.getSelectionModel() == null ||
-                genreOptions == null) {
+            genreOptions.getSelectionModel() == null ||
+            genreOptions == null) {
             return false;
         }
         if (filePath.getText() == null ||
-                filePath.getText().isEmpty()) {
+            filePath.getText().isEmpty()) {
             return false;
         }
-        if (artistName.getText() == null ||
-                artistName.getText().isEmpty()) {
-            return false;
-        }
-        return true;
+        return artistName.getText() != null &&
+            !artistName.getText().isEmpty();
     }
 
     public void deleteSong(Song song) {
         displayedDeleteConfirmation(song);
     }
-
 
     /**
      * method that takes control of implementing
@@ -323,8 +313,9 @@ public class SongController {
     }
 
     /**
-     * TODO :
-     * @param content
+     * Creates a new popup window that allows the user to edit a song.
+     *
+     * @param content Must be a Song.
      */
     private void displayEditPopUp(Song content) {
         popUpContent = new AnchorPane();
@@ -406,7 +397,7 @@ public class SongController {
         var genreNameLabel = new Label("Genre");
         genreNameLabel.getStyleClass().add("form-label");
         ObservableList<Genre> Items =
-                null;
+            null;
         try {
             Items = FXCollections.observableArrayList(new GenreModel().getAllGenres());
         } catch (Exception e) {
@@ -468,7 +459,8 @@ public class SongController {
     /**
      * void method that takes song that will be added and playlist that song goes into
      * try to find if song already exist in the playlist and if not will be added to the database
-     * @param songToBeAdded object that needs to have title and its id in order to work
+     *
+     * @param songToBeAdded      object that needs to have title and its id in order to work
      * @param playlistToBeFilled object of the playlist that song will be inserted into
      */
 
@@ -486,24 +478,27 @@ public class SongController {
             throw new RuntimeException(e);
         }
         if (finalResult) {
-            AlertNotification.showAlertWindow("Successfully added song with id " + playlistToBeFilled.getId() + " to playlist " + playlistToBeFilled.getPlaylistName(), Alert.AlertType.INFORMATION);
+            AlertNotification.showAlertWindow(
+                "Successfully added song with id " + playlistToBeFilled.getId() + " to playlist " + playlistToBeFilled.getPlaylistName(),
+                Alert.AlertType.INFORMATION);
         } else {
-            AlertNotification.showAlertWindow("Could not add song " + songToBeAdded.getTitle() + " to playlist with id :" + playlistToBeFilled.getId(), Alert.AlertType.WARNING);
+            AlertNotification.showAlertWindow("Could not add song " + songToBeAdded.getTitle() + " to playlist with id :" + playlistToBeFilled.getId(),
+                Alert.AlertType.WARNING);
         }
     }
 
     /**
      * iterates through the list of song fetched from database and find its by its title
+     *
      * @param fetchedPlaylist to be iterated
-     * @param songTitle that needs to be find in the list
+     * @param songTitle       that needs to be find in the list
      * @return false if not found
      */
     private boolean findSongInPlaylist(List<Song> fetchedPlaylist, String songTitle) {
         return fetchedPlaylist.stream()
-                .anyMatch(row -> row.getTitle()
-                        .contains(songTitle));
+            .anyMatch(row -> row.getTitle()
+                .contains(songTitle));
     }
-
 
 }
 

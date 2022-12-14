@@ -12,6 +12,7 @@ import java.util.Optional;
 
 /**
  * Manager class that is responsible for all the logic implementation with current abstract dao factory and with the use of abstraction
+ *
  * @author Bálint, Matej & Tomas,Julian
  */
 
@@ -23,15 +24,18 @@ public class GenreManager implements ILogicFacade<Genre> {
         try {
             this.genreDAO = abstractDAOFactory.genreDAO();
         } catch (Exception e) {
-            throw new ApplicationException(e.getMessage(),e.getCause());
+            throw new ApplicationException(e.getMessage(), e.getCause());
         }
     }
+
     @Override
     public List<Genre> getAllObject() throws Exception {
         return this.genreDAO.getAllGenre();
     }
 
-    /** NOT IMPLEMENTED **/
+    /**
+     * NOT IMPLEMENTED
+     **/
     @Override
     public Optional<Genre> getObjectById(Genre object) throws Exception {
         return null;
