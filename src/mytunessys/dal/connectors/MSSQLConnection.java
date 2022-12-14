@@ -2,7 +2,7 @@ package mytunessys.dal.connectors;
 
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
-import mytunessys.dal.AbstractConnectionFactory;
+import mytunessys.dal.connectionFactory.IConnectionFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.Properties;
  * and can be used in try with resources by getting the connection source
  */
 
-public class MSSQLConnection implements AbstractConnectionFactory {
+public class MSSQLConnection implements IConnectionFactory {
 
     private static final String MSSQL_FILE = "resources/mssqlConfig.properties";
 

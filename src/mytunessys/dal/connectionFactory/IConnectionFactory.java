@@ -1,8 +1,8 @@
-package mytunessys.dal;
+package mytunessys.dal.connectionFactory;
 
 import java.sql.Connection;
 
-public interface AbstractConnectionFactory {
+public interface IConnectionFactory {
     /**
      * method for that creates connection with given type of the database
      * and can be used in try with resources to start using jdbc

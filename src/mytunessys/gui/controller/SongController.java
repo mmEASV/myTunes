@@ -107,7 +107,7 @@ public class SongController {
         DurationColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("duration"));
 
         TableColumn<Song, String> OptionsColumn = new TableColumn<>();
-        OptionsColumn.prefWidthProperty().set(47);
+        OptionsColumn.prefWidthProperty().set(40);
         OptionsColumn.setResizable(false);
 
 
@@ -196,35 +196,95 @@ public class SongController {
         fillTable();
     }
 
+    /**
+     * void method that sets on action submit button that will fire event to validate all user inputs and if true then it will
+     * try to create new song from song model
+     * implements alert notifications of the state that the method of creating song is
+     */
     public void newSong() {
         displayEditPopUp(null);
         submitButton.setOnAction(event -> {
-            var _song = new Song(2000, songName.getText(), songDuration.getText(), artistName.getText(), filePath.getText(),(Genre) genreOptions.getSelectionModel().getSelectedItem());
-
-            try {
-                songModel.createSong(_song);
-                fillTable();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            if(validation()){
+                var _song = new Song(
+                        songName.getText().trim(),
+                        songDuration.getText().trim(),
+                        artistName.getText().trim(),
+                        filePath.getText().trim(),(Genre)
+                        genreOptions.getSelectionModel().getSelectedItem()
+                );
+                try {
+                    songModel.createSong(_song);
+                    fillTable();
+                } catch (Exception e) {
+                    AlertNotification.showAlertWindow(e.getMessage() + " " + e.getCause(), Alert.AlertType.WARNING);
+                }
+                AlertNotification.showAlertWindow("Song with name: " + _song.getTitle() + " was created !", Alert.AlertType.INFORMATION);
+                window.getChildren().remove(popUpContent);
+                event.consume();
+            }else {
+                AlertNotification.showAlertWindow("Please make sure all the field are filled", Alert.AlertType.WARNING);
             }
-            window.getChildren().remove(popUpContent);
-            event.consume();
         });
     }
+    /**
+     * void method that sets on action submit button that will fire event to validate all user inputs and if true then it will
+     * try to create new song from song model
+     * implements alert notifications of the state that the method of creating song is
+     */
     public void editSong(Song song){
         displayEditPopUp(song);
         submitButton.setOnAction(event -> {
-            var _song = new Song(song.getId(), songName.getText(), songDuration.getText(), artistName.getText(), filePath.getText(),(Genre) genreOptions.getSelectionModel().getSelectedItem());
-
-            try {
-                songModel.updateSong(_song);
-                fillTable();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            if(validation()){
+                var _song = new Song(
+                        song.getId(),
+                        songName.getText().trim(),
+                        songDuration.getText().trim(),
+                        artistName.getText().trim(),
+                        filePath.getText().trim(),
+                        (Genre) genreOptions.getSelectionModel().getSelectedItem()
+                );
+                try {
+                    songModel.updateSong(_song);
+                    fillTable();
+                } catch (Exception e) {
+                    AlertNotification.showAlertWindow(e.getMessage() + " " + e.getCause(), Alert.AlertType.WARNING);
+                }
+                AlertNotification.showAlertWindow("Song with name: " + _song.getTitle() + " was successfully updated!", Alert.AlertType.INFORMATION);
+                window.getChildren().remove(popUpContent);
+                event.consume();
+            }else {
+                AlertNotification.showAlertWindow("Please make sure all the field are filled", Alert.AlertType.WARNING);
             }
-            window.getChildren().remove(popUpContent);
-            event.consume();
         });
+    }
+
+    /**
+     * Simple validation method that check whenever all the fields are filled up or not
+     * @return false if any of the field are null or empty where required and not filled
+     */
+    private boolean validation() {
+        if(songName == null ||
+                songName.getText().isEmpty()){
+            return false;
+        }
+        if(songDuration.getText() == null ||
+                songDuration.getText().isEmpty()){
+            return false;
+        }
+        if(genreOptions.getSelectionModel().getSelectedItem() == null ||
+                genreOptions.getSelectionModel() == null ||
+                genreOptions == null){
+            return false;
+        }
+        if(filePath.getText() == null ||
+                filePath.getText().isEmpty()){
+            return false;
+        }
+        if(artistName.getText() == null ||
+                artistName.getText().isEmpty()){
+            return false;
+        }
+        return true;
     }
 
     public void deleteSong(Song song){
@@ -232,16 +292,26 @@ public class SongController {
     }
 
 
+    /**
+     * method that takes control of implementing
+     * delete functionality for selected song that needs to be deleted
+     * displays custom alert notification if result boolean fails to delete song in the database
+     * @param songToDelete object that must contain id in order to be deleted
+     */
     private void displayedDeleteConfirmation(Song songToDelete){
-
         var confirm = AlertNotification.showAlertWindow("You are about to delete this song.", Alert.AlertType.CONFIRMATION);
+        var result = false;
         if(confirm.get().equals(ButtonType.OK)){
             try {
-                songModel.deleteSong(songToDelete);
-                fillTable();
+                result = songModel.deleteSong(songToDelete);
+                if(result){
+                    fillTable();
+                    AlertNotification.showAlertWindow("Song with id: " + songToDelete.getId() + " successfully deleted ", Alert.AlertType.INFORMATION);
+                } else {
+                    AlertNotification.showAlertWindow("Could not delete song with id: " + songToDelete.getId(), Alert.AlertType.ERROR);
+                }
             } catch (Exception e) {
-                throw new RuntimeException(e);
-
+                AlertNotification.showAlertWindow(e.getMessage(), Alert.AlertType.ERROR);
             }
         }
     }

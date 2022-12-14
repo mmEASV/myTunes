@@ -27,16 +27,14 @@ import mytunessys.gui.models.PlaylistModel;
  */
 
 public class PlaylistController {
-    // TODO: do not write inst var with upper case letter first please
     private AnchorPane popUpContent;
     private AnchorPane window;
     private final PlaylistModel playlistModel;
-
     private BaseController baseController;
     private TableView<Playlist> table;
 
     public PlaylistController(AnchorPane contentWindow, PlaylistModel playlistModel, BaseController baseController) {
-        this.window = contentWindow; // refer to this. instead of just the name  :)
+        this.window = contentWindow;
         this.playlistModel = playlistModel;
         this.baseController = baseController;
     }
@@ -48,8 +46,6 @@ public class PlaylistController {
     public TableView<Playlist> getTable(){
         return this.table;
     }
-
-
         public void show (AnchorPane centerContent) throws Exception {
             table = new TableView<>();
             table.getStyleClass().add("playlist-table");
@@ -155,12 +151,18 @@ public class PlaylistController {
         public void deletePlaylist (Playlist playlist){
             displayedDeleteConfirmation(playlist);
         }
-        public void displayedDeleteConfirmation (Playlist playlistToDelete){
+
+    /**
+     * method with void as return type that tries to delete playlist from its model in not confirmed by user action this playlist wont be deleted
+     * @param playlistToDelete selected playlist that must carry its id in order to be deleted
+     */
+    public void displayedDeleteConfirmation (Playlist playlistToDelete){
             var confirm = AlertNotification.showAlertWindow("You are about to delete this playlist.", Alert.AlertType.CONFIRMATION);
             if (confirm.get().equals(ButtonType.OK)) {
                 try {
                     playlistModel.deletePlaylist(playlistToDelete);
                     fillTable();
+                    AlertNotification.showAlertWindow("Playlist with id : " + playlistToDelete.getId() + " was successfully updated !", Alert.AlertType.INFORMATION);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -221,8 +223,9 @@ public class PlaylistController {
                 @Override
                 public void handle(ActionEvent event) {
                     try {
-                        playlistModel.createPlaylist(new Playlist(1, playlistName.getText(0, playlistName.getLength()), 0));
+                        playlistModel.createPlaylist(new Playlist(playlistName.getText(0, playlistName.getLength())));
                         fillTable();
+                        AlertNotification.showAlertWindow("Successfully created playlist with id : " + playlistName.getId() + " !", Alert.AlertType.INFORMATION);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }

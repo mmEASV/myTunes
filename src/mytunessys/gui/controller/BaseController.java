@@ -177,7 +177,6 @@ public class BaseController implements Initializable {
     //endregion
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         try {
             this.songModel = new SongModel();
             this.playlistModel = new PlaylistModel();
@@ -192,7 +191,7 @@ public class BaseController implements Initializable {
         }
         btnGoBack.setVisible(false);
 
-        btnPlay.setStyle("-fx-background-image: url('mytunessys/gui/icons/Play.png')");
+        btnPlay.setStyle("-fx-background-image: url('mytunessys/gui/icons/Play.png')"); // this gives me some error with path
 
         btnPlay.setOnAction(this::listener);
         btnNext.setOnAction(this::nextSong);
@@ -396,10 +395,15 @@ public class BaseController implements Initializable {
 
     }
 
+    /**
+     * set search method that is called when base controller is instantiated and adds listener to listen to any event
+     * regards filter/search implementation
+     * try to get the location that currently user is at and depending on the location needed search is execute with required values
+     */
     private void setSearch() {
         txfSearchBar.textProperty().addListener((obs, oldValue, newValue) -> {
             try {
-                if (lblCurrentLocation.getText().equals("Playlists")) { // not so type safe but works for now
+                if (lblCurrentLocation.getText().equals("Playlists")) {
                     playlistModel.searchPlaylist(newValue);
                 } else {
                     songModel.searchSongs(newValue);
@@ -413,7 +417,6 @@ public class BaseController implements Initializable {
     public void NewItem(ActionEvent actionEvent) {
         if (lblCurrentLocation.getText().equals("Songs"))
             songCont.newSong();
-
         else
             playlistCont.newPlaylist();
     }

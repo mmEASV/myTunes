@@ -1,8 +1,6 @@
 package mytunessys.dal.repository.interfaces;
 
 import mytunessys.be.Song;
-import mytunessys.bll.exceptions.ApplicationException;
-import mytunessys.bll.exceptions.ConnectionExceptions;
 
 import java.util.List;
 
